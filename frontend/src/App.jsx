@@ -28,6 +28,7 @@ export default function App() {
           <Route path="/" element={<Home onQuoteClick={openQuote} />} />
           <Route path="/moskva/:okrug/:slug" element={<District onQuoteClick={openQuote} />} />
           <Route path="/podmoskovye/:slug" element={<City onQuoteClick={openQuote} />} />
+          <Route path="/podmoskovye/:slug/" element={<City onQuoteClick={openQuote} />} />
           <Route path="/uslugi/" element={<ServiceList onQuoteClick={openQuote} />} />
           <Route path="/uslugi/:slug" element={<Service onQuoteClick={openQuote} />} />
           <Route path="/uslugi/:slug/" element={<Service onQuoteClick={openQuote} />} />

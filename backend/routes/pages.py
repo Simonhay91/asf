@@ -195,3 +195,19 @@ async def list_cities(status: str = None, limit: int = 50, skip: int = 0):
     ).sort("priority_order", 1).skip(skip).limit(limit).to_list(limit)
     total = await db.podmoskovye_cities.count_documents(query)
     return {"items": items, "total": total}
+
+
+@router.post("/api/cities/sync-status")
+async def sync_cities_status():
+    """Set status=done for all cities that have a generated page but status is not done."""
+    pages = await db.generated_pages.find(
+        {"type": "city"}, {"slug": 1, "_id": 0}
+    ).to_list(None)
+    slugs = [p["slug"] for p in pages]
+    if not slugs:
+        return {"updated": 0}
+    result = await db.podmoskovye_cities.update_many(
+        {"slug": {"$in": slugs}, "status": {"$ne": "done"}},
+        {"$set": {"status": "done"}}
+    )
+    return {"updated": result.modified_count, "slugs_with_pages": len(slugs)}

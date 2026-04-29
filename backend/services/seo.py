@@ -232,12 +232,12 @@ ROBOTS_TXT = f"""User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
-Disallow: /_next/
-Disallow: /static/
+Disallow: /*?
 
 User-agent: Yandex
 Allow: /
 Crawl-delay: 1
+Clean-param: ref /
 
 User-agent: Googlebot
 Allow: /

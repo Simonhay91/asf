@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 import { CITIES, REGION_ORDER } from '../constants/cities'
+import { useCitiesStatus } from '../hooks/useCitiesStatus'
 
 const META = {
   title: 'Асфальтирование в Подмосковье — города и районы | РусскийАсфальт',
@@ -11,6 +12,7 @@ const META = {
 }
 
 export default function RegionList() {
+  const generatedSlugs = useCitiesStatus()
   const grouped = REGION_ORDER.reduce((acc, region) => {
     acc[region] = CITIES.filter(c => c.region === region)
     return acc
@@ -71,37 +73,40 @@ export default function RegionList() {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
                 gap: '10px',
               }}>
-                {cities.map(city => (
-                  <Link
-                    key={city.slug}
-                    to={`/podmoskovye/${city.slug}/`}
-                    style={{
-                      background: 'var(--gray)',
-                      border: '1px solid #2a2a2a',
-                      borderRadius: '6px',
-                      padding: '12px 16px',
-                      color: 'var(--light)',
-                      textDecoration: 'none',
-                      fontSize: '0.93rem',
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '8px',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = 'var(--accent)'
-                      e.currentTarget.style.color = 'var(--accent)'
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.borderColor = '#2a2a2a'
-                      e.currentTarget.style.color = 'var(--light)'
-                    }}
-                  >
-                    <span>Асфальтирование в {city.name}</span>
-                    <span style={{ opacity: 0.5, fontSize: '0.8rem' }}>→</span>
-                  </Link>
-                ))}
+                {cities.map(city => {
+                  const isDone = generatedSlugs ? generatedSlugs.has(city.slug) : false
+                  const baseStyle = {
+                    background: 'var(--gray)',
+                    borderRadius: '6px',
+                    padding: '12px 16px',
+                    fontSize: '0.93rem',
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '8px',
+                  }
+                  if (isDone) {
+                    return (
+                      <Link
+                        key={city.slug}
+                        to={`/podmoskovye/${city.slug}/`}
+                        style={{ ...baseStyle, border: '1px solid #2a2a2a', color: 'var(--light)', textDecoration: 'none' }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a2a2a'; e.currentTarget.style.color = 'var(--light)' }}
+                      >
+                        <span>Асфальтирование в {city.name}</span>
+                        <span style={{ opacity: 0.5, fontSize: '0.8rem' }}>→</span>
+                      </Link>
+                    )
+                  }
+                  return (
+                    <span key={city.slug} style={{ ...baseStyle, border: '1px solid #1e1e1e', color: 'var(--mid)', opacity: 0.5, cursor: 'default' }}>
+                      <span>Асфальтирование в {city.name}</span>
+                      <span style={{ fontSize: '0.7rem' }}>скоро</span>
+                    </span>
+                  )
+                })}
               </div>
             </div>
           )

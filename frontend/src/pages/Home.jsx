@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { ALL_SERVICES } from '../constants/services'
+import { useCitiesStatus } from '../hooks/useCitiesStatus'
 
 const SLIDES = [
   {
@@ -209,6 +210,7 @@ const BLOG_PREVIEWS = [
 export default function Home({ onQuoteClick }) {
   const [current, setCurrent] = useState(0)
   const timerRef = useRef(null)
+  const generatedSlugs = useCitiesStatus()
 
   const go = (idx) => setCurrent((idx + SLIDES.length) % SLIDES.length)
 
@@ -620,27 +622,27 @@ export default function Home({ onQuoteClick }) {
           <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--white)', marginBottom: '8px' }}>Карта присутствия</h2>
           <p style={{ color: 'var(--mid)', marginBottom: '32px' }}>Работаем во всех городах Москвы и Подмосковья</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {CITIES.map(c => (
-              <Link
-                key={c.slug}
-                to={`/podmoskovye/${c.slug}/`}
-                style={{
-                  padding: '7px 14px',
-                  background: '#1a1a1a',
-                  border: '1px solid #2a2a2a',
-                  borderRadius: '20px',
-                  color: '#ccc',
-                  fontSize: '0.85rem',
-                  textDecoration: 'none',
-                  transition: 'all 0.15s',
-                  whiteSpace: 'nowrap',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a2a2a'; e.currentTarget.style.color = '#ccc' }}
-              >
-                {c.name}
-              </Link>
-            ))}
+            {CITIES.map(c => {
+              const isDone = generatedSlugs ? generatedSlugs.has(c.slug) : false
+              if (isDone) {
+                return (
+                  <Link
+                    key={c.slug}
+                    to={`/podmoskovye/${c.slug}/`}
+                    style={{ padding: '7px 14px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '20px', color: '#ccc', fontSize: '0.85rem', textDecoration: 'none', transition: 'all 0.15s', whiteSpace: 'nowrap' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a2a2a'; e.currentTarget.style.color = '#ccc' }}
+                  >
+                    {c.name}
+                  </Link>
+                )
+              }
+              return (
+                <span key={c.slug} style={{ padding: '7px 14px', background: '#111', border: '1px solid #1e1e1e', borderRadius: '20px', color: '#444', fontSize: '0.85rem', whiteSpace: 'nowrap', cursor: 'default' }}>
+                  {c.name}
+                </span>
+              )
+            })}
           </div>
           <div style={{ marginTop: '24px' }}>
             <Link to="/regiony/" style={{ color: 'var(--accent)', fontSize: '0.9rem', fontWeight: 600 }}>

@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { CITIES, REGION_ORDER } from '../constants/cities'
+import { useCitiesStatus } from '../hooks/useCitiesStatus'
 
 export default function RegionsWidget() {
+  const generatedSlugs = useCitiesStatus()
   return (
     <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '20px' }}>
       <h3 style={{ fontWeight: 900, fontSize: '1.05rem', marginBottom: '16px', marginTop: 0 }}>
@@ -18,15 +20,21 @@ export default function RegionsWidget() {
                 {label}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {cities.slice(0, 4).map(c => (
-                  <Link
-                    key={c.slug}
-                    to={`/podmoskovye/${c.slug}/`}
-                    style={{ background: '#2a2a2a', padding: '4px 10px', borderRadius: '20px', fontSize: '0.78rem', color: 'var(--light)', textDecoration: 'none', border: '1px solid #444' }}
-                  >
-                    {c.name}
-                  </Link>
-                ))}
+                {cities.slice(0, 4).map(c => {
+                  const isDone = generatedSlugs ? generatedSlugs.has(c.slug) : false
+                  if (isDone) {
+                    return (
+                      <Link key={c.slug} to={`/podmoskovye/${c.slug}/`} style={{ background: '#2a2a2a', padding: '4px 10px', borderRadius: '20px', fontSize: '0.78rem', color: 'var(--light)', textDecoration: 'none', border: '1px solid #444' }}>
+                        {c.name}
+                      </Link>
+                    )
+                  }
+                  return (
+                    <span key={c.slug} style={{ background: '#1e1e1e', padding: '4px 10px', borderRadius: '20px', fontSize: '0.78rem', color: '#555', border: '1px solid #2a2a2a', cursor: 'default' }}>
+                      {c.name}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           )

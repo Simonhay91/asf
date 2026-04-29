@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import PageMeta from '../components/PageMeta'
 import RegionsWidget from '../components/RegionsWidget'
+import { CITIES } from '../constants/cities'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=600'
 
@@ -11,16 +12,19 @@ export default function City({ onQuoteClick }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [notFound, setNotFound] = useState(false)
   const [blogs, setBlogs] = useState([])
 
   useEffect(() => {
     setLoading(true)
+    setNotFound(false)
     fetch(`/api/page/podmoskovye/${slug}`)
       .then(r => {
-        if (!r.ok) throw new Error(r.status === 404 ? 'Страница не найдена' : 'Ошибка загрузки')
+        if (r.status === 404) { setNotFound(true); setLoading(false); return null }
+        if (!r.ok) throw new Error('Ошибка загрузки')
         return r.json()
       })
-      .then(d => { setData(d); setLoading(false) })
+      .then(d => { if (d) { setData(d); setLoading(false) } })
       .catch(e => { setError(e.message); setLoading(false) })
 
     fetch('/api/blog/recent?limit=3')
@@ -29,7 +33,30 @@ export default function City({ onQuoteClick }) {
       .catch(() => {})
   }, [slug])
 
+  const cityName = CITIES.find(c => c.slug === slug)?.name || slug
+
   if (loading) return <div className="loading">Загрузка...</div>
+  if (notFound) return (
+    <div className="container" style={{ padding: '80px 20px', maxWidth: '700px' }}>
+      <div style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
+        <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
+        {' / '}
+        <Link to="/regiony/" style={{ color: 'var(--mid)' }}>Подмосковье</Link>
+        {' / '}
+        <span>{cityName}</span>
+      </div>
+      <h1 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '16px' }}>
+        Асфальтирование в {cityName}
+      </h1>
+      <p style={{ color: 'var(--mid)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '28px' }}>
+        Мы уже работаем в {cityName}. Страница с ценами и условиями скоро появится — оставьте заявку прямо сейчас, замерщик приедет бесплатно.
+      </p>
+      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        <button onClick={onQuoteClick} className="btn">Получить расчёт бесплатно</button>
+        <a href="tel:+79096282800" className="btn btn-outline">+7 909 628 28 00</a>
+      </div>
+    </div>
+  )
   if (error) return (
     <div className="container" style={{ padding: '60px 20px' }}>
       <div className="error-box">{error}</div>
