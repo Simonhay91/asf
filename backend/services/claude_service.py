@@ -7,7 +7,7 @@ import anthropic
 logger = logging.getLogger(__name__)
 
 client = anthropic.AsyncAnthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-sonnet-4-5"
 
 COMPANY_PHONE = "+7 909 628 28 00"
 COMPANY_PHONE_TEL = "tel:+79096282800"
