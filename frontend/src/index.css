@@ -86,8 +86,12 @@ h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; }
   .blog-layout,
   .city-layout { grid-template-columns: 1fr !important; }
 
-  /* Region city cards — 2 per row on mobile */
-  .region-city-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+  /* Region city cards — single column on mobile */
+  .region-city-grid { grid-template-columns: 1fr !important; gap: 8px !important; }
+  .city-prefix { display: none; }
+  /* Hero split layout — stack on mobile */
+  .hero2-grid { grid-template-columns: 1fr !important; }
+  .hero2-grid img { max-height: 220px; width: 100%; object-fit: cover; }
   .region-city-grid a { font-size: 0.8rem !important; padding: 8px 10px !important; }
 
   /* Container padding */

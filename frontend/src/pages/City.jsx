@@ -34,7 +34,7 @@ function Hero1({ title, img }) {
 function Hero2({ title, img }) {
   // Split: image right, title+badge left
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '340px', overflow: 'hidden' }}>
+    <div className="hero2-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '340px', overflow: 'hidden' }}>
       <div style={{ background: 'var(--dark)', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '48px 40px' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: 700, marginBottom: '16px', width: 'fit-content' }}>
           ⚡ Асфальтирование в Подмосковье

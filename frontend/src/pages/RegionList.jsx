@@ -95,14 +95,14 @@ export default function RegionList() {
                         onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
                         onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a2a2a'; e.currentTarget.style.color = 'var(--light)' }}
                       >
-                        <span>Асфальтирование в {city.name}</span>
+                        <span><span className="city-prefix">Асфальтирование в </span>{city.name}</span>
                         <span style={{ opacity: 0.5, fontSize: '0.8rem' }}>→</span>
                       </Link>
                     )
                   }
                   return (
                     <span key={city.slug} style={{ ...baseStyle, border: '1px solid #1e1e1e', color: 'var(--mid)', opacity: 0.5, cursor: 'default' }}>
-                      <span>Асфальтирование в {city.name}</span>
+                      <span><span className="city-prefix">Асфальтирование в </span>{city.name}</span>
                       <span style={{ fontSize: '0.7rem' }}>скоро</span>
                     </span>
                   )

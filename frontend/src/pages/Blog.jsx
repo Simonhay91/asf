@@ -31,7 +31,7 @@ function Hero1({ title, img, date }) {
 
 function Hero2({ title, img, date }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '360px', overflow: 'hidden' }}>
+    <div className="hero2-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '360px', overflow: 'hidden' }}>
       <div style={{ background: '#0f0f0f', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '48px 40px' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--accent)', color: '#000', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, marginBottom: '16px', width: 'fit-content' }}>
           📰 Блог РусскийАсфальт
