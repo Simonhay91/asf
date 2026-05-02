@@ -38,7 +38,7 @@ export default function App() {
           <Route path="/regiony" element={<RegionList />} />
           <Route path="/blog/" element={<BlogList />} />
           <Route path="/blog/:slug" element={<Blog onQuoteClick={openQuote} />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/sys-9x4k2m" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -1,8 +1,58 @@
 import { useEffect, useState } from 'react'
 
 const API = '/api'
+const ADMIN_KEY = 'adm_auth_v1'
+const SECRET = 'Ru$$1yA$phalt#2026'
+
+function PasswordGate({ onAuth }) {
+  const [value, setValue] = useState('')
+  const [shake, setShake] = useState(false)
+
+  function attempt() {
+    if (value === SECRET) {
+      localStorage.setItem(ADMIN_KEY, '1')
+      onAuth()
+    } else {
+      setShake(true)
+      setValue('')
+      setTimeout(() => setShake(false), 600)
+    }
+  }
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+      <div style={{
+        background: 'var(--dark)', border: '1px solid #333', borderRadius: '10px',
+        padding: '40px 32px', width: '100%', maxWidth: '360px', textAlign: 'center',
+      }}>
+        <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🔒</div>
+        <div style={{ color: 'var(--mid)', fontSize: '0.9rem', marginBottom: '24px' }}>Доступ ограничен</div>
+        <input
+          type="password"
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && attempt()}
+          placeholder="Пароль"
+          autoFocus
+          style={{
+            width: '100%', boxSizing: 'border-box',
+            background: shake ? '#2a1010' : 'var(--gray)',
+            color: 'var(--white)', border: `1px solid ${shake ? '#a33' : '#444'}`,
+            borderRadius: '6px', padding: '12px 14px', fontSize: '1rem',
+            marginBottom: '16px', outline: 'none',
+            transition: 'background 0.2s, border-color 0.2s',
+          }}
+        />
+        <button onClick={attempt} className="btn" style={{ width: '100%' }}>Войти</button>
+      </div>
+    </div>
+  )
+}
 
 export default function Admin() {
+  const [authed, setAuthed] = useState(() => localStorage.getItem(ADMIN_KEY) === '1')
+
+  if (!authed) return <PasswordGate onAuth={() => setAuthed(true)} />
   const [status, setStatus] = useState(null)
   const [queue, setQueue] = useState(null)
   const [generating, setGenerating] = useState(false)
@@ -84,9 +134,15 @@ export default function Admin() {
 
   return (
     <div style={{ padding: '40px 20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '1.8rem', marginBottom: '32px', color: 'var(--white)' }}>
-        Панель управления
-      </h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+        <h1 style={{ fontSize: '1.8rem', color: 'var(--white)', margin: 0 }}>Панель управления</h1>
+        <button
+          onClick={() => { localStorage.removeItem(ADMIN_KEY); setAuthed(false) }}
+          style={{ background: 'transparent', border: '1px solid #444', color: '#888', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}
+        >
+          Выйти
+        </button>
+      </div>
 
       {/* Status cards */}
       {status && (
