@@ -80,6 +80,62 @@ async def notify_page(
         logger.error(f"Telegram notify_page error: {e}", exc_info=True)
 
 
+async def send_keyboard(text: str, buttons: list[list[dict]]) -> int | None:
+    """Send a message with inline keyboard. Returns message_id."""
+    if not BOT_TOKEN or not CHAT_ID:
+        return None
+    try:
+        async with httpx.AsyncClient(timeout=10) as http:
+            resp = await http.post(
+                f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+                json={
+                    "chat_id": CHAT_ID,
+                    "text": text,
+                    "parse_mode": "HTML",
+                    "reply_markup": {"inline_keyboard": buttons},
+                },
+            )
+            data = resp.json()
+            return data.get("result", {}).get("message_id")
+    except Exception as e:
+        logger.error(f"Telegram send_keyboard error: {e}", exc_info=True)
+        return None
+
+
+async def edit_keyboard(message_id: int, text: str, buttons: list[list[dict]]) -> None:
+    """Edit existing message with new text and keyboard."""
+    if not BOT_TOKEN or not CHAT_ID:
+        return
+    try:
+        async with httpx.AsyncClient(timeout=10) as http:
+            await http.post(
+                f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText",
+                json={
+                    "chat_id": CHAT_ID,
+                    "message_id": message_id,
+                    "text": text,
+                    "parse_mode": "HTML",
+                    "reply_markup": {"inline_keyboard": buttons},
+                },
+            )
+    except Exception as e:
+        logger.error(f"Telegram edit_keyboard error: {e}", exc_info=True)
+
+
+async def answer_callback(callback_query_id: str, text: str = "") -> None:
+    """Answer a callback query to remove loading state."""
+    if not BOT_TOKEN:
+        return
+    try:
+        async with httpx.AsyncClient(timeout=5) as http:
+            await http.post(
+                f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery",
+                json={"callback_query_id": callback_query_id, "text": text},
+            )
+    except Exception as e:
+        logger.error(f"Telegram answer_callback error: {e}", exc_info=True)
+
+
 async def notify_quote(name: str, phone: str, comment: str = "", source_url: str = "") -> None:
     """Send a formatted quote request notification."""
     if not BOT_TOKEN or not CHAT_ID:
