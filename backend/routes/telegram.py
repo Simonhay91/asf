@@ -1,6 +1,6 @@
 import os
 import logging
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException, BackgroundTasks
 
 from backend.services.generate import generate_next, regenerate_slug, regenerate_service, get_status, get_next_queue, refresh_all_images, generate_cities_by_region
 from backend.services.telegram_service import notify, send_keyboard, edit_keyboard, answer_callback
@@ -13,7 +13,7 @@ CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
 
 @router.post("/telegram")
-async def telegram_webhook(request: Request):
+async def telegram_webhook(request: Request, background_tasks: BackgroundTasks):
     """Handle incoming Telegram bot updates."""
     try:
         data = await request.json()
@@ -26,7 +26,7 @@ async def telegram_webhook(request: Request):
         cb_chat_id = str(callback.get("message", {}).get("chat", {}).get("id", ""))
         if cb_chat_id != CHAT_ID:
             return {"ok": True}
-        await _handle_callback(callback)
+        background_tasks.add_task(_handle_callback, callback)
         return {"ok": True}
 
     message = data.get("message") or data.get("edited_message")
@@ -40,7 +40,7 @@ async def telegram_webhook(request: Request):
         logger.warning(f"Unauthorized Telegram message from chat {chat_id}")
         return {"ok": True}
 
-    await _handle_command(text)
+    background_tasks.add_task(_handle_command, text)
     return {"ok": True}
 
 
