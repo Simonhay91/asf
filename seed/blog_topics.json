@@ -1,154 +1,1202 @@
 [
-  {"id": 1, "title": "Технология укладки асфальта: этапы и нюансы", "slug": "tehnologiya-ukladki-asfalta-etapy", "category": "technical", "priority_order": 1, "status": "pending"},
-  {"id": 2, "title": "Песчаное основание против щебневого: что выбрать?", "slug": "peschanoe-vs-schebnevo-osnovanje", "category": "technical", "priority_order": 2, "status": "pending"},
-  {"id": 3, "title": "Как рассчитать стоимость асфальтирования за 1 м²?", "slug": "kak-rasschitat-stoimost-asfaltirovaniya", "category": "technical", "priority_order": 3, "status": "pending"},
-  {"id": 4, "title": "Сколько слоев асфальта нужно для частного двора?", "slug": "skolko-sloev-asfalta-dlya-dvora", "category": "technical", "priority_order": 4, "status": "pending"},
-  {"id": 5, "title": "Что такое выравнивающий слой и зачем он нужен?", "slug": "chto-takoe-vyravnivayushij-sloj", "category": "technical", "priority_order": 5, "status": "pending"},
-  {"id": 6, "title": "Асфальтирование или тротуарная плитка: что долговечнее?", "slug": "asfalt-vs-trotuarnaya-plitka-dolgovechnost", "category": "technical", "priority_order": 6, "status": "pending"},
-  {"id": 7, "title": "Подготовка основания на пучинистых грунтах Подмосковья", "slug": "podgotovka-osnovaniya-puchinistye-grunty", "category": "technical", "priority_order": 7, "status": "pending"},
-  {"id": 8, "title": "Что делать, если на участке застаивается вода?", "slug": "chto-delat-esli-zastaivaetsya-voda", "category": "technical", "priority_order": 8, "status": "pending"},
-  {"id": 9, "title": "Сколько времени нужно асфальту для полного застывания?", "slug": "skolko-vremeni-asfaltu-dlya-zastyvanya", "category": "technical", "priority_order": 9, "status": "pending"},
-  {"id": 10, "title": "Правильная установка бордюрного камня: инструкция", "slug": "pravilnaya-ustanovka-bordyurnogo-kamnya", "category": "technical", "priority_order": 10, "status": "pending"},
-  {"id": 11, "title": "Как проверить качество уложенного асфальта", "slug": "kak-proverit-kachestvo-ulozhennogo-asfalta", "category": "technical", "priority_order": 11, "status": "pending"},
-  {"id": 12, "title": "Зачем нужна регулярная чистка асфальтового покрытия?", "slug": "zachem-nuzhna-chistka-asfaltovogo-pokrytiya", "category": "technical", "priority_order": 12, "status": "pending"},
-  {"id": 13, "title": "Погодные условия для асфальтирования: когда лучше работать?", "slug": "pogodnye-usloviya-dlya-asfaltirovaniya", "category": "technical", "priority_order": 13, "status": "pending"},
-  {"id": 14, "title": "Ремонт старого асфальта без полной замены покрытия", "slug": "remont-starogo-asfalta-bez-zameny", "category": "technical", "priority_order": 14, "status": "pending"},
-  {"id": 15, "title": "Как предотвратить появление трещин на новом асфальте?", "slug": "kak-predotvratit-treshiny-na-asfalte", "category": "technical", "priority_order": 15, "status": "pending"},
-  {"id": 16, "title": "Оптимальная толщина асфальта для легковых автомобилей", "slug": "optimalnaya-tolshina-asfalta-legkovye", "category": "technical", "priority_order": 16, "status": "pending"},
-  {"id": 17, "title": "Расчет уклонов для отвода воды: почему это важно?", "slug": "raschet-uklonov-dlya-otvoda-vody", "category": "technical", "priority_order": 17, "status": "pending"},
-  {"id": 18, "title": "Можно ли укладывать асфальт в дождь: мифы и реальность", "slug": "mozhno-li-ukladyvat-asfalt-v-dozhd", "category": "technical", "priority_order": 18, "status": "pending"},
-  {"id": 19, "title": "Уход за асфальтом зимой: советы владельцам", "slug": "uhod-za-asfaltom-zimoj-sovety", "category": "technical", "priority_order": 19, "status": "pending"},
-  {"id": 20, "title": "Виды асфальта (мелкозернистый, крупнозернистый): какой выбрать?", "slug": "vidy-asfalta-melko-krupnozernistyj", "category": "technical", "priority_order": 20, "status": "pending"},
-  {"id": 21, "title": "Как выбрать подрядчика по асфальтированию в Москве", "slug": "kak-vybrat-podryadchika-moskva", "category": "business", "priority_order": 21, "status": "pending"},
-  {"id": 22, "title": "Почему цены на асфальтирование сильно отличаются?", "slug": "pochemu-ceny-na-asfalt-razlichayutsya", "category": "business", "priority_order": 22, "status": "pending"},
-  {"id": 23, "title": "Договор на оказание услуг: что должно быть прописано", "slug": "dogovor-na-asfaltirovanie-chto-propisat", "category": "business", "priority_order": 23, "status": "pending"},
-  {"id": 24, "title": "Гарантия на асфальтовые работы: что в неё входит?", "slug": "garantiya-na-asfaltovye-raboty", "category": "business", "priority_order": 24, "status": "pending"},
-  {"id": 25, "title": "Как сэкономить на асфальтировании без потери качества?", "slug": "kak-sekonomit-na-asfaltirovanii", "category": "business", "priority_order": 25, "status": "pending"},
-  {"id": 26, "title": "Асфальтирование под ключ: плюсы услуги", "slug": "asfaltirovanie-pod-klyuch-plyusy", "category": "business", "priority_order": 26, "status": "pending"},
-  {"id": 27, "title": "Почему выгоднее нанять профессионалов, чем делать самим", "slug": "pochemu-vygodnee-nanat-professionalov", "category": "business", "priority_order": 27, "status": "pending"},
-  {"id": 28, "title": "Как правильно принять работу у подрядчика: чек-лист", "slug": "kak-prinyat-rabotu-u-podryadchika", "category": "business", "priority_order": 28, "status": "pending"},
-  {"id": 29, "title": "Асфальтирование частной территории против промышленной", "slug": "asfaltirovanie-chastnoe-vs-promyshlennoe", "category": "business", "priority_order": 29, "status": "pending"},
-  {"id": 30, "title": "Уловки недобросовестных подрядчиков: как распознать", "slug": "ulovki-nedobrosovestnyh-podryadchikov", "category": "business", "priority_order": 30, "status": "pending"},
-  {"id": 31, "title": "Какие документы нужны для асфальтирования двора", "slug": "kakie-dokumenty-nuzhny-dlya-asfalta", "category": "business", "priority_order": 31, "status": "pending"},
-  {"id": 32, "title": "Сколько времени занимает асфальтирование среднего двора?", "slug": "skolko-vremeni-asfaltirovanie-dvora", "category": "business", "priority_order": 32, "status": "pending"},
-  {"id": 33, "title": "Сроки выполнения работ: на что ориентироваться?", "slug": "sroki-vypolneniya-rabot-asfalt", "category": "business", "priority_order": 33, "status": "pending"},
-  {"id": 34, "title": "Почему осеннее асфальтирование — это риск?", "slug": "pochemu-osennee-asfaltirovanie-risk", "category": "business", "priority_order": 34, "status": "pending"},
-  {"id": 35, "title": "Как выбрать компанию по асфальтированию: рейтинг критериев", "slug": "kak-vybrat-kompaniyu-po-asfaltirovaniyu", "category": "business", "priority_order": 35, "status": "pending"},
-  {"id": 36, "title": "Из чего складывается цена: прозрачное ценообразование", "slug": "iz-chego-skladyvaetsya-cena-asfalt", "category": "business", "priority_order": 36, "status": "pending"},
-  {"id": 37, "title": "Современные технологии асфальтирования в 2026 году", "slug": "sovremennye-tehnologii-asfaltirovaniya-2026", "category": "business", "priority_order": 37, "status": "pending"},
-  {"id": 38, "title": "Часто задаваемые вопросы асфальтировщику", "slug": "chasto-zadavaemye-voprosy-asfaltirovshiku", "category": "business", "priority_order": 38, "status": "pending"},
-  {"id": 39, "title": "Как организовать работы, чтобы не мешать соседям", "slug": "kak-organizovat-raboty-ne-meshat-sosedyam", "category": "business", "priority_order": 39, "status": "pending"},
-  {"id": 40, "title": "Как заказать бесплатный замер на участке", "slug": "kak-zakazat-besplatnyj-zamer", "category": "business", "priority_order": 40, "status": "pending"},
-  {"id": 41, "title": "Особенности асфальтирования в почвах Московской области", "slug": "osobennosti-asfaltirovaniya-podmoskovye-pochvy", "category": "local", "priority_order": 41, "status": "pending"},
-  {"id": 42, "title": "Почему в Москве важно делать качественный дренаж", "slug": "pochemu-v-moskve-vazhen-drenazh", "category": "local", "priority_order": 42, "status": "pending"},
-  {"id": 43, "title": "Влияние московского климата на долговечность покрытия", "slug": "vliyanie-moskovskogo-klimata-na-asfalt", "category": "local", "priority_order": 43, "status": "pending"},
-  {"id": 44, "title": "Асфальтирование в Подольске: местные особенности", "slug": "asfaltirovanie-v-podolske-osobennosti", "category": "local", "priority_order": 44, "status": "pending"},
-  {"id": 45, "title": "Как изменились стандарты качества в Москве в 2026 году", "slug": "standarty-kachestva-moskva-2026", "category": "local", "priority_order": 45, "status": "pending"},
-  {"id": 46, "title": "Лучшие решения для частных домов в Подмосковье", "slug": "luchshie-resheniya-dlya-domov-podmoskovye", "category": "local", "priority_order": 46, "status": "pending"},
-  {"id": 47, "title": "Экологические нормы при дорожных работах в регионе", "slug": "ekologicheskie-normy-dorozhnye-raboty", "category": "local", "priority_order": 47, "status": "pending"},
-  {"id": 48, "title": "Влияние московских ГОСТов на частное строительство", "slug": "gost-moskva-chastnoe-stroitelstvo", "category": "local", "priority_order": 48, "status": "pending"},
-  {"id": 49, "title": "Специфика асфальтирования в Домодедово", "slug": "specifika-asfaltirovaniya-domodedovo", "category": "local", "priority_order": 49, "status": "pending"},
-  {"id": 50, "title": "Почему в московских дворах важно использовать бордюры", "slug": "pochemu-v-dvorah-nuzhny-bordyury", "category": "local", "priority_order": 50, "status": "pending"},
-  {"id": 51, "title": "Как бороться с грязью на дачных участках Подмосковья", "slug": "kak-borotsya-s-gryazyu-dacha-podmoskovye", "category": "local", "priority_order": 51, "status": "pending"},
-  {"id": 52, "title": "Планирование строительного сезона в условиях Москвы", "slug": "planirovanie-stroitelnogo-sezona-moskva", "category": "local", "priority_order": 52, "status": "pending"},
-  {"id": 53, "title": "Обустройство парковки у частного дома в Подмосковье", "slug": "obustrojstvo-parkovki-dom-podmoskovye", "category": "local", "priority_order": 53, "status": "pending"},
-  {"id": 54, "title": "Получение разрешений на асфальтирование общей территории", "slug": "razresheniya-asfaltirovanie-obshaya-territoriya", "category": "local", "priority_order": 54, "status": "pending"},
-  {"id": 55, "title": "Асфальтирование в Одинцовском районе: опыт и практика", "slug": "asfaltirovanie-odincovskij-rajon", "category": "local", "priority_order": 55, "status": "pending"},
-  {"id": 56, "title": "Почему асфальт в Москве разрушается быстрее (соль и химия)", "slug": "pochemu-asfalt-moskva-razrushaetsya-sol", "category": "local", "priority_order": 56, "status": "pending"},
-  {"id": 57, "title": "Как погода в Москве влияет на выбор типа асфальта", "slug": "pogoda-moskva-vybor-tipa-asfalta", "category": "local", "priority_order": 57, "status": "pending"},
-  {"id": 58, "title": "Почему асфальт может просесть в Московской области", "slug": "pochemu-asfalt-prosedaet-podmoskovye", "category": "local", "priority_order": 58, "status": "pending"},
-  {"id": 59, "title": "Асфальтирование в Химках: важные нюансы", "slug": "asfaltirovanie-v-himkah-nyuansy", "category": "local", "priority_order": 59, "status": "pending"},
-  {"id": 60, "title": "Примеры наших работ в Подмосковье: фотоотчет", "slug": "primery-rabot-podmoskovye-fotoотчет", "category": "local", "priority_order": 60, "status": "pending"},
-  {"id": 61, "title": "Как заделать ямы на участке своими руками", "slug": "kak-zadelat-yamy-svoimi-rukami", "category": "problems", "priority_order": 61, "status": "pending"},
-  {"id": 62, "title": "Что делать, если на асфальте образовались лужи", "slug": "chto-delat-luzhi-na-asfalte", "category": "problems", "priority_order": 62, "status": "pending"},
-  {"id": 63, "title": "Как убрать масляные пятна с асфальта", "slug": "kak-ubrat-maslyanye-pyatna-s-asfalta", "category": "problems", "priority_order": 63, "status": "pending"},
-  {"id": 64, "title": "Изменение цвета асфальта: о чем это говорит?", "slug": "izmenenie-cveta-asfalta-chto-znachit", "category": "problems", "priority_order": 64, "status": "pending"},
-  {"id": 65, "title": "Заделка трещин битумной мастикой: технология", "slug": "zadelka-treshin-bitumnoj-mastikoj", "category": "problems", "priority_order": 65, "status": "pending"},
-  {"id": 66, "title": "Почему асфальт начинает крошиться по краям", "slug": "pochemu-asfalt-kroshitsya-po-krayam", "category": "problems", "priority_order": 66, "status": "pending"},
-  {"id": 67, "title": "Как избавиться от травы, прорастающей сквозь асфальт", "slug": "kak-izbavitsya-ot-travy-cherez-asfalt", "category": "problems", "priority_order": 67, "status": "pending"},
-  {"id": 68, "title": "Вздутие асфальта: причины и устранение", "slug": "vzdutie-asfalta-prichiny-ustranenie", "category": "problems", "priority_order": 68, "status": "pending"},
-  {"id": 69, "title": "Реставрация старого покрытия спустя много лет", "slug": "restavraciya-starogo-asfalta", "category": "problems", "priority_order": 69, "status": "pending"},
-  {"id": 70, "title": "Следы от тяжелой техники на асфальте: как исправить", "slug": "sledy-tyazheloj-tehniki-na-asfalte", "category": "problems", "priority_order": 70, "status": "pending"},
-  {"id": 71, "title": "Как очистить асфальт от строительного мусора", "slug": "kak-ochistit-asfalt-ot-stroitelnogo-musora", "category": "problems", "priority_order": 71, "status": "pending"},
-  {"id": 72, "title": "Защита асфальта от воздействия тяжелого транспорта", "slug": "zashita-asfalta-tyazhelyj-transport", "category": "problems", "priority_order": 72, "status": "pending"},
-  {"id": 73, "title": "Почему асфальт может плыть в жару", "slug": "pochemu-asfalt-plyvet-v-zharu", "category": "problems", "priority_order": 73, "status": "pending"},
-  {"id": 74, "title": "Как избавиться от запаха асфальта в жаркую погоду", "slug": "zapah-asfalta-v-zharu-kak-izbavitsya", "category": "problems", "priority_order": 74, "status": "pending"},
-  {"id": 75, "title": "Организация правильного дренажа под покрытием", "slug": "organizaciya-pravilnogo-drenazha-pod-asfaltom", "category": "problems", "priority_order": 75, "status": "pending"},
-  {"id": 76, "title": "Признаки износа: когда пора обновлять асфальт", "slug": "priznaki-iznosa-kogda-obnovlyat-asfalt", "category": "problems", "priority_order": 76, "status": "pending"},
-  {"id": 77, "title": "Как предотвратить проседание основания под асфальтом", "slug": "kak-predotvratit-prosedanie-osnovaniya", "category": "problems", "priority_order": 77, "status": "pending"},
-  {"id": 78, "title": "Способы исправления волн на покрытии", "slug": "ispravlenie-voln-na-asfalte", "category": "problems", "priority_order": 78, "status": "pending"},
-  {"id": 79, "title": "Восстановление внешнего вида асфальтового покрытия", "slug": "vosstanovlenie-vida-asfaltovogo-pokrytiya", "category": "problems", "priority_order": 79, "status": "pending"},
-  {"id": 80, "title": "Ремонт отмостки дома: асфальт против других материалов", "slug": "remont-otmostki-doma-asfalt", "category": "problems", "priority_order": 80, "status": "pending"},
-  {"id": 81, "title": "Дизайн двора: сочетание асфальта и озеленения", "slug": "dizajn-dvora-asfalt-ozelenenie", "category": "inspiration", "priority_order": 81, "status": "pending"},
-  {"id": 82, "title": "Как асфальтирование повышает стоимость недвижимости", "slug": "asfaltirovanie-povyshaet-stoimost-nedvizhimosti", "category": "inspiration", "priority_order": 82, "status": "pending"},
-  {"id": 83, "title": "10 вдохновляющих проектов по благоустройству двора", "slug": "10-vdohnovlyayushih-proektov-blagoustrojstvo", "category": "inspiration", "priority_order": 83, "status": "pending"},
-  {"id": 84, "title": "Сочетание асфальта и тротуарной плитки в ландшафте", "slug": "sochetanie-asfalta-i-plitki-landshaft", "category": "inspiration", "priority_order": 84, "status": "pending"},
-  {"id": 85, "title": "Истории клиентов: до и после благоустройства", "slug": "istorii-klientov-do-i-posle", "category": "inspiration", "priority_order": 85, "status": "pending"},
-  {"id": 86, "title": "Почему асфальт — лучшее решение для частной парковки", "slug": "asfalt-luchshee-reshenie-chastnaya-parkovka", "category": "inspiration", "priority_order": 86, "status": "pending"},
-  {"id": 87, "title": "Освещение и асфальтирование: создаем уютный двор", "slug": "osveshenie-i-asfaltirovanie-uyutnyj-dvor", "category": "inspiration", "priority_order": 87, "status": "pending"},
-  {"id": 88, "title": "Как сделать удобный подъезд к дому", "slug": "kak-sdelat-udobnyj-podjezd-k-domu", "category": "inspiration", "priority_order": 88, "status": "pending"},
-  {"id": 89, "title": "Тренды благоустройства частных территорий 2026", "slug": "trendy-blagoustrojstva-territorij-2026", "category": "inspiration", "priority_order": 89, "status": "pending"},
-  {"id": 90, "title": "Игровая площадка на асфальтовом покрытии: идеи", "slug": "igrovaya-ploshhadka-na-asfalte-idei", "category": "inspiration", "priority_order": 90, "status": "pending"},
-  {"id": 91, "title": "Бетон или асфальт: что лучше для дачи?", "slug": "beton-ili-asfalt-chto-luchshe-dlya-dachi", "category": "inspiration", "priority_order": 91, "status": "pending"},
-  {"id": 92, "title": "Проектирование подъездных путей на дачном участке", "slug": "proektirovanie-podjezdnyh-putej-dacha", "category": "inspiration", "priority_order": 92, "status": "pending"},
-  {"id": 93, "title": "Асфальт или гравий: сравнительный анализ", "slug": "asfalt-ili-gravij-sravnitelnyj-analiz", "category": "inspiration", "priority_order": 93, "status": "pending"},
-  {"id": 94, "title": "Благоустройство узких садовых дорожек", "slug": "blagoustrojstvo-uzkih-sadovyh-dorozhek", "category": "inspiration", "priority_order": 94, "status": "pending"},
-  {"id": 95, "title": "Преимущества асфальтирования для семей с детьми", "slug": "preimushhestva-asfaltirovaniya-semi-s-detmi", "category": "inspiration", "priority_order": 95, "status": "pending"},
-  {"id": 96, "title": "Как сделать асфальтовое покрытие эстетичным", "slug": "kak-sdelat-asfaltirovanie-estetichnym", "category": "inspiration", "priority_order": 96, "status": "pending"},
-  {"id": 97, "title": "Почему владельцы выбирают асфальт вместо плитки", "slug": "pochemu-vladeltsy-vybirayut-asfalt", "category": "inspiration", "priority_order": 97, "status": "pending"},
-  {"id": 98, "title": "Комбинированные решения: асфальт и клумбы", "slug": "kombinirovannye-resheniya-asfalt-klumby", "category": "inspiration", "priority_order": 98, "status": "pending"},
-  {"id": 99, "title": "Как спланировать работы, чтобы получить идеальный результат", "slug": "kak-splanirovat-raboty-idealnyj-rezultat", "category": "inspiration", "priority_order": 99, "status": "pending"},
-  {"id": 100, "title": "Фото-истории: как асфальтирование изменило вид участка", "slug": "foto-istorii-asfaltirovanie-izmenilo-uchastok", "category": "inspiration", "priority_order": 100, "status": "pending"},
-
-  {"id": 101, "title": "Асфальтирование промышленных площадок: требования и цены", "slug": "asfaltirovanie-promyshlennyh-ploshhadok", "category": "service_blog", "priority_order": 101, "status": "pending"},
-  {"id": 102, "title": "Асфальтирование въездов в гаражи и паркинги", "slug": "asfaltirovanie-vezdov-garazhi-parking", "category": "service_blog", "priority_order": 102, "status": "pending"},
-  {"id": 103, "title": "Асфальтирование детских площадок: нормы безопасности", "slug": "asfaltirovanie-detskih-ploshhadok-normy", "category": "service_blog", "priority_order": 103, "status": "pending"},
-  {"id": 104, "title": "Строительство дорог с нуля: этапы и стоимость", "slug": "stroitelstvo-dorog-s-nulya-etapy", "category": "service_blog", "priority_order": 104, "status": "pending"},
-  {"id": 105, "title": "Асфальтирование складов и терминалов под ключ", "slug": "asfaltirovanie-skladov-terminalov", "category": "service_blog", "priority_order": 105, "status": "pending"},
-  {"id": 106, "title": "Тротуарное асфальтирование: технология и цены", "slug": "trotuarnoe-asfaltirovanie-tehnologiya", "category": "service_blog", "priority_order": 106, "status": "pending"},
-  {"id": 107, "title": "Асфальтирование АЗС и автомоек: специфика работ", "slug": "asfaltirovanie-azs-avtomojki", "category": "service_blog", "priority_order": 107, "status": "pending"},
-  {"id": 108, "title": "Укладка асфальта в труднодоступных местах", "slug": "ukladka-asfalta-trudnodostupnye-mesta", "category": "service_blog", "priority_order": 108, "status": "pending"},
-  {"id": 109, "title": "Капитальный ремонт дорожных покрытий: когда необходим", "slug": "kapitalnyj-remont-dorozhnyh-pokrytij", "category": "service_blog", "priority_order": 109, "status": "pending"},
-  {"id": 110, "title": "Асфальтирование спортивных площадок и беговых дорожек", "slug": "asfaltirovanie-sportivnyh-ploshhadok", "category": "service_blog", "priority_order": 110, "status": "pending"},
-  {"id": 111, "title": "Устройство асфальтового покрытия из горячей смеси", "slug": "ustrojstvo-asfalta-goryachaya-smes", "category": "service_blog", "priority_order": 111, "status": "pending"},
-  {"id": 112, "title": "Асфальтирование территорий бизнес-центров", "slug": "asfaltirovanie-territorij-biznes-centrov", "category": "service_blog", "priority_order": 112, "status": "pending"},
-  {"id": 113, "title": "Асфальтирование для торговых центров: требования", "slug": "asfaltirovanie-torgovyh-centrov", "category": "service_blog", "priority_order": 113, "status": "pending"},
-  {"id": 114, "title": "Ремонт отмостков зданий: асфальт vs бетон", "slug": "remont-otmostkov-zdanij-asfalt-beton", "category": "service_blog", "priority_order": 114, "status": "pending"},
-  {"id": 115, "title": "Асфальтирование велодорожек и пешеходных зон", "slug": "asfaltirovanie-velodorozhek-peshehodnyh-zon", "category": "service_blog", "priority_order": 115, "status": "pending"},
-  {"id": 116, "title": "Укладка асфальта на пандусы и съезды", "slug": "ukladka-asfalta-pandus-sezdy", "category": "service_blog", "priority_order": 116, "status": "pending"},
-  {"id": 117, "title": "Восстановление асфальта после прокладки коммуникаций", "slug": "vosstanovlenie-asfalta-kommunikacii", "category": "service_blog", "priority_order": 117, "status": "pending"},
-  {"id": 118, "title": "Усиление дорожного основания: технологии и материалы", "slug": "usilenie-dorozhnogo-osnovaniya", "category": "service_blog", "priority_order": 118, "status": "pending"},
-  {"id": 119, "title": "Асфальтирование в зимний период: возможно ли это?", "slug": "asfaltirovanie-v-zimnij-period", "category": "service_blog", "priority_order": 119, "status": "pending"},
-  {"id": 120, "title": "Асфальтирование больших площадей от 1000 м²: особенности", "slug": "asfaltirovanie-bolshih-ploshhadej-1000m2", "category": "service_blog", "priority_order": 120, "status": "pending"},
-  {"id": 121, "title": "Ремонт дорог в СНТ: порядок и стоимость", "slug": "remont-dorog-v-snt", "category": "service_blog", "priority_order": 121, "status": "pending"},
-  {"id": 122, "title": "Благоустройство коттеджных поселков: дороги и стоянки", "slug": "blagoustrojstvo-kottedzhnyh-poselkov", "category": "service_blog", "priority_order": 122, "status": "pending"},
-  {"id": 123, "title": "Асфальтовые дорожки в саду: за и против", "slug": "asfaltovye-dorozhki-v-sadu", "category": "service_blog", "priority_order": 123, "status": "pending"},
-  {"id": 124, "title": "Демонтаж старого асфальта: когда и как", "slug": "demontazh-starogo-asfalta-kogda-kak", "category": "service_blog", "priority_order": 124, "status": "pending"},
-  {"id": 125, "title": "Асфальтирование частных территорий: от 50 до 500 м²", "slug": "asfaltirovanie-chastnyh-territorij-50-500m2", "category": "service_blog", "priority_order": 125, "status": "pending"},
-  {"id": 126, "title": "Асфальтирование дорог общего пользования в МО", "slug": "asfaltirovanie-dorog-obshego-polzovaniya-mo", "category": "service_blog", "priority_order": 126, "status": "pending"},
-  {"id": 127, "title": "Ямочный ремонт vs полная замена покрытия: что выбрать", "slug": "yamochnyj-remont-vs-polnaya-zamena", "category": "service_blog", "priority_order": 127, "status": "pending"},
-  {"id": 128, "title": "Асфальтирование дворов многоквартирных домов: порядок", "slug": "asfaltirovanie-dvorov-mkd-poryadok", "category": "service_blog", "priority_order": 128, "status": "pending"},
-  {"id": 129, "title": "Асфальтовая крошка vs горячий асфальт: сравнение", "slug": "asfaltovaya-kroshka-vs-goryachij-asfalt", "category": "service_blog", "priority_order": 129, "status": "pending"},
-  {"id": 130, "title": "Укладка асфальта для частного дома: с чего начать", "slug": "ukladka-asfalta-chastnyj-dom-nachalo", "category": "service_blog", "priority_order": 130, "status": "pending"},
-
-  {"id": 131, "title": "Укладка тротуарной плитки: технология и цены в МО", "slug": "ukladka-trotuarnoj-plitki-ceny-mo", "category": "landscaping", "priority_order": 131, "status": "pending"},
-  {"id": 132, "title": "Монтаж брусчатки: виды, цены, сроки", "slug": "montazh-bruschatki-vidy-ceny-sroki", "category": "landscaping", "priority_order": 132, "status": "pending"},
-  {"id": 133, "title": "Установка бордюров и поребриков: зачем и как", "slug": "ustanovka-bordyurov-porebrik-zachem-kak", "category": "landscaping", "priority_order": 133, "status": "pending"},
-  {"id": 134, "title": "Установка лежачих полицейских: нормы и стоимость", "slug": "ustanovka-lezhachih-policejskih-normy", "category": "landscaping", "priority_order": 134, "status": "pending"},
-  {"id": 135, "title": "Нанесение дорожной разметки: виды и технология", "slug": "nanesenie-dorozhnoj-razmetki-vidy", "category": "landscaping", "priority_order": 135, "status": "pending"},
-  {"id": 136, "title": "Устройство ливневой канализации на участке", "slug": "ustrojstvo-livnevoj-kanalizacii-uchastok", "category": "landscaping", "priority_order": 136, "status": "pending"},
-  {"id": 137, "title": "Монтаж георешетки для укрепления откосов и дорог", "slug": "montazh-georeshetki-ukreplenie-odkosov", "category": "landscaping", "priority_order": 137, "status": "pending"},
-  {"id": 138, "title": "Дренажные системы под асфальтом: виды и монтаж", "slug": "drenazhnye-sistemy-pod-asfaltom", "category": "landscaping", "priority_order": 138, "status": "pending"},
-  {"id": 139, "title": "Монтаж водоотводных лотков: защита покрытия от воды", "slug": "montazh-vodootvodnyh-lotkov", "category": "landscaping", "priority_order": 139, "status": "pending"},
-  {"id": 140, "title": "Установка дорожных знаков на частной территории", "slug": "ustanovka-dorozhnyh-znakov-chastnaya-territoriya", "category": "landscaping", "priority_order": 140, "status": "pending"},
-  {"id": 141, "title": "Укладка плитки на бетонное основание: нюансы", "slug": "ukladka-plitki-na-betonnoe-osnovanie", "category": "landscaping", "priority_order": 141, "status": "pending"},
-  {"id": 142, "title": "Монтаж подпорных стен: когда необходим и сколько стоит", "slug": "montazh-podpornyh-sten-kogda-nuzhen", "category": "landscaping", "priority_order": 142, "status": "pending"},
-  {"id": 143, "title": "Устройство садовых дорожек: материалы и технологии", "slug": "ustrojstvo-sadovyh-dorozhek-materialy", "category": "landscaping", "priority_order": 143, "status": "pending"},
-  {"id": 144, "title": "Снегоуборочные работы на асфальте зимой", "slug": "snegouborochnye-raboty-na-asfalte-zimoj", "category": "landscaping", "priority_order": 144, "status": "pending"},
-  {"id": 145, "title": "Комплексное благоустройство двора под ключ", "slug": "kompleksnoe-blagoustrojstvo-dvora-pod-klyuch", "category": "landscaping", "priority_order": 145, "status": "pending"},
-  {"id": 146, "title": "Озеленение придомовой территории вместе с асфальтом", "slug": "ozelenenie-pridomovoj-territorii-asfalt", "category": "landscaping", "priority_order": 146, "status": "pending"},
-  {"id": 147, "title": "Вывоз строительного мусора после асфальтирования", "slug": "vyvoz-stroitelnogo-musora-asfaltirovanie", "category": "landscaping", "priority_order": 147, "status": "pending"},
-  {"id": 148, "title": "Зона барбекю с асфальтовым покрытием: проект и цены", "slug": "zona-barbeku-asfaltovoe-pokrytie", "category": "landscaping", "priority_order": 148, "status": "pending"},
-  {"id": 149, "title": "Декоративные элементы и МАФ на асфальтированной территории", "slug": "dekorativnye-elementy-maf-asfalt", "category": "landscaping", "priority_order": 149, "status": "pending"},
-  {"id": 150, "title": "Благоустройство парковки: разметка, бордюры, освещение", "slug": "blagoustrojstvo-parkovki-razmetka-bordyury", "category": "landscaping", "priority_order": 150, "status": "pending"}
+  {
+    "id": 1,
+    "title": "Технология укладки асфальта в Москве: этапы и нюансы",
+    "slug": "tehnologiya-ukladki-asfalta-etapy-v-moskve",
+    "category": "technical",
+    "priority_order": 1,
+    "status": "pending"
+  },
+  {
+    "id": 2,
+    "title": "Песчаное основание против щебневого: что выбрать в Москве?",
+    "slug": "peschanoe-vs-schebnevo-osnovanje-v-moskve",
+    "category": "technical",
+    "priority_order": 2,
+    "status": "pending"
+  },
+  {
+    "id": 3,
+    "title": "Как рассчитать стоимость асфальтирования за 1 м² в Москве?",
+    "slug": "kak-rasschitat-stoimost-asfaltirovaniya-v-moskve",
+    "category": "technical",
+    "priority_order": 3,
+    "status": "pending"
+  },
+  {
+    "id": 4,
+    "title": "Сколько слоев асфальта нужно для частного двора в Москве?",
+    "slug": "skolko-sloev-asfalta-dlya-dvora-v-moskve",
+    "category": "technical",
+    "priority_order": 4,
+    "status": "pending"
+  },
+  {
+    "id": 5,
+    "title": "Что такое выравнивающий слой и зачем он нужен в Москве?",
+    "slug": "chto-takoe-vyravnivayushij-sloj-v-moskve",
+    "category": "technical",
+    "priority_order": 5,
+    "status": "pending"
+  },
+  {
+    "id": 6,
+    "title": "Асфальтирование или тротуарная плитка: что долговечнее в Москве?",
+    "slug": "asfalt-vs-trotuarnaya-plitka-dolgovechnost-v-moskve",
+    "category": "technical",
+    "priority_order": 6,
+    "status": "pending"
+  },
+  {
+    "id": 7,
+    "title": "Подготовка основания на пучинистых грунтах Подмосковья",
+    "slug": "podgotovka-osnovaniya-puchinistye-grunty",
+    "category": "technical",
+    "priority_order": 7,
+    "status": "pending"
+  },
+  {
+    "id": 8,
+    "title": "Что делать, если на участке застаивается вода в Москве?",
+    "slug": "chto-delat-esli-zastaivaetsya-voda-v-moskve",
+    "category": "technical",
+    "priority_order": 8,
+    "status": "pending"
+  },
+  {
+    "id": 9,
+    "title": "Сколько времени нужно асфальту для полного застывания в Москве?",
+    "slug": "skolko-vremeni-asfaltu-dlya-zastyvanya-v-moskve",
+    "category": "technical",
+    "priority_order": 9,
+    "status": "pending"
+  },
+  {
+    "id": 10,
+    "title": "Правильная установка бордюрного камня в Москве: инструкция",
+    "slug": "pravilnaya-ustanovka-bordyurnogo-kamnya-v-moskve",
+    "category": "technical",
+    "priority_order": 10,
+    "status": "pending"
+  },
+  {
+    "id": 11,
+    "title": "Как проверить качество уложенного асфальта в Москве",
+    "slug": "kak-proverit-kachestvo-ulozhennogo-asfalta-v-moskve",
+    "category": "technical",
+    "priority_order": 11,
+    "status": "pending"
+  },
+  {
+    "id": 12,
+    "title": "Зачем нужна регулярная чистка асфальтового покрытия в Москве?",
+    "slug": "zachem-nuzhna-chistka-asfaltovogo-pokrytiya-v-moskve",
+    "category": "technical",
+    "priority_order": 12,
+    "status": "pending"
+  },
+  {
+    "id": 13,
+    "title": "Погодные условия для асфальтирования: когда лучше работать в Москве?",
+    "slug": "pogodnye-usloviya-dlya-asfaltirovaniya-v-moskve",
+    "category": "technical",
+    "priority_order": 13,
+    "status": "pending"
+  },
+  {
+    "id": 14,
+    "title": "Ремонт старого асфальта без полной замены покрытия в Москве",
+    "slug": "remont-starogo-asfalta-bez-zameny-v-moskve",
+    "category": "technical",
+    "priority_order": 14,
+    "status": "pending"
+  },
+  {
+    "id": 15,
+    "title": "Как предотвратить появление трещин на новом асфальте в Москве?",
+    "slug": "kak-predotvratit-treshiny-na-asfalte-v-moskve",
+    "category": "technical",
+    "priority_order": 15,
+    "status": "pending"
+  },
+  {
+    "id": 16,
+    "title": "Оптимальная толщина асфальта для легковых автомобилей в Москве",
+    "slug": "optimalnaya-tolshina-asfalta-legkovye-v-moskve",
+    "category": "technical",
+    "priority_order": 16,
+    "status": "pending"
+  },
+  {
+    "id": 17,
+    "title": "Расчет уклонов для отвода воды: почему это важно в Москве?",
+    "slug": "raschet-uklonov-dlya-otvoda-vody-v-moskve",
+    "category": "technical",
+    "priority_order": 17,
+    "status": "pending"
+  },
+  {
+    "id": 18,
+    "title": "Можно ли укладывать асфальт в дождь в Москве: мифы и реальность",
+    "slug": "mozhno-li-ukladyvat-asfalt-v-dozhd-v-moskve",
+    "category": "technical",
+    "priority_order": 18,
+    "status": "pending"
+  },
+  {
+    "id": 19,
+    "title": "Уход за асфальтом зимой в Москве: советы владельцам",
+    "slug": "uhod-za-asfaltom-zimoj-sovety-v-moskve",
+    "category": "technical",
+    "priority_order": 19,
+    "status": "pending"
+  },
+  {
+    "id": 20,
+    "title": "Виды асфальта (мелкозернистый, крупнозернистый): какой выбрать в Москве?",
+    "slug": "vidy-asfalta-melko-krupnozernistyj-v-moskve",
+    "category": "technical",
+    "priority_order": 20,
+    "status": "pending"
+  },
+  {
+    "id": 21,
+    "title": "Как выбрать подрядчика по асфальтированию в Москве",
+    "slug": "kak-vybrat-podryadchika-moskva",
+    "category": "business",
+    "priority_order": 21,
+    "status": "pending"
+  },
+  {
+    "id": 22,
+    "title": "Почему цены на асфальтирование сильно отличаются в Москве?",
+    "slug": "pochemu-ceny-na-asfalt-razlichayutsya-v-moskve",
+    "category": "business",
+    "priority_order": 22,
+    "status": "pending"
+  },
+  {
+    "id": 23,
+    "title": "Договор на оказание услуг в Москве: что должно быть прописано",
+    "slug": "dogovor-na-asfaltirovanie-chto-propisat-v-moskve",
+    "category": "business",
+    "priority_order": 23,
+    "status": "pending"
+  },
+  {
+    "id": 24,
+    "title": "Гарантия на асфальтовые работы: что в неё входит в Москве?",
+    "slug": "garantiya-na-asfaltovye-raboty-v-moskve",
+    "category": "business",
+    "priority_order": 24,
+    "status": "pending"
+  },
+  {
+    "id": 25,
+    "title": "Как сэкономить на асфальтировании без потери качества в Москве?",
+    "slug": "kak-sekonomit-na-asfaltirovanii-v-moskve",
+    "category": "business",
+    "priority_order": 25,
+    "status": "pending"
+  },
+  {
+    "id": 26,
+    "title": "Асфальтирование под ключ в Москве: плюсы услуги",
+    "slug": "asfaltirovanie-pod-klyuch-plyusy-v-moskve",
+    "category": "business",
+    "priority_order": 26,
+    "status": "pending"
+  },
+  {
+    "id": 27,
+    "title": "Почему выгоднее нанять профессионалов, чем делать самим в Москве",
+    "slug": "pochemu-vygodnee-nanat-professionalov-v-moskve",
+    "category": "business",
+    "priority_order": 27,
+    "status": "pending"
+  },
+  {
+    "id": 28,
+    "title": "Как правильно принять работу у подрядчика в Москве: чек-лист",
+    "slug": "kak-prinyat-rabotu-u-podryadchika-v-moskve",
+    "category": "business",
+    "priority_order": 28,
+    "status": "pending"
+  },
+  {
+    "id": 29,
+    "title": "Асфальтирование частной территории против промышленной в Москве",
+    "slug": "asfaltirovanie-chastnoe-vs-promyshlennoe-v-moskve",
+    "category": "business",
+    "priority_order": 29,
+    "status": "pending"
+  },
+  {
+    "id": 30,
+    "title": "Уловки недобросовестных подрядчиков в Москве: как распознать",
+    "slug": "ulovki-nedobrosovestnyh-podryadchikov-v-moskve",
+    "category": "business",
+    "priority_order": 30,
+    "status": "pending"
+  },
+  {
+    "id": 31,
+    "title": "Какие документы нужны для асфальтирования двора в Москве",
+    "slug": "kakie-dokumenty-nuzhny-dlya-asfalta-v-moskve",
+    "category": "business",
+    "priority_order": 31,
+    "status": "pending"
+  },
+  {
+    "id": 32,
+    "title": "Сколько времени занимает асфальтирование среднего двора в Москве?",
+    "slug": "skolko-vremeni-asfaltirovanie-dvora-v-moskve",
+    "category": "business",
+    "priority_order": 32,
+    "status": "pending"
+  },
+  {
+    "id": 33,
+    "title": "Сроки выполнения работ: на что ориентироваться в Москве?",
+    "slug": "sroki-vypolneniya-rabot-asfalt-v-moskve",
+    "category": "business",
+    "priority_order": 33,
+    "status": "pending"
+  },
+  {
+    "id": 34,
+    "title": "Почему осеннее асфальтирование — это риск в Москве?",
+    "slug": "pochemu-osennee-asfaltirovanie-risk-v-moskve",
+    "category": "business",
+    "priority_order": 34,
+    "status": "pending"
+  },
+  {
+    "id": 35,
+    "title": "Как выбрать компанию по асфальтированию в Москве: рейтинг критериев",
+    "slug": "kak-vybrat-kompaniyu-po-asfaltirovaniyu-v-moskve",
+    "category": "business",
+    "priority_order": 35,
+    "status": "pending"
+  },
+  {
+    "id": 36,
+    "title": "Из чего складывается цена в Москве: прозрачное ценообразование",
+    "slug": "iz-chego-skladyvaetsya-cena-asfalt-v-moskve",
+    "category": "business",
+    "priority_order": 36,
+    "status": "pending"
+  },
+  {
+    "id": 37,
+    "title": "Современные технологии асфальтирования в 2026 году в Москве",
+    "slug": "sovremennye-tehnologii-asfaltirovaniya-2026-v-moskve",
+    "category": "business",
+    "priority_order": 37,
+    "status": "pending"
+  },
+  {
+    "id": 38,
+    "title": "Часто задаваемые вопросы асфальтировщику в Москве",
+    "slug": "chasto-zadavaemye-voprosy-asfaltirovshiku-v-moskve",
+    "category": "business",
+    "priority_order": 38,
+    "status": "pending"
+  },
+  {
+    "id": 39,
+    "title": "Как организовать работы, чтобы не мешать соседям в Москве",
+    "slug": "kak-organizovat-raboty-ne-meshat-sosedyam-v-moskve",
+    "category": "business",
+    "priority_order": 39,
+    "status": "pending"
+  },
+  {
+    "id": 40,
+    "title": "Как заказать бесплатный замер на участке в Москве",
+    "slug": "kak-zakazat-besplatnyj-zamer-v-moskve",
+    "category": "business",
+    "priority_order": 40,
+    "status": "pending"
+  },
+  {
+    "id": 41,
+    "title": "Особенности асфальтирования в почвах Московской области",
+    "slug": "osobennosti-asfaltirovaniya-podmoskovye-pochvy",
+    "category": "local",
+    "priority_order": 41,
+    "status": "pending"
+  },
+  {
+    "id": 42,
+    "title": "Почему в Москве важно делать качественный дренаж",
+    "slug": "pochemu-v-moskve-vazhen-drenazh",
+    "category": "local",
+    "priority_order": 42,
+    "status": "pending"
+  },
+  {
+    "id": 43,
+    "title": "Влияние московского климата на долговечность покрытия",
+    "slug": "vliyanie-moskovskogo-klimata-na-asfalt",
+    "category": "local",
+    "priority_order": 43,
+    "status": "pending"
+  },
+  {
+    "id": 44,
+    "title": "Асфальтирование в Подольске: местные особенности",
+    "slug": "asfaltirovanie-v-podolske-osobennosti",
+    "category": "local",
+    "priority_order": 44,
+    "status": "pending"
+  },
+  {
+    "id": 45,
+    "title": "Как изменились стандарты качества в Москве в 2026 году",
+    "slug": "standarty-kachestva-moskva-2026",
+    "category": "local",
+    "priority_order": 45,
+    "status": "pending"
+  },
+  {
+    "id": 46,
+    "title": "Лучшие решения для частных домов в Подмосковье",
+    "slug": "luchshie-resheniya-dlya-domov-podmoskovye",
+    "category": "local",
+    "priority_order": 46,
+    "status": "pending"
+  },
+  {
+    "id": 47,
+    "title": "Экологические нормы при дорожных работах в регионе в Москве",
+    "slug": "ekologicheskie-normy-dorozhnye-raboty-v-moskve",
+    "category": "local",
+    "priority_order": 47,
+    "status": "pending"
+  },
+  {
+    "id": 48,
+    "title": "Влияние московских ГОСТов на частное строительство",
+    "slug": "gost-moskva-chastnoe-stroitelstvo",
+    "category": "local",
+    "priority_order": 48,
+    "status": "pending"
+  },
+  {
+    "id": 49,
+    "title": "Специфика асфальтирования в Домодедово",
+    "slug": "specifika-asfaltirovaniya-domodedovo",
+    "category": "local",
+    "priority_order": 49,
+    "status": "pending"
+  },
+  {
+    "id": 50,
+    "title": "Почему в московских дворах важно использовать бордюры",
+    "slug": "pochemu-v-dvorah-nuzhny-bordyury",
+    "category": "local",
+    "priority_order": 50,
+    "status": "pending"
+  },
+  {
+    "id": 51,
+    "title": "Как бороться с грязью на дачных участках Подмосковья",
+    "slug": "kak-borotsya-s-gryazyu-dacha-podmoskovye",
+    "category": "local",
+    "priority_order": 51,
+    "status": "pending"
+  },
+  {
+    "id": 52,
+    "title": "Планирование строительного сезона в условиях Москвы",
+    "slug": "planirovanie-stroitelnogo-sezona-moskva",
+    "category": "local",
+    "priority_order": 52,
+    "status": "pending"
+  },
+  {
+    "id": 53,
+    "title": "Обустройство парковки у частного дома в Подмосковье",
+    "slug": "obustrojstvo-parkovki-dom-podmoskovye",
+    "category": "local",
+    "priority_order": 53,
+    "status": "pending"
+  },
+  {
+    "id": 54,
+    "title": "Получение разрешений на асфальтирование общей территории в Москве",
+    "slug": "razresheniya-asfaltirovanie-obshaya-territoriya-v-moskve",
+    "category": "local",
+    "priority_order": 54,
+    "status": "pending"
+  },
+  {
+    "id": 55,
+    "title": "Асфальтирование в Одинцовском районе: опыт и практика",
+    "slug": "asfaltirovanie-odincovskij-rajon",
+    "category": "local",
+    "priority_order": 55,
+    "status": "pending"
+  },
+  {
+    "id": 56,
+    "title": "Почему асфальт в Москве разрушается быстрее (соль и химия)",
+    "slug": "pochemu-asfalt-moskva-razrushaetsya-sol",
+    "category": "local",
+    "priority_order": 56,
+    "status": "pending"
+  },
+  {
+    "id": 57,
+    "title": "Как погода в Москве влияет на выбор типа асфальта",
+    "slug": "pogoda-moskva-vybor-tipa-asfalta",
+    "category": "local",
+    "priority_order": 57,
+    "status": "pending"
+  },
+  {
+    "id": 58,
+    "title": "Почему асфальт может просесть в Московской области",
+    "slug": "pochemu-asfalt-prosedaet-podmoskovye",
+    "category": "local",
+    "priority_order": 58,
+    "status": "pending"
+  },
+  {
+    "id": 59,
+    "title": "Асфальтирование в Химках: важные нюансы",
+    "slug": "asfaltirovanie-v-himkah-nyuansy",
+    "category": "local",
+    "priority_order": 59,
+    "status": "pending"
+  },
+  {
+    "id": 60,
+    "title": "Примеры наших работ в Подмосковье: фотоотчет",
+    "slug": "primery-rabot-podmoskovye-fotoотчет",
+    "category": "local",
+    "priority_order": 60,
+    "status": "pending"
+  },
+  {
+    "id": 61,
+    "title": "Как заделать ямы на участке своими руками в Москве",
+    "slug": "kak-zadelat-yamy-svoimi-rukami-v-moskve",
+    "category": "problems",
+    "priority_order": 61,
+    "status": "pending"
+  },
+  {
+    "id": 62,
+    "title": "Что делать, если на асфальте образовались лужи в Москве",
+    "slug": "chto-delat-luzhi-na-asfalte-v-moskve",
+    "category": "problems",
+    "priority_order": 62,
+    "status": "pending"
+  },
+  {
+    "id": 63,
+    "title": "Как убрать масляные пятна с асфальта в Москве",
+    "slug": "kak-ubrat-maslyanye-pyatna-s-asfalta-v-moskve",
+    "category": "problems",
+    "priority_order": 63,
+    "status": "pending"
+  },
+  {
+    "id": 64,
+    "title": "Изменение цвета асфальта: о чем это говорит в Москве?",
+    "slug": "izmenenie-cveta-asfalta-chto-znachit-v-moskve",
+    "category": "problems",
+    "priority_order": 64,
+    "status": "pending"
+  },
+  {
+    "id": 65,
+    "title": "Заделка трещин битумной мастикой в Москве: технология",
+    "slug": "zadelka-treshin-bitumnoj-mastikoj-v-moskve",
+    "category": "problems",
+    "priority_order": 65,
+    "status": "pending"
+  },
+  {
+    "id": 66,
+    "title": "Почему асфальт начинает крошиться по краям в Москве",
+    "slug": "pochemu-asfalt-kroshitsya-po-krayam-v-moskve",
+    "category": "problems",
+    "priority_order": 66,
+    "status": "pending"
+  },
+  {
+    "id": 67,
+    "title": "Как избавиться от травы, прорастающей сквозь асфальт в Москве",
+    "slug": "kak-izbavitsya-ot-travy-cherez-asfalt-v-moskve",
+    "category": "problems",
+    "priority_order": 67,
+    "status": "pending"
+  },
+  {
+    "id": 68,
+    "title": "Вздутие асфальта в Москве: причины и устранение",
+    "slug": "vzdutie-asfalta-prichiny-ustranenie-v-moskve",
+    "category": "problems",
+    "priority_order": 68,
+    "status": "pending"
+  },
+  {
+    "id": 69,
+    "title": "Реставрация старого покрытия спустя много лет в Москве",
+    "slug": "restavraciya-starogo-asfalta-v-moskve",
+    "category": "problems",
+    "priority_order": 69,
+    "status": "pending"
+  },
+  {
+    "id": 70,
+    "title": "Следы от тяжелой техники на асфальте в Москве: как исправить",
+    "slug": "sledy-tyazheloj-tehniki-na-asfalte-v-moskve",
+    "category": "problems",
+    "priority_order": 70,
+    "status": "pending"
+  },
+  {
+    "id": 71,
+    "title": "Как очистить асфальт от строительного мусора в Москве",
+    "slug": "kak-ochistit-asfalt-ot-stroitelnogo-musora-v-moskve",
+    "category": "problems",
+    "priority_order": 71,
+    "status": "pending"
+  },
+  {
+    "id": 72,
+    "title": "Защита асфальта от воздействия тяжелого транспорта в Москве",
+    "slug": "zashita-asfalta-tyazhelyj-transport-v-moskve",
+    "category": "problems",
+    "priority_order": 72,
+    "status": "pending"
+  },
+  {
+    "id": 73,
+    "title": "Почему асфальт может плыть в жару в Москве",
+    "slug": "pochemu-asfalt-plyvet-v-zharu-v-moskve",
+    "category": "problems",
+    "priority_order": 73,
+    "status": "pending"
+  },
+  {
+    "id": 74,
+    "title": "Как избавиться от запаха асфальта в жаркую погоду в Москве",
+    "slug": "zapah-asfalta-v-zharu-kak-izbavitsya-v-moskve",
+    "category": "problems",
+    "priority_order": 74,
+    "status": "pending"
+  },
+  {
+    "id": 75,
+    "title": "Организация правильного дренажа под покрытием в Москве",
+    "slug": "organizaciya-pravilnogo-drenazha-pod-asfaltom-v-moskve",
+    "category": "problems",
+    "priority_order": 75,
+    "status": "pending"
+  },
+  {
+    "id": 76,
+    "title": "Признаки износа в Москве: когда пора обновлять асфальт",
+    "slug": "priznaki-iznosa-kogda-obnovlyat-asfalt-v-moskve",
+    "category": "problems",
+    "priority_order": 76,
+    "status": "pending"
+  },
+  {
+    "id": 77,
+    "title": "Как предотвратить проседание основания под асфальтом в Москве",
+    "slug": "kak-predotvratit-prosedanie-osnovaniya-v-moskve",
+    "category": "problems",
+    "priority_order": 77,
+    "status": "pending"
+  },
+  {
+    "id": 78,
+    "title": "Способы исправления волн на покрытии в Москве",
+    "slug": "ispravlenie-voln-na-asfalte-v-moskve",
+    "category": "problems",
+    "priority_order": 78,
+    "status": "pending"
+  },
+  {
+    "id": 79,
+    "title": "Восстановление внешнего вида асфальтового покрытия в Москве",
+    "slug": "vosstanovlenie-vida-asfaltovogo-pokrytiya-v-moskve",
+    "category": "problems",
+    "priority_order": 79,
+    "status": "pending"
+  },
+  {
+    "id": 80,
+    "title": "Ремонт отмостки дома в Москве: асфальт против других материалов",
+    "slug": "remont-otmostki-doma-asfalt-v-moskve",
+    "category": "problems",
+    "priority_order": 80,
+    "status": "pending"
+  },
+  {
+    "id": 81,
+    "title": "Дизайн двора в Москве: сочетание асфальта и озеленения",
+    "slug": "dizajn-dvora-asfalt-ozelenenie-v-moskve",
+    "category": "inspiration",
+    "priority_order": 81,
+    "status": "pending"
+  },
+  {
+    "id": 82,
+    "title": "Как асфальтирование повышает стоимость недвижимости в Москве",
+    "slug": "asfaltirovanie-povyshaet-stoimost-nedvizhimosti-v-moskve",
+    "category": "inspiration",
+    "priority_order": 82,
+    "status": "pending"
+  },
+  {
+    "id": 83,
+    "title": "10 вдохновляющих проектов по благоустройству двора в Москве",
+    "slug": "10-vdohnovlyayushih-proektov-blagoustrojstvo-v-moskve",
+    "category": "inspiration",
+    "priority_order": 83,
+    "status": "pending"
+  },
+  {
+    "id": 84,
+    "title": "Сочетание асфальта и тротуарной плитки в ландшафте в Москве",
+    "slug": "sochetanie-asfalta-i-plitki-landshaft-v-moskve",
+    "category": "inspiration",
+    "priority_order": 84,
+    "status": "pending"
+  },
+  {
+    "id": 85,
+    "title": "Истории клиентов в Москве: до и после благоустройства",
+    "slug": "istorii-klientov-do-i-posle-v-moskve",
+    "category": "inspiration",
+    "priority_order": 85,
+    "status": "pending"
+  },
+  {
+    "id": 86,
+    "title": "Почему асфальт — лучшее решение для частной парковки в Москве",
+    "slug": "asfalt-luchshee-reshenie-chastnaya-parkovka-v-moskve",
+    "category": "inspiration",
+    "priority_order": 86,
+    "status": "pending"
+  },
+  {
+    "id": 87,
+    "title": "Освещение и асфальтирование в Москве: создаем уютный двор",
+    "slug": "osveshenie-i-asfaltirovanie-uyutnyj-dvor-v-moskve",
+    "category": "inspiration",
+    "priority_order": 87,
+    "status": "pending"
+  },
+  {
+    "id": 88,
+    "title": "Как сделать удобный подъезд к дому в Москве",
+    "slug": "kak-sdelat-udobnyj-podjezd-k-domu-v-moskve",
+    "category": "inspiration",
+    "priority_order": 88,
+    "status": "pending"
+  },
+  {
+    "id": 89,
+    "title": "Тренды благоустройства частных территорий 2026 в Москве",
+    "slug": "trendy-blagoustrojstva-territorij-2026-v-moskve",
+    "category": "inspiration",
+    "priority_order": 89,
+    "status": "pending"
+  },
+  {
+    "id": 90,
+    "title": "Игровая площадка на асфальтовом покрытии в Москве: идеи",
+    "slug": "igrovaya-ploshhadka-na-asfalte-idei-v-moskve",
+    "category": "inspiration",
+    "priority_order": 90,
+    "status": "pending"
+  },
+  {
+    "id": 91,
+    "title": "Бетон или асфальт: что лучше для дачи в Москве?",
+    "slug": "beton-ili-asfalt-chto-luchshe-dlya-dachi-v-moskve",
+    "category": "inspiration",
+    "priority_order": 91,
+    "status": "pending"
+  },
+  {
+    "id": 92,
+    "title": "Проектирование подъездных путей на дачном участке в Москве",
+    "slug": "proektirovanie-podjezdnyh-putej-dacha-v-moskve",
+    "category": "inspiration",
+    "priority_order": 92,
+    "status": "pending"
+  },
+  {
+    "id": 93,
+    "title": "Асфальт или гравий в Москве: сравнительный анализ",
+    "slug": "asfalt-ili-gravij-sravnitelnyj-analiz-v-moskve",
+    "category": "inspiration",
+    "priority_order": 93,
+    "status": "pending"
+  },
+  {
+    "id": 94,
+    "title": "Благоустройство узких садовых дорожек в Москве",
+    "slug": "blagoustrojstvo-uzkih-sadovyh-dorozhek-v-moskve",
+    "category": "inspiration",
+    "priority_order": 94,
+    "status": "pending"
+  },
+  {
+    "id": 95,
+    "title": "Преимущества асфальтирования для семей с детьми в Москве",
+    "slug": "preimushhestva-asfaltirovaniya-semi-s-detmi-v-moskve",
+    "category": "inspiration",
+    "priority_order": 95,
+    "status": "pending"
+  },
+  {
+    "id": 96,
+    "title": "Как сделать асфальтовое покрытие эстетичным в Москве",
+    "slug": "kak-sdelat-asfaltirovanie-estetichnym-v-moskve",
+    "category": "inspiration",
+    "priority_order": 96,
+    "status": "pending"
+  },
+  {
+    "id": 97,
+    "title": "Почему владельцы выбирают асфальт вместо плитки в Москве",
+    "slug": "pochemu-vladeltsy-vybirayut-asfalt-v-moskve",
+    "category": "inspiration",
+    "priority_order": 97,
+    "status": "pending"
+  },
+  {
+    "id": 98,
+    "title": "Комбинированные решения в Москве: асфальт и клумбы",
+    "slug": "kombinirovannye-resheniya-asfalt-klumby-v-moskve",
+    "category": "inspiration",
+    "priority_order": 98,
+    "status": "pending"
+  },
+  {
+    "id": 99,
+    "title": "Как спланировать работы, чтобы получить идеальный результат в Москве",
+    "slug": "kak-splanirovat-raboty-idealnyj-rezultat-v-moskve",
+    "category": "inspiration",
+    "priority_order": 99,
+    "status": "pending"
+  },
+  {
+    "id": 100,
+    "title": "Фото-истории в Москве: как асфальтирование изменило вид участка",
+    "slug": "foto-istorii-asfaltirovanie-izmenilo-uchastok-v-moskve",
+    "category": "inspiration",
+    "priority_order": 100,
+    "status": "pending"
+  },
+  {
+    "id": 101,
+    "title": "Асфальтирование промышленных площадок в Москве: требования и цены",
+    "slug": "asfaltirovanie-promyshlennyh-ploshhadok-v-moskve",
+    "category": "service_blog",
+    "priority_order": 101,
+    "status": "pending"
+  },
+  {
+    "id": 102,
+    "title": "Асфальтирование въездов в гаражи и паркинги в Москве",
+    "slug": "asfaltirovanie-vezdov-garazhi-parking-v-moskve",
+    "category": "service_blog",
+    "priority_order": 102,
+    "status": "pending"
+  },
+  {
+    "id": 103,
+    "title": "Асфальтирование детских площадок в Москве: нормы безопасности",
+    "slug": "asfaltirovanie-detskih-ploshhadok-normy-v-moskve",
+    "category": "service_blog",
+    "priority_order": 103,
+    "status": "pending"
+  },
+  {
+    "id": 104,
+    "title": "Строительство дорог с нуля в Москве: этапы и стоимость",
+    "slug": "stroitelstvo-dorog-s-nulya-etapy-v-moskve",
+    "category": "service_blog",
+    "priority_order": 104,
+    "status": "pending"
+  },
+  {
+    "id": 105,
+    "title": "Асфальтирование складов и терминалов под ключ в Москве",
+    "slug": "asfaltirovanie-skladov-terminalov-v-moskve",
+    "category": "service_blog",
+    "priority_order": 105,
+    "status": "pending"
+  },
+  {
+    "id": 106,
+    "title": "Тротуарное асфальтирование в Москве: технология и цены",
+    "slug": "trotuarnoe-asfaltirovanie-tehnologiya-v-moskve",
+    "category": "service_blog",
+    "priority_order": 106,
+    "status": "pending"
+  },
+  {
+    "id": 107,
+    "title": "Асфальтирование АЗС и автомоек в Москве: специфика работ",
+    "slug": "asfaltirovanie-azs-avtomojki-v-moskve",
+    "category": "service_blog",
+    "priority_order": 107,
+    "status": "pending"
+  },
+  {
+    "id": 108,
+    "title": "Укладка асфальта в труднодоступных местах в Москве",
+    "slug": "ukladka-asfalta-trudnodostupnye-mesta-v-moskve",
+    "category": "service_blog",
+    "priority_order": 108,
+    "status": "pending"
+  },
+  {
+    "id": 109,
+    "title": "Капитальный ремонт дорожных покрытий в Москве: когда необходим",
+    "slug": "kapitalnyj-remont-dorozhnyh-pokrytij-v-moskve",
+    "category": "service_blog",
+    "priority_order": 109,
+    "status": "pending"
+  },
+  {
+    "id": 110,
+    "title": "Асфальтирование спортивных площадок и беговых дорожек в Москве",
+    "slug": "asfaltirovanie-sportivnyh-ploshhadok-v-moskve",
+    "category": "service_blog",
+    "priority_order": 110,
+    "status": "pending"
+  },
+  {
+    "id": 111,
+    "title": "Устройство асфальтового покрытия из горячей смеси в Москве",
+    "slug": "ustrojstvo-asfalta-goryachaya-smes-v-moskve",
+    "category": "service_blog",
+    "priority_order": 111,
+    "status": "pending"
+  },
+  {
+    "id": 112,
+    "title": "Асфальтирование территорий бизнес-центров в Москве",
+    "slug": "asfaltirovanie-territorij-biznes-centrov-v-moskve",
+    "category": "service_blog",
+    "priority_order": 112,
+    "status": "pending"
+  },
+  {
+    "id": 113,
+    "title": "Асфальтирование для торговых центров в Москве: требования",
+    "slug": "asfaltirovanie-torgovyh-centrov-v-moskve",
+    "category": "service_blog",
+    "priority_order": 113,
+    "status": "pending"
+  },
+  {
+    "id": 114,
+    "title": "Ремонт отмостков зданий в Москве: асфальт vs бетон",
+    "slug": "remont-otmostkov-zdanij-asfalt-beton-v-moskve",
+    "category": "service_blog",
+    "priority_order": 114,
+    "status": "pending"
+  },
+  {
+    "id": 115,
+    "title": "Асфальтирование велодорожек и пешеходных зон в Москве",
+    "slug": "asfaltirovanie-velodorozhek-peshehodnyh-zon-v-moskve",
+    "category": "service_blog",
+    "priority_order": 115,
+    "status": "pending"
+  },
+  {
+    "id": 116,
+    "title": "Укладка асфальта на пандусы и съезды в Москве",
+    "slug": "ukladka-asfalta-pandus-sezdy-v-moskve",
+    "category": "service_blog",
+    "priority_order": 116,
+    "status": "pending"
+  },
+  {
+    "id": 117,
+    "title": "Восстановление асфальта после прокладки коммуникаций в Москве",
+    "slug": "vosstanovlenie-asfalta-kommunikacii-v-moskve",
+    "category": "service_blog",
+    "priority_order": 117,
+    "status": "pending"
+  },
+  {
+    "id": 118,
+    "title": "Усиление дорожного основания в Москве: технологии и материалы",
+    "slug": "usilenie-dorozhnogo-osnovaniya-v-moskve",
+    "category": "service_blog",
+    "priority_order": 118,
+    "status": "pending"
+  },
+  {
+    "id": 119,
+    "title": "Асфальтирование в зимний период: возможно ли это в Москве?",
+    "slug": "asfaltirovanie-v-zimnij-period-v-moskve",
+    "category": "service_blog",
+    "priority_order": 119,
+    "status": "pending"
+  },
+  {
+    "id": 120,
+    "title": "Асфальтирование больших площадей от 1000 м² в Москве: особенности",
+    "slug": "asfaltirovanie-bolshih-ploshhadej-1000m2-v-moskve",
+    "category": "service_blog",
+    "priority_order": 120,
+    "status": "pending"
+  },
+  {
+    "id": 121,
+    "title": "Ремонт дорог в СНТ в Москве: порядок и стоимость",
+    "slug": "remont-dorog-v-snt-v-moskve",
+    "category": "service_blog",
+    "priority_order": 121,
+    "status": "pending"
+  },
+  {
+    "id": 122,
+    "title": "Благоустройство коттеджных поселков в Москве: дороги и стоянки",
+    "slug": "blagoustrojstvo-kottedzhnyh-poselkov-v-moskve",
+    "category": "service_blog",
+    "priority_order": 122,
+    "status": "pending"
+  },
+  {
+    "id": 123,
+    "title": "Асфальтовые дорожки в саду в Москве: за и против",
+    "slug": "asfaltovye-dorozhki-v-sadu-v-moskve",
+    "category": "service_blog",
+    "priority_order": 123,
+    "status": "pending"
+  },
+  {
+    "id": 124,
+    "title": "Демонтаж старого асфальта в Москве: когда и как",
+    "slug": "demontazh-starogo-asfalta-kogda-kak-v-moskve",
+    "category": "service_blog",
+    "priority_order": 124,
+    "status": "pending"
+  },
+  {
+    "id": 125,
+    "title": "Асфальтирование частных территорий в Москве: от 50 до 500 м²",
+    "slug": "asfaltirovanie-chastnyh-territorij-50-500m2-v-moskve",
+    "category": "service_blog",
+    "priority_order": 125,
+    "status": "pending"
+  },
+  {
+    "id": 126,
+    "title": "Асфальтирование дорог общего пользования в МО в Москве",
+    "slug": "asfaltirovanie-dorog-obshego-polzovaniya-mo-v-moskve",
+    "category": "service_blog",
+    "priority_order": 126,
+    "status": "pending"
+  },
+  {
+    "id": 127,
+    "title": "Ямочный ремонт vs полная замена покрытия в Москве: что выбрать",
+    "slug": "yamochnyj-remont-vs-polnaya-zamena-v-moskve",
+    "category": "service_blog",
+    "priority_order": 127,
+    "status": "pending"
+  },
+  {
+    "id": 128,
+    "title": "Асфальтирование дворов многоквартирных домов в Москве: порядок",
+    "slug": "asfaltirovanie-dvorov-mkd-poryadok-v-moskve",
+    "category": "service_blog",
+    "priority_order": 128,
+    "status": "pending"
+  },
+  {
+    "id": 129,
+    "title": "Асфальтовая крошка vs горячий асфальт в Москве: сравнение",
+    "slug": "asfaltovaya-kroshka-vs-goryachij-asfalt-v-moskve",
+    "category": "service_blog",
+    "priority_order": 129,
+    "status": "pending"
+  },
+  {
+    "id": 130,
+    "title": "Укладка асфальта для частного дома в Москве: с чего начать",
+    "slug": "ukladka-asfalta-chastnyj-dom-nachalo-v-moskve",
+    "category": "service_blog",
+    "priority_order": 130,
+    "status": "pending"
+  },
+  {
+    "id": 131,
+    "title": "Укладка тротуарной плитки в Москве: технология и цены в МО",
+    "slug": "ukladka-trotuarnoj-plitki-ceny-mo-v-moskve",
+    "category": "landscaping",
+    "priority_order": 131,
+    "status": "pending"
+  },
+  {
+    "id": 132,
+    "title": "Монтаж брусчатки в Москве: виды, цены, сроки",
+    "slug": "montazh-bruschatki-vidy-ceny-sroki-v-moskve",
+    "category": "landscaping",
+    "priority_order": 132,
+    "status": "pending"
+  },
+  {
+    "id": 133,
+    "title": "Установка бордюров и поребриков в Москве: зачем и как",
+    "slug": "ustanovka-bordyurov-porebrik-zachem-kak-v-moskve",
+    "category": "landscaping",
+    "priority_order": 133,
+    "status": "pending"
+  },
+  {
+    "id": 134,
+    "title": "Установка лежачих полицейских в Москве: нормы и стоимость",
+    "slug": "ustanovka-lezhachih-policejskih-normy-v-moskve",
+    "category": "landscaping",
+    "priority_order": 134,
+    "status": "pending"
+  },
+  {
+    "id": 135,
+    "title": "Нанесение дорожной разметки в Москве: виды и технология",
+    "slug": "nanesenie-dorozhnoj-razmetki-vidy-v-moskve",
+    "category": "landscaping",
+    "priority_order": 135,
+    "status": "pending"
+  },
+  {
+    "id": 136,
+    "title": "Устройство ливневой канализации на участке в Москве",
+    "slug": "ustrojstvo-livnevoj-kanalizacii-uchastok-v-moskve",
+    "category": "landscaping",
+    "priority_order": 136,
+    "status": "pending"
+  },
+  {
+    "id": 137,
+    "title": "Монтаж георешетки для укрепления откосов и дорог в Москве",
+    "slug": "montazh-georeshetki-ukreplenie-odkosov-v-moskve",
+    "category": "landscaping",
+    "priority_order": 137,
+    "status": "pending"
+  },
+  {
+    "id": 138,
+    "title": "Дренажные системы под асфальтом в Москве: виды и монтаж",
+    "slug": "drenazhnye-sistemy-pod-asfaltom-v-moskve",
+    "category": "landscaping",
+    "priority_order": 138,
+    "status": "pending"
+  },
+  {
+    "id": 139,
+    "title": "Монтаж водоотводных лотков в Москве: защита покрытия от воды",
+    "slug": "montazh-vodootvodnyh-lotkov-v-moskve",
+    "category": "landscaping",
+    "priority_order": 139,
+    "status": "pending"
+  },
+  {
+    "id": 140,
+    "title": "Установка дорожных знаков на частной территории в Москве",
+    "slug": "ustanovka-dorozhnyh-znakov-chastnaya-territoriya-v-moskve",
+    "category": "landscaping",
+    "priority_order": 140,
+    "status": "pending"
+  },
+  {
+    "id": 141,
+    "title": "Укладка плитки на бетонное основание в Москве: нюансы",
+    "slug": "ukladka-plitki-na-betonnoe-osnovanie-v-moskve",
+    "category": "landscaping",
+    "priority_order": 141,
+    "status": "pending"
+  },
+  {
+    "id": 142,
+    "title": "Монтаж подпорных стен в Москве: когда необходим и сколько стоит",
+    "slug": "montazh-podpornyh-sten-kogda-nuzhen-v-moskve",
+    "category": "landscaping",
+    "priority_order": 142,
+    "status": "pending"
+  },
+  {
+    "id": 143,
+    "title": "Устройство садовых дорожек в Москве: материалы и технологии",
+    "slug": "ustrojstvo-sadovyh-dorozhek-materialy-v-moskve",
+    "category": "landscaping",
+    "priority_order": 143,
+    "status": "pending"
+  },
+  {
+    "id": 144,
+    "title": "Снегоуборочные работы на асфальте зимой в Москве",
+    "slug": "snegouborochnye-raboty-na-asfalte-zimoj-v-moskve",
+    "category": "landscaping",
+    "priority_order": 144,
+    "status": "pending"
+  },
+  {
+    "id": 145,
+    "title": "Комплексное благоустройство двора под ключ в Москве",
+    "slug": "kompleksnoe-blagoustrojstvo-dvora-pod-klyuch-v-moskve",
+    "category": "landscaping",
+    "priority_order": 145,
+    "status": "pending"
+  },
+  {
+    "id": 146,
+    "title": "Озеленение придомовой территории вместе с асфальтом в Москве",
+    "slug": "ozelenenie-pridomovoj-territorii-asfalt-v-moskve",
+    "category": "landscaping",
+    "priority_order": 146,
+    "status": "pending"
+  },
+  {
+    "id": 147,
+    "title": "Вывоз строительного мусора после асфальтирования в Москве",
+    "slug": "vyvoz-stroitelnogo-musora-asfaltirovanie-v-moskve",
+    "category": "landscaping",
+    "priority_order": 147,
+    "status": "pending"
+  },
+  {
+    "id": 148,
+    "title": "Зона барбекю с асфальтовым покрытием в Москве: проект и цены",
+    "slug": "zona-barbeku-asfaltovoe-pokrytie-v-moskve",
+    "category": "landscaping",
+    "priority_order": 148,
+    "status": "pending"
+  },
+  {
+    "id": 149,
+    "title": "Декоративные элементы и МАФ на асфальтированной территории в Москве",
+    "slug": "dekorativnye-elementy-maf-asfalt-v-moskve",
+    "category": "landscaping",
+    "priority_order": 149,
+    "status": "pending"
+  },
+  {
+    "id": 150,
+    "title": "Благоустройство парковки в Москве: разметка, бордюры, освещение",
+    "slug": "blagoustrojstvo-parkovki-razmetka-bordyury-v-moskve",
+    "category": "landscaping",
+    "priority_order": 150,
+    "status": "pending"
+  }
 ]
