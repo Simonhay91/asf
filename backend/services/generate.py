@@ -258,7 +258,7 @@ async def _run_district(district: dict) -> Optional[dict]:
         blog = await generate_blog_article(name, "district", research, style_id)
 
         page_url = f"/moskva/{okrug}/{slug}/"
-        blog_slug = f"asfalt-{slug}-{style_id}"
+        blog_slug = f"asfalt-{slug}"
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
@@ -313,7 +313,7 @@ async def _run_city(city: dict) -> Optional[dict]:
         blog = await generate_blog_article(name, "city", research, style_id)
 
         page_url = f"/podmoskovye/{slug}/"
-        blog_slug = f"asfalt-{slug}-{style_id}"
+        blog_slug = f"asfalt-{slug}"
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
