@@ -262,8 +262,9 @@ async def _run_district(district: dict) -> Optional[dict]:
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
-        image_urls = await fetch_images(slug, "district", location_name=name, count=3)
-        image_url = image_urls[0] if image_urls else None
+        city_image_urls = await fetch_images(slug, "district", location_name=name, count=3)
+        blog_image_urls = await fetch_images(blog_slug, "", count=3)
+        image_url = city_image_urls[0] if city_image_urls else None
 
         await db.generated_pages.insert_one({
             "slug": slug, "type": "district", "name": name,
@@ -271,7 +272,7 @@ async def _run_district(district: dict) -> Optional[dict]:
             "page_content": page["content"],
             "meta_title": page["meta_title"], "meta_description": page["meta_description"],
             "generated_at": now, "style_page": style_id, "indexed": False, "indexed_at": None,
-            "image_url": image_url, "image_urls": image_urls,
+            "image_url": image_url, "image_urls": city_image_urls,
         })
         await db.generated_pages.insert_one({
             "slug": blog_slug, "type": "blog", "name": blog.get("topic", f"Блог — {name}"),
@@ -279,7 +280,8 @@ async def _run_district(district: dict) -> Optional[dict]:
             "page_content": blog["content"],
             "meta_title": blog["meta_title"], "meta_description": blog["meta_description"],
             "generated_at": now, "style_blog": style_id, "indexed": False, "indexed_at": None,
-            "image_url": image_url, "image_urls": image_urls,
+            "image_url": blog_image_urls[0] if blog_image_urls else image_url,
+            "image_urls": blog_image_urls,
         })
         await db.moscow_districts.update_one(
             {"slug": slug},
@@ -318,8 +320,9 @@ async def _run_city(city: dict) -> Optional[dict]:
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
-        image_urls = await fetch_images(slug, "city", location_name=name, count=3)
-        image_url = image_urls[0] if image_urls else None
+        city_image_urls = await fetch_images(slug, "city", location_name=name, count=3)
+        blog_image_urls = await fetch_images(blog_slug, "", count=3)
+        image_url = city_image_urls[0] if city_image_urls else None
 
         await db.generated_pages.insert_one({
             "slug": slug, "type": "city", "name": name,
@@ -327,7 +330,7 @@ async def _run_city(city: dict) -> Optional[dict]:
             "page_content": page["content"],
             "meta_title": page["meta_title"], "meta_description": page["meta_description"],
             "generated_at": now, "style_page": style_id, "indexed": False, "indexed_at": None,
-            "image_url": image_url, "image_urls": image_urls,
+            "image_url": image_url, "image_urls": city_image_urls,
         })
         await db.generated_pages.insert_one({
             "slug": blog_slug, "type": "blog", "name": blog.get("topic", f"Блог — {name}"),
@@ -335,7 +338,8 @@ async def _run_city(city: dict) -> Optional[dict]:
             "page_content": blog["content"],
             "meta_title": blog["meta_title"], "meta_description": blog["meta_description"],
             "generated_at": now, "style_blog": style_id, "indexed": False, "indexed_at": None,
-            "image_url": image_url, "image_urls": image_urls,
+            "image_url": blog_image_urls[0] if blog_image_urls else image_url,
+            "image_urls": blog_image_urls,
         })
         await db.podmoskovye_cities.update_one(
             {"slug": slug},
