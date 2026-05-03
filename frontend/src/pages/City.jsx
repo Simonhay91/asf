@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
 import PageMeta from '../components/PageMeta'
 import RegionsWidget from '../components/RegionsWidget'
+import ContentWithImages from '../components/ContentWithImages'
 import { CITIES } from '../constants/cities'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=1200'
@@ -207,9 +207,7 @@ export default function City({ onQuoteClick }) {
 
       <div className="container city-layout" style={{ padding: `${topPadding} 20px 48px`, display: 'grid', gridTemplateColumns: '1fr 300px', gap: '48px', alignItems: 'start', maxWidth: '1200px' }}>
         <div>
-          <div className="prose">
-            <ReactMarkdown>{data.content}</ReactMarkdown>
-          </div>
+          <ContentWithImages content={data.content} img={img} style={style} />
 
           <CallBlock onQuoteClick={onQuoteClick} />
 

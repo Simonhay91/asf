@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
 import PageMeta from '../components/PageMeta'
 import RegionsWidget from '../components/RegionsWidget'
+import ContentWithImages from '../components/ContentWithImages'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=1200'
 
@@ -178,9 +178,7 @@ export default function Blog({ onQuoteClick }) {
               Опубликовано: {date}
             </div>
           )}
-          <div className="prose">
-            <ReactMarkdown>{data.content}</ReactMarkdown>
-          </div>
+          <ContentWithImages content={data.content} img={img} style={style} />
           <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '28px', marginTop: '48px', border: '1px solid #333' }}>
             <p style={{ color: 'var(--light)', marginBottom: '16px', fontSize: '1.05rem' }}>
               <strong>РусскийАсфальт</strong> — асфальтирование только в Москве и Подмосковье от 630 руб/м².
