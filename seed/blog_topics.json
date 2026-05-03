@@ -1198,5 +1198,101 @@
     "category": "landscaping",
     "priority_order": 150,
     "status": "pending"
+  },
+  {
+    "id": 151,
+    "title": "Асфальтирование площадки в Москве: цена за м² в 2026 году",
+    "slug": "asfaltirovanie-ploshhadki-cena-za-m2-moskva",
+    "category": "business",
+    "priority_order": 3,
+    "status": "pending"
+  },
+  {
+    "id": 152,
+    "title": "Асфальтирование дачного участка в Москве: цена под ключ",
+    "slug": "asfaltirovanie-dachnogo-uchastka-cena-moskva",
+    "category": "business",
+    "priority_order": 4,
+    "status": "pending"
+  },
+  {
+    "id": 153,
+    "title": "Асфальтирование дорожек в Москве: цена за погонный и квадратный метр",
+    "slug": "asfaltirovanie-dorozhek-cena-moskva",
+    "category": "business",
+    "priority_order": 5,
+    "status": "pending"
+  },
+  {
+    "id": 154,
+    "title": "Асфальтирование частных дворов в Москве: цены и условия 2026",
+    "slug": "asfaltirovanie-chastnyh-dvorov-ceny-moskva",
+    "category": "business",
+    "priority_order": 6,
+    "status": "pending"
+  },
+  {
+    "id": 155,
+    "title": "Стоимость асфальтирования территории за м² в Москве",
+    "slug": "stoimost-asfaltirovaniya-territorii-za-m2-moskva",
+    "category": "business",
+    "priority_order": 7,
+    "status": "pending"
+  },
+  {
+    "id": 156,
+    "title": "Услуги асфальтирования в Москве: полный прайс и условия",
+    "slug": "uslugi-asfaltirovaniya-cena-moskva",
+    "category": "business",
+    "priority_order": 8,
+    "status": "pending"
+  },
+  {
+    "id": 157,
+    "title": "Сколько стоит 1 кв. метр асфальта в Москве в 2026 году",
+    "slug": "skolko-stoit-1-kv-metr-asfalta-moskva-2026",
+    "category": "business",
+    "priority_order": 9,
+    "status": "pending"
+  },
+  {
+    "id": 158,
+    "title": "Укладка асфальта в Москве: цена за метр квадратный с материалом",
+    "slug": "ukladka-asfalta-cena-za-metr-moskva",
+    "category": "business",
+    "priority_order": 10,
+    "status": "pending"
+  },
+  {
+    "id": 159,
+    "title": "Асфальтирование малых площадей в Москве: цена от 50 м²",
+    "slug": "asfaltirovanie-malyh-ploshhadej-cena-moskva",
+    "category": "business",
+    "priority_order": 11,
+    "status": "pending"
+  },
+  {
+    "id": 160,
+    "title": "Заказать асфальтирование в Москве: цена и сроки",
+    "slug": "zakazat-asfaltirovanie-cena-moskva",
+    "category": "business",
+    "priority_order": 12,
+    "status": "pending"
+  },
+  {
+    "id": 161,
+    "title": "Асфальтирование дорог в Москве: цена за м² под ключ",
+    "slug": "asfaltirovanie-dorog-cena-za-m2-moskva",
+    "category": "business",
+    "priority_order": 13,
+    "status": "pending"
+  },
+  {
+    "id": 162,
+    "title": "Асфальтирование с материалом в Москве: полная стоимость работ",
+    "slug": "asfaltirovanie-s-materialom-stoimost-moskva",
+    "category": "business",
+    "priority_order": 14,
+    "status": "pending"
   }
 ]
