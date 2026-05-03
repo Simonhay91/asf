@@ -80,6 +80,7 @@ async def get_city_page(slug: str):
         "content": _sanitize_phones(page.get("page_content", "")),
         "generated_at": page.get("generated_at"),
         "image_url": page.get("image_url"),
+        "image_urls": page.get("image_urls") or [],
         "style": page.get("style_page", 1),
     }
 
@@ -108,6 +109,7 @@ async def get_blog_page(slug: str):
         "content": _sanitize_phones(page.get("page_content", "")),
         "generated_at": generated_at,
         "image_url": page.get("image_url"),
+        "image_urls": page.get("image_urls") or [],
         "style": page.get("style_blog") or page.get("style_page", 1),
     }
 

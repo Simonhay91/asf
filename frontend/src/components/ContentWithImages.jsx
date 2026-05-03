@@ -77,14 +77,16 @@ function InlineImage({ img, style, index }) {
   return null
 }
 
-export default function ContentWithImages({ content, img, style = 1 }) {
-  if (!img || !content) {
+export default function ContentWithImages({ content, img, imageUrls = [], style = 1 }) {
+  // Build image pool: prefer imageUrls array, fall back to single img
+  const pool = imageUrls.length > 0 ? imageUrls : (img ? [img] : [])
+
+  if (!pool.length || !content) {
     return <div className="prose"><ReactMarkdown>{content || ''}</ReactMarkdown></div>
   }
 
   // Split at ## headings, keeping the heading with its section
-  const raw = content.split(/(?=\n## )/)
-  const sections = raw.filter(s => s.trim())
+  const sections = content.split(/(?=\n## )/).filter(s => s.trim())
 
   // Insert image after every 2nd section (skip first intro and last)
   const elements = []
@@ -96,11 +98,11 @@ export default function ContentWithImages({ content, img, style = 1 }) {
         <ReactMarkdown>{section}</ReactMarkdown>
       </div>
     )
-    // Insert image after sections 1, 3, 5... (0-indexed: after index 1, 3, 5)
-    // Skip first section (intro) and last section
     if (i > 0 && i % 2 === 1 && i < sections.length - 1) {
+      // Cycle through the pool so we never run out
+      const src = pool[imgIndex % pool.length]
       elements.push(
-        <InlineImage key={`img-${i}`} img={img} style={style} index={imgIndex} />
+        <InlineImage key={`img-${i}`} img={src} style={style} index={imgIndex} />
       )
       imgIndex++
     }

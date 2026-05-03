@@ -207,7 +207,7 @@ export default function City({ onQuoteClick }) {
 
       <div className="container city-layout" style={{ padding: `${topPadding} 20px 48px`, display: 'grid', gridTemplateColumns: '1fr 300px', gap: '48px', alignItems: 'start', maxWidth: '1200px' }}>
         <div>
-          <ContentWithImages content={data.content} img={img} style={style} />
+          <ContentWithImages content={data.content} img={img} imageUrls={data.image_urls || []} style={style} />
 
           <CallBlock onQuoteClick={onQuoteClick} />
 

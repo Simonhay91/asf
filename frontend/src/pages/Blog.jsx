@@ -178,7 +178,7 @@ export default function Blog({ onQuoteClick }) {
               Опубликовано: {date}
             </div>
           )}
-          <ContentWithImages content={data.content} img={img} style={style} />
+          <ContentWithImages content={data.content} img={img} imageUrls={data.image_urls || []} style={style} />
           <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '28px', marginTop: '48px', border: '1px solid #333' }}>
             <p style={{ color: 'var(--light)', marginBottom: '16px', fontSize: '1.05rem' }}>
               <strong>РусскийАсфальт</strong> — асфальтирование только в Москве и Подмосковье от 630 руб/м².

@@ -137,6 +137,65 @@ def _pick_query(slug: str, location_type: str = "", category: str = "") -> str:
     return DEFAULT_QUERY
 
 
+async def fetch_images(slug: str, location_type: str = "", location_name: str = "", category: str = "", count: int = 3) -> list[str]:
+    """
+    Return up to `count` unique Pexels photo URLs for the given slug.
+    Uses varied queries to get visually different images.
+    """
+    if not PEXELS_API_KEY:
+        return []
+
+    if location_name and location_type in ("city", "district"):
+        base_query = f"asphalt road paving {location_name} construction"
+    else:
+        base_query = _pick_query(slug, location_type, category)
+
+    # Alternate queries for variety
+    alt_queries = [
+        base_query,
+        base_query.replace("asphalt", "road").replace("paving", "construction"),
+        f"construction workers road machinery moscow",
+    ]
+
+    results: list[str] = []
+    try:
+        from backend.database import db
+        used_docs = await db.used_images.find({}, {"photo_id": 1, "_id": 0}).to_list(None)
+        used_ids: set[int] = {doc["photo_id"] for doc in used_docs}
+
+        async with httpx.AsyncClient(timeout=15) as client:
+            for i, query in enumerate(alt_queries):
+                if len(results) >= count:
+                    break
+                for page in range(1, 3):
+                    resp = await client.get(
+                        PEXELS_API_URL,
+                        headers={"Authorization": PEXELS_API_KEY},
+                        params={"query": query, "per_page": 30, "page": page, "orientation": "landscape"},
+                    )
+                    resp.raise_for_status()
+                    photos = resp.json().get("photos", [])
+                    for photo in photos:
+                        if photo["id"] not in used_ids and len(results) < count:
+                            url = photo["src"]["large"]
+                            await db.used_images.insert_one({
+                                "photo_id": photo["id"],
+                                "slug": slug,
+                                "query": query,
+                                "url": url,
+                            })
+                            used_ids.add(photo["id"])
+                            results.append(url)
+                    if len(results) >= count:
+                        break
+
+        logger.info(f"Pexels fetched {len(results)}/{count} images for '{slug}'")
+    except Exception as e:
+        logger.error(f"Pexels fetch_images failed for slug={slug}: {e}")
+
+    return results
+
+
 async def fetch_image(slug: str, location_type: str = "", location_name: str = "", category: str = "") -> str | None:
     """
     Return a unique Pexels photo URL for the given slug.
