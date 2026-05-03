@@ -78,8 +78,8 @@ function InlineImage({ img, style, index }) {
 }
 
 export default function ContentWithImages({ content, img, imageUrls = [], style = 1 }) {
-  // Build image pool: prefer imageUrls array, fall back to single img
-  const pool = imageUrls.length > 0 ? imageUrls : (img ? [img] : [])
+  // Only show section images when we have 2+ unique images (avoid repeating the same one)
+  const pool = imageUrls.length >= 2 ? imageUrls : []
 
   if (!pool.length || !content) {
     return <div className="prose"><ReactMarkdown>{content || ''}</ReactMarkdown></div>
