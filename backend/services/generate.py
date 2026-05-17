@@ -160,7 +160,7 @@ async def refresh_all_images() -> dict:
         try:
             image_url = None
             if page_type in ("district", "city"):
-                image_url = await fetch_wikimedia_image(name, page_type)
+                image_url = await fetch_wikimedia_image(name, page_type, slug=slug)
                 if not image_url:
                     image_url = await fetch_image(slug, page_type, location_name=name)
             else:
@@ -272,7 +272,7 @@ async def _run_district(district: dict) -> Optional[dict]:
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
-        wiki_image = await fetch_wikimedia_image(name, "district")
+        wiki_image = await fetch_wikimedia_image(name, "district", slug=slug)
         city_image_urls = await fetch_images(slug, "district", location_name=name, count=3)
         blog_image_urls = await fetch_images(blog_slug, "", count=3)
         image_url = wiki_image or (city_image_urls[0] if city_image_urls else None)
@@ -331,7 +331,7 @@ async def _run_city(city: dict) -> Optional[dict]:
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
-        wiki_image = await fetch_wikimedia_image(name, "city")
+        wiki_image = await fetch_wikimedia_image(name, "city", slug=slug)
         city_image_urls = await fetch_images(slug, "city", location_name=name, count=3)
         blog_image_urls = await fetch_images(blog_slug, "", count=3)
         image_url = wiki_image or (city_image_urls[0] if city_image_urls else None)

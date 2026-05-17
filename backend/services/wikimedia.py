@@ -9,22 +9,24 @@ COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 EXCLUDE_KEYWORDS = ("map", "coat", "flag", "logo", "svg", "схема", "герб", "карт", "план")
 
 
-async def fetch_wikimedia_image(location_name: str, location_type: str = "district") -> str | None:
+async def fetch_wikimedia_image(location_name: str, location_type: str = "district", slug: str = "") -> str | None:
     """
     Fetch a real photo of a Moscow district or Podmoskovye city from Wikimedia Commons.
     Returns a direct image URL or None if not found.
     """
+    slug_latin = slug.replace("-", " ").strip() if slug else ""
+
     if location_type == "district":
         queries = [
+            f"{slug_latin} Moscow district" if slug_latin else f"{location_name} Moscow district",
+            f"{slug_latin} Moscow" if slug_latin else f"{location_name} Moscow",
             f"{location_name} район Москва",
-            f"{location_name} Moscow district",
-            f"{location_name} Москва",
         ]
     else:
         queries = [
-            f"{location_name} город Подмосковье",
-            f"{location_name} Russia city",
-            f"{location_name} Московская область",
+            f"{slug_latin} Moscow region" if slug_latin else f"{location_name} Moscow region",
+            f"{slug_latin} Russia city" if slug_latin else f"{location_name} Russia",
+            f"{location_name} Подмосковье",
         ]
 
     try:
