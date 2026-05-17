@@ -85,7 +85,6 @@ def jsonld_organization() -> dict:
         "areaServed": {"@type": "AdministrativeArea", "name": "Москва и Московская область"},
         "priceRange": "от 630 руб/м²",
         "openingHours": "Mo-Su 08:00-20:00",
-        "sameAs": [],
     }
     if COMPANY_PHONE:
         data["telephone"] = COMPANY_PHONE
@@ -109,13 +108,7 @@ def jsonld_service(
         "offers": {
             "@type": "Offer",
             "priceCurrency": "RUB",
-            "price": str(price_from),
-            "priceSpecification": {
-                "@type": "UnitPriceSpecification",
-                "price": price_from,
-                "priceCurrency": "RUB",
-                "unitText": "м²",
-            },
+            "price": price_from,
         },
         "url": f"{SITE_URL}{url}",
         "aggregateRating": {
