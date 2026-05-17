@@ -103,6 +103,14 @@ COMPANY_PHONE=+7-XXX-XXX-XX-XX
 COMPANY_EMAIL=info@russkiyasphalt.ru
 ```
 
+## Deploy (сервер: /var/www/russkiyasphalt)
+
+```bash
+cd /var/www/russkiyasphalt && git pull origin main
+cd frontend && npm run build && cd ..
+pm2 restart russkiyasphalt-backend
+```
+
 ## Cron
 
 Добавить на cron-job.org:
