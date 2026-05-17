@@ -225,7 +225,7 @@ export default function Home({ onQuoteClick }) {
     <>
       <Helmet>
         <title>Асфальтирование в Москве — от 630 руб/м² | РусскийАсфальт</title>
-        <meta name="description" content="Асфальтирование дворов, парковок, дорог в Москве и Подмосковье под ключ. Выезд замерщика в день обращения, гарантия 5 лет. Цены от 630 руб/м²." />
+        <meta name="description" content="Асфальтирование двора частного дома, территорий, парковок в Москве под ключ. Цена от 630 руб/м². Выезд замерщика в день обращения, гарантия 5 лет." />
       </Helmet>
 
       {/* ── HERO SLIDER ── */}
@@ -369,7 +369,7 @@ export default function Home({ onQuoteClick }) {
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '36px', flexWrap: 'wrap', gap: '12px' }}>
             <div>
-              <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--white)', marginBottom: '6px' }}>Цены на асфальтирование</h2>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--white)', marginBottom: '6px' }}>Цены на асфальтирование территорий и дворов</h2>
               <p style={{ color: 'var(--mid)', fontSize: '0.9rem' }}>Фиксированная цена прописывается в договоре — без скрытых расходов</p>
             </div>
             <Link to="/prajs-list/" style={{ color: 'var(--accent)', fontSize: '0.9rem', fontWeight: 600, whiteSpace: 'nowrap' }}>Полный прайс-лист →</Link>
