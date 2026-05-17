@@ -13,6 +13,7 @@ import Service from './pages/Service'
 import ServiceList from './pages/ServiceList'
 import PriceList from './pages/PriceList'
 import RegionList from './pages/RegionList'
+import MoscowList from './pages/MoscowList'
 
 export default function App() {
   const [quoteOpen, setQuoteOpen] = useState(false)
@@ -26,6 +27,8 @@ export default function App() {
       <main style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home onQuoteClick={openQuote} />} />
+          <Route path="/moskva/" element={<MoscowList />} />
+          <Route path="/moskva" element={<MoscowList />} />
           <Route path="/moskva/:okrug/:slug" element={<District onQuoteClick={openQuote} />} />
           <Route path="/podmoskovye/:slug" element={<City onQuoteClick={openQuote} />} />
           <Route path="/podmoskovye/:slug/" element={<City onQuoteClick={openQuote} />} />

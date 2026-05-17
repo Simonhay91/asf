@@ -185,6 +185,7 @@ def jsonld_article(title: str, description: str, url: str, published: datetime) 
 
 STATIC_URLS = [
     ("/", "1.0", "weekly"),
+    ("/moskva/", "0.9", "weekly"),
     ("/o-kompanii/", "0.7", "monthly"),
     ("/prajs-list/", "0.8", "monthly"),
     ("/kontakty/", "0.6", "monthly"),

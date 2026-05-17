@@ -19,7 +19,8 @@ export default function Header({ onQuoteClick }) {
           <Link to="/" style={{ color: 'var(--light)' }}>Главная</Link>
           <Link to="/uslugi/" style={{ color: 'var(--light)' }}>Услуги</Link>
           <Link to="/prajs-list/" style={{ color: 'var(--light)' }}>Прайс-лист</Link>
-          <Link to="/regiony/" style={{ color: 'var(--light)' }}>Регионы</Link>
+          <Link to="/moskva/" style={{ color: 'var(--light)' }}>Москва</Link>
+          <Link to="/regiony/" style={{ color: 'var(--light)' }}>Подмосковье</Link>
           <Link to="/blog/" style={{ color: 'var(--light)' }}>Блог</Link>
           <a
             href="https://t.me/asf_prj_bot"
@@ -59,7 +60,8 @@ export default function Header({ onQuoteClick }) {
             { to: '/', label: 'Главная' },
             { to: '/uslugi/', label: 'Услуги' },
             { to: '/prajs-list/', label: 'Прайс-лист' },
-            { to: '/regiony/', label: 'Регионы' },
+            { to: '/moskva/', label: 'Москва' },
+            { to: '/regiony/', label: 'Подмосковье' },
             { to: '/blog/', label: 'Блог' },
           ].map(item => (
             <Link
