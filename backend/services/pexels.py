@@ -117,6 +117,20 @@ CATEGORY_QUERIES: dict[str, str] = {
 
 DEFAULT_QUERY = "asphalt road paving construction"
 
+DISTRICT_BLOG_QUERIES = [
+    "asphalt road construction urban city workers",
+    "road paving construction machinery equipment",
+    "asphalt laying compactor roller machine street",
+    "street road construction site workers outdoor",
+    "road resurfacing city construction professional",
+    "asphalt paving truck heavy machinery",
+    "road surface construction process daylight",
+    "asphalt repair road workers tools",
+    "construction workers road paving team",
+    "new road asphalt surface smooth",
+]
+
+import hashlib
 
 def _pick_query(slug: str, location_type: str = "", category: str = "") -> str:
     # 1. Exact slug match
@@ -134,7 +148,9 @@ def _pick_query(slug: str, location_type: str = "", category: str = "") -> str:
         return SLUG_KEYWORDS["district"]
     if location_type == "city":
         return SLUG_KEYWORDS["city"]
-    return DEFAULT_QUERY
+    # 5. For district/city blog slugs (asfalt-{name}), rotate varied queries by slug hash
+    idx = int(hashlib.md5(slug.encode()).hexdigest(), 16) % len(DISTRICT_BLOG_QUERIES)
+    return DISTRICT_BLOG_QUERIES[idx]
 
 
 async def fetch_images(slug: str, location_type: str = "", location_name: str = "", category: str = "", count: int = 3) -> list[str]:
