@@ -14,6 +14,7 @@ from backend.services.claude_service import (
 )
 from backend.services.perplexity import research_location, research_topic
 from backend.services.pexels import fetch_image, fetch_images
+from backend.services.wikimedia import fetch_wikimedia_image
 from backend.services.yandex import ping_urls
 from backend.services.telegram_service import notify, notify_page
 from backend.services.seo import build_sitemap
@@ -143,23 +144,32 @@ async def regenerate_slug(slug: str) -> dict:
 
 
 async def refresh_all_images() -> dict:
-    """Re-fetch Pexels images for all blog pages (does not touch district/city pages)."""
+    """Re-fetch images for all pages: Wikimedia for district/city, Pexels for blog/service."""
     pages = await db.generated_pages.find(
-        {"type": {"$in": ["blog", "service"]}},
-        {"slug": 1, "type": 1, "category": 1, "_id": 0},
+        {},
+        {"slug": 1, "type": 1, "name": 1, "category": 1, "_id": 0},
     ).to_list(None)
 
     updated = 0
     failed = 0
     for p in pages:
         slug = p["slug"]
+        page_type = p["type"]
+        name = p.get("name", "")
         category = p.get("category", "")
-        loc_type = "service" if p["type"] == "service" else ""
         try:
-            image_url = await fetch_image(slug, loc_type, category=category)
+            image_url = None
+            if page_type in ("district", "city"):
+                image_url = await fetch_wikimedia_image(name, page_type)
+                if not image_url:
+                    image_url = await fetch_image(slug, page_type, location_name=name)
+            else:
+                loc_type = "service" if page_type == "service" else ""
+                image_url = await fetch_image(slug, loc_type, category=category)
+
             if image_url:
                 await db.generated_pages.update_one(
-                    {"slug": slug, "type": p["type"]},
+                    {"slug": slug, "type": page_type},
                     {"$set": {"image_url": image_url}},
                 )
                 updated += 1
@@ -262,9 +272,10 @@ async def _run_district(district: dict) -> Optional[dict]:
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
+        wiki_image = await fetch_wikimedia_image(name, "district")
         city_image_urls = await fetch_images(slug, "district", location_name=name, count=3)
         blog_image_urls = await fetch_images(blog_slug, "", count=3)
-        image_url = city_image_urls[0] if city_image_urls else None
+        image_url = wiki_image or (city_image_urls[0] if city_image_urls else None)
 
         await db.generated_pages.insert_one({
             "slug": slug, "type": "district", "name": name,
@@ -320,9 +331,10 @@ async def _run_city(city: dict) -> Optional[dict]:
         blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
+        wiki_image = await fetch_wikimedia_image(name, "city")
         city_image_urls = await fetch_images(slug, "city", location_name=name, count=3)
         blog_image_urls = await fetch_images(blog_slug, "", count=3)
-        image_url = city_image_urls[0] if city_image_urls else None
+        image_url = wiki_image or (city_image_urls[0] if city_image_urls else None)
 
         await db.generated_pages.insert_one({
             "slug": slug, "type": "city", "name": name,
