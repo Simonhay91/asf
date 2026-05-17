@@ -81,7 +81,7 @@
   {"city_id": 80, "name": "Электроугли", "slug": "elektrougli", "region": "восток", "priority_order": 80, "month_planned": 8, "status": "pending"},
   {"city_id": 81, "name": "Лесной Городок", "slug": "lesnoj-gorodok", "region": "запад", "priority_order": 81, "month_planned": 8, "status": "pending"},
   {"city_id": 82, "name": "Деденево", "slug": "dedenevo", "region": "север", "priority_order": 82, "month_planned": 8, "status": "pending"},
-  {"city_id": 83, "name": "Яхрома", "slug": "yaхroma", "region": "север", "priority_order": 83, "month_planned": 9, "status": "pending"},
+  {"city_id": 83, "name": "Яхрома", "slug": "yakhroma", "region": "север", "priority_order": 83, "month_planned": 9, "status": "pending"},
   {"city_id": 84, "name": "Икша", "slug": "iksha", "region": "север", "priority_order": 84, "month_planned": 9, "status": "pending"},
   {"city_id": 85, "name": "Андреевка", "slug": "andreevka", "region": "запад", "priority_order": 85, "month_planned": 9, "status": "pending"},
   {"city_id": 86, "name": "Шереметьево", "slug": "sheremetyevo-pos", "region": "север", "priority_order": 86, "month_planned": 10, "status": "pending"},

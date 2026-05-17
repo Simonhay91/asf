@@ -208,9 +208,13 @@ def build_sitemap(generated_pages: list[dict]) -> str:
         ET.SubElement(el, "changefreq").text = changefreq
         ET.SubElement(el, "priority").text = priority
 
+    static_paths = {path for path, _, _ in STATIC_URLS}
+
     for page in (generated_pages or []):
         path = page.get("url", "").strip()
         if not path:
+            continue
+        if path in static_paths:
             continue
         page_type = page.get("type", "district")
         priority = "0.9" if page_type in ("district", "city") else "0.6"

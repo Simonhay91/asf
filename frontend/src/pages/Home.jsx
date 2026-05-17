@@ -164,7 +164,7 @@ const CITIES = [
   { name: "Хотьково", slug: "hotykovo" },
   { name: "Александров", slug: "aleksandrov" },
   { name: "Электроугли", slug: "elektrougli" },
-  { name: "Яхрома", slug: "yaхroma" },
+  { name: "Яхрома", slug: "yakhroma" },
   { name: "Красково", slug: "kraskovo" },
   { name: "Томилино", slug: "tomilino" },
   { name: "Малаховка", slug: "malahovka" },
