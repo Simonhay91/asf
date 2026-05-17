@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { ALL_SERVICES } from '../constants/services'
+import { CITIES } from '../constants/cities'
 import { useCitiesStatus } from '../hooks/useCitiesStatus'
 
 const SLIDES = [
@@ -107,68 +108,6 @@ const REVIEWS = [
   { name: 'Виталий', stars: 4, text: 'Хочу поблагодарить за укладку асфальта на территории моего предприятия. Стоимость приемлемая, результат — отличный!' },
 ]
 
-const CITIES = [
-  { name: "Балашиха", slug: "balashiha" },
-  { name: "Химки", slug: "himki" },
-  { name: "Подольск", slug: "podolsk" },
-  { name: "Королёв", slug: "korolev" },
-  { name: "Мытищи", slug: "mytishhi" },
-  { name: "Люберцы", slug: "lyubercza" },
-  { name: "Электросталь", slug: "elektrostal" },
-  { name: "Коломна", slug: "kolomna" },
-  { name: "Одинцово", slug: "odincovo" },
-  { name: "Красногорск", slug: "krasnogorsk" },
-  { name: "Домодедово", slug: "domodedovo" },
-  { name: "Щёлково", slug: "shhelkovo" },
-  { name: "Раменское", slug: "ramenskoe" },
-  { name: "Пушкино", slug: "pushkino" },
-  { name: "Реутов", slug: "reutov" },
-  { name: "Долгопрудный", slug: "dolgoprudnyj" },
-  { name: "Ступино", slug: "stupino" },
-  { name: "Серпухов", slug: "serpuhov" },
-  { name: "Жуковский", slug: "zhukovskij" },
-  { name: "Орехово-Зуево", slug: "orekhovo-zuevo" },
-  { name: "Наро-Фоминск", slug: "naro-fominsk" },
-  { name: "Ногинск", slug: "noginsk" },
-  { name: "Воскресенск", slug: "voskresensk" },
-  { name: "Дзержинский", slug: "dzerzhinskij" },
-  { name: "Котельники", slug: "kotelniki" },
-  { name: "Лыткарино", slug: "lytkarino" },
-  { name: "Лобня", slug: "lobnya" },
-  { name: "Дубна", slug: "dubna" },
-  { name: "Ивантеевка", slug: "ivanteevka" },
-  { name: "Фрязино", slug: "fryazino" },
-  { name: "Видное", slug: "vidnoe" },
-  { name: "Троицк", slug: "troick" },
-  { name: "Звенигород", slug: "zvenigorod" },
-  { name: "Можайск", slug: "mozhajsk" },
-  { name: "Апрелевка", slug: "aprelevka" },
-  { name: "Голицыно", slug: "goliczyno" },
-  { name: "Кубинка", slug: "kubinka" },
-  { name: "Кашира", slug: "kashira" },
-  { name: "Зарайск", slug: "zarajsk" },
-  { name: "Егорьевск", slug: "egoryevsk" },
-  { name: "Бронницы", slug: "bronnicza" },
-  { name: "Черноголовка", slug: "chernogolovka" },
-  { name: "Клин", slug: "klin" },
-  { name: "Дмитров", slug: "dmitrov" },
-  { name: "Сергиев Посад", slug: "sergiev-posad" },
-  { name: "Лотошино", slug: "lotoshino" },
-  { name: "Волоколамск", slug: "volokolamsk" },
-  { name: "Истра", slug: "istra" },
-  { name: "Протвино", slug: "protvino" },
-  { name: "Пущино", slug: "pushhino" },
-  { name: "Чехов", slug: "chehov" },
-  { name: "Михнево", slug: "mihnevo" },
-  { name: "Красноармейск", slug: "krasnoarmejsk" },
-  { name: "Хотьково", slug: "hotykovo" },
-  { name: "Александров", slug: "aleksandrov" },
-  { name: "Электроугли", slug: "elektrougli" },
-  { name: "Яхрома", slug: "yakhroma" },
-  { name: "Красково", slug: "kraskovo" },
-  { name: "Томилино", slug: "tomilino" },
-  { name: "Малаховка", slug: "malahovka" },
-]
 
 const CALC_TYPES = [
   { label: 'Асфальтирование 4 см', price: 630 },

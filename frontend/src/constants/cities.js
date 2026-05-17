@@ -73,6 +73,7 @@ export const CITIES = [
   { name: 'Монино',            slug: 'monino',             region: 'восток' },
   { name: 'Красноармейск',     slug: 'krasnoarmejsk',      region: 'север' },
   { name: 'Хотьково',          slug: 'hotykovo',           region: 'север' },
+  { name: 'Александров',       slug: 'aleksandrov',        region: 'север' },
   { name: 'Пересвет',          slug: 'peresvet',           region: 'север' },
   { name: 'Электроугли',       slug: 'elektrougli',        region: 'восток' },
   { name: 'Лесной Городок',    slug: 'lesnoj-gorodok',     region: 'запад' },
