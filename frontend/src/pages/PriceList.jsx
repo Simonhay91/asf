@@ -1,67 +1,94 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 
 const SECTIONS = [
   {
+    id: 'asfalt',
     title: 'Асфальтирование',
+    icon: '🛣️',
     rows: [
-      { name: 'Асфальтирование под ключ',                          unit: 'м²',    min: 630,  max: 800  },
-      { name: 'Асфальтирование дворов',                            unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование парковок',                          unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование стоянок',                           unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование дорог и улиц',                      unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование придомовой территории',             unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование площадок',                          unit: 'м²',    min: 630,  max: 800  },
-      { name: 'Асфальтирование дорожек и тротуаров',               unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование частного дома и участка',           unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование дачного участка',                   unit: 'м²',    min: 630,  max: 730  },
-      { name: 'Асфальтирование СНТ',                               unit: 'м²',    min: 630,  max: 800  },
-      { name: 'Асфальтирование территорий предприятий',            unit: 'м²',    min: 630,  max: 800  },
-      { name: 'Асфальтирование малых площадей (до 100 м²)',        unit: 'м²',    min: 730,  max: 900  },
-      { name: 'Укладка асфальтовой крошки',                        unit: 'м²',    min: 350,  max: 500  },
+      { name: 'Асфальтирование под ключ', unit: 'м²', min: 630, max: 800, highlight: true },
+      { name: 'Асфальтирование дворов', unit: 'м²', min: 630, max: 730, highlight: true },
+      { name: 'Асфальтирование парковок', unit: 'м²', min: 630, max: 730 },
+      { name: 'Асфальтирование стоянок', unit: 'м²', min: 630, max: 730 },
+      { name: 'Асфальтирование дорог и улиц', unit: 'м²', min: 630, max: 730 },
+      { name: 'Асфальтирование придомовой территории', unit: 'м²', min: 630, max: 730 },
+      { name: 'Асфальтирование площадок', unit: 'м²', min: 630, max: 800 },
+      { name: 'Асфальтирование дорожек и тротуаров', unit: 'м²', min: 630, max: 730 },
+      { name: 'Асфальтирование частного дома и участка', unit: 'м²', min: 630, max: 730 },
+      { name: 'Асфальтирование дачного участка', unit: 'м²', min: 630, max: 730 },
+      { name: 'Асфальтирование СНТ', unit: 'м²', min: 630, max: 800 },
+      { name: 'Асфальтирование территорий предприятий', unit: 'м²', min: 630, max: 800 },
+      { name: 'Асфальтирование малых площадей (до 100 м²)', unit: 'м²', min: 730, max: 900 },
+      { name: 'Укладка асфальтовой крошки', unit: 'м²', min: 350, max: 500, highlight: true },
     ],
   },
   {
+    id: 'remont',
     title: 'Ремонт асфальта',
+    icon: '🔧',
     rows: [
-      { name: 'Ямочный ремонт асфальта',              unit: 'м²',    min: 1200, max: 2500 },
-      { name: 'Ремонт трещин в асфальте',             unit: 'п.м.',  min: 300,  max: 800  },
-      { name: 'Ремонт и замена асфальта',             unit: 'м²',    min: 800,  max: 1500 },
-      { name: 'Резка асфальта (алмазная)',             unit: 'п.м.',  min: 250,  max: 500  },
-      { name: 'Демонтаж асфальтового покрытия',       unit: 'м²',    min: 150,  max: 300  },
+      { name: 'Ямочный ремонт асфальта', unit: 'м²', min: 1200, max: 2500, highlight: true },
+      { name: 'Ремонт трещин в асфальте', unit: 'п.м.', min: 300, max: 800 },
+      { name: 'Ремонт и замена асфальта', unit: 'м²', min: 800, max: 1500 },
+      { name: 'Резка асфальта (алмазная)', unit: 'п.м.', min: 250, max: 500 },
+      { name: 'Демонтаж асфальтового покрытия', unit: 'м²', min: 150, max: 300 },
     ],
   },
   {
+    id: 'dorogi',
     title: 'Строительство дорог',
+    icon: '🚧',
     rows: [
-      { name: 'Строительство дорог с нуля',           unit: 'м²',    min: 900,  max: 1500 },
-      { name: 'Строительство временных дорог',        unit: 'м²',    min: 500,  max: 900  },
-      { name: 'Строительство дорог в СНТ',            unit: 'м²',    min: 700,  max: 1200 },
-      { name: 'Строительство дачных дорог',           unit: 'м²',    min: 630,  max: 1000 },
-      { name: 'Строительство грунтовых дорог',        unit: 'м²',    min: 300,  max: 600  },
-      { name: 'Дорожные работы под ключ',             unit: 'м²',    min: 900,  max: 1800 },
+      { name: 'Строительство дорог с нуля', unit: 'м²', min: 900, max: 1500 },
+      { name: 'Строительство временных дорог', unit: 'м²', min: 500, max: 900 },
+      { name: 'Строительство дорог в СНТ', unit: 'м²', min: 700, max: 1200 },
+      { name: 'Строительство дачных дорог', unit: 'м²', min: 630, max: 1000 },
+      { name: 'Строительство грунтовых дорог', unit: 'м²', min: 300, max: 600 },
+      { name: 'Дорожные работы под ключ', unit: 'м²', min: 900, max: 1800 },
     ],
   },
   {
-    title: 'Благоустройство и отделка',
+    id: 'blag',
+    title: 'Благоустройство',
+    icon: '🏡',
     rows: [
-      { name: 'Укладка тротуарной плитки',            unit: 'м²',    min: 850,  max: 1400 },
-      { name: 'Укладка брусчатки',                    unit: 'м²',    min: 900,  max: 1600 },
-      { name: 'Установка бордюров и поребриков',      unit: 'п.м.',  min: 350,  max: 600  },
-      { name: 'Установка лежачих полицейских',        unit: 'шт.',   min: 4500, max: 9000 },
-      { name: 'Нанесение дорожной разметки',          unit: 'п.м.',  min: 80,   max: 200  },
-      { name: 'Озеленение и благоустройство',         unit: 'м²',    min: 400,  max: 900  },
+      { name: 'Укладка тротуарной плитки', unit: 'м²', min: 850, max: 1400 },
+      { name: 'Укладка брусчатки', unit: 'м²', min: 900, max: 1600 },
+      { name: 'Установка бордюров и поребриков', unit: 'п.м.', min: 350, max: 600 },
+      { name: 'Установка лежачих полицейских', unit: 'шт.', min: 4500, max: 9000 },
+      { name: 'Нанесение дорожной разметки', unit: 'п.м.', min: 80, max: 200 },
+      { name: 'Озеленение и благоустройство', unit: 'м²', min: 400, max: 900 },
     ],
   },
   {
-    title: 'Земляные и вспомогательные работы',
+    id: 'extra',
+    title: 'Доп. работы',
+    icon: '⚙️',
     rows: [
-      { name: 'Земляные работы (срезка, планировка)', unit: 'м²',    min: 100,  max: 250  },
-      { name: 'Вывоз строительного мусора',           unit: 'т',     min: 1500, max: 3000 },
-      { name: 'Уборка снега и содержание дорог',      unit: 'м²',    min: 30,   max: 80   },
-      { name: 'Выезд замерщика',                      unit: 'выезд', min: 0,    max: 0    },
+      { name: 'Земляные работы (срезка, планировка)', unit: 'м²', min: 100, max: 250 },
+      { name: 'Вывоз строительного мусора', unit: 'т', min: 1500, max: 3000 },
+      { name: 'Уборка снега и содержание дорог', unit: 'м²', min: 30, max: 80 },
+      { name: 'Выезд замерщика', unit: 'выезд', min: 0, max: 0, free: true },
     ],
   },
+]
+
+const FEATURED = [
+  { label: 'Асфальт под ключ', from: 630, unit: '₽/м²', desc: 'С материалом и работой' },
+  { label: 'Ямочный ремонт', from: 1200, unit: '₽/м²', desc: 'Быстро, с гарантией' },
+  { label: 'Асфальтовая крошка', from: 350, unit: '₽/м²', desc: 'Экономичное покрытие' },
+  { label: 'Замер объекта', from: 0, unit: '', desc: 'В день обращения', free: true },
+]
+
+const SERVICE_LINKS = [
+  { to: '/uslugi/asfaltirovanie-dvorov/', label: 'Дворы' },
+  { to: '/uslugi/asfaltirovanie-parkovok/', label: 'Парковки' },
+  { to: '/uslugi/asfaltirovanie-dorog/', label: 'Дороги' },
+  { to: '/uslugi/yamochnyj-remont/', label: 'Ямочный ремонт' },
+  { to: '/uslugi/asfaltovaya-kroshka/', label: 'Крошка' },
+  { to: '/uslugi/asfaltirovanie-promyshlennyh-ploshhadok/', label: 'Промплощадки' },
 ]
 
 const META = {
@@ -72,139 +99,207 @@ const META = {
   'og:type': 'website',
 }
 
-function formatPrice(min, max) {
-  if (min === 0 && max === 0) return <span style={{ color: 'var(--accent)', fontWeight: 800 }}>Бесплатно</span>
+function formatPrice(min, max, free) {
+  if (free || (min === 0 && max === 0)) return 'Бесплатно'
   if (min === max) return `от ${min.toLocaleString('ru')} ₽`
   return `${min.toLocaleString('ru')} – ${max.toLocaleString('ru')} ₽`
 }
 
+function PriceRow({ row }) {
+  const price = formatPrice(row.min, row.max, row.free)
+  const isFree = row.free || (row.min === 0 && row.max === 0)
+
+  return (
+    <div className={`price-row${row.highlight ? ' price-row--hot' : ''}`}>
+      <div className="price-row__main">
+        <span className="price-row__name">{row.name}</span>
+        <span className="price-row__unit">{row.unit}</span>
+      </div>
+      <span className={`price-row__price${isFree ? ' price-row__price--free' : ''}`}>{price}</span>
+    </div>
+  )
+}
+
 export default function PriceList({ onQuoteClick }) {
+  const [activeId, setActiveId] = useState(SECTIONS[0].id)
+  const sectionRefs = useRef({})
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        if (visible?.target?.id) setActiveId(visible.target.id)
+      },
+      { rootMargin: '-120px 0px -55% 0px', threshold: [0, 0.15, 0.4] },
+    )
+    SECTIONS.forEach(s => {
+      const el = sectionRefs.current[s.id]
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [])
+
+  const scrollToSection = id => {
+    sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setActiveId(id)
+  }
+
   return (
     <>
       <PageMeta meta={META} jsonld={[]} />
 
       {/* Hero */}
-      <div style={{ background: 'var(--dark)', borderBottom: '1px solid #2a2a2a', padding: '56px 20px 48px' }}>
-        <div className="container">
-          <div style={{ fontSize: '0.8rem', color: 'var(--mid)', marginBottom: '12px' }}>
-            <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-            {' / '}
-            <span style={{ color: 'var(--white)' }}>Прайс-лист</span>
-          </div>
-          <h1 style={{ fontWeight: 900, fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', marginBottom: '12px' }}>
-            Прайс-лист на асфальтирование и дорожные работы
+      <section className="price-hero">
+        <img src="/photos/work5.jpg" alt="Асфальтирование — прайс-лист" className="price-hero__bg" />
+        <div className="price-hero__overlay" />
+        <div className="container price-hero__content">
+          <nav className="price-breadcrumb">
+            <Link to="/">Главная</Link>
+            <span>/</span>
+            <span>Прайс-лист</span>
+          </nav>
+          <h1 className="price-hero__title">
+            Прайс-лист
+            <span> на асфальтирование</span>
           </h1>
-          <p style={{ color: 'var(--mid)', fontSize: '1rem', maxWidth: '640px', marginBottom: '28px' }}>
-            Обратившись к нам, вы получите высококачественные сертифицированные материалы и долговечную работу.
-            Цены актуальны для Москвы и Московской области, 2026 год.
+          <p className="price-hero__sub">
+            Москва и Московская область · 2026 · цены с материалом
           </p>
-          <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
-            {[
-              { v: 'от 350 ₽/м²', l: 'минимальная цена' },
-              { v: 'Бесплатно',   l: 'выезд и замер' },
-              { v: '5 лет',       l: 'гарантия' },
-              { v: '1 день',      l: 'выезд замерщика' },
-            ].map(w => (
-              <div key={w.v}>
-                <div style={{ fontWeight: 900, fontSize: '1.4rem', color: 'var(--accent)' }}>{w.v}</div>
-                <div style={{ fontSize: '0.82rem', color: 'var(--mid)' }}>{w.l}</div>
+          <button type="button" className="btn price-hero__cta" onClick={onQuoteClick}>
+            Получить точный расчёт
+          </button>
+        </div>
+      </section>
+
+      {/* Featured prices */}
+      <section className="price-featured-wrap">
+        <div className="container">
+          <div className="price-featured-grid">
+            {FEATURED.map(f => (
+              <div key={f.label} className={`price-featured-card${f.free ? ' price-featured-card--free' : ''}`}>
+                <div className="price-featured-card__label">{f.label}</div>
+                <div className="price-featured-card__price">
+                  {f.free ? (
+                    <span className="price-featured-card__free">Бесплатно</span>
+                  ) : (
+                    <>
+                      <span className="price-featured-card__from">от</span>
+                      {f.from.toLocaleString('ru')}
+                      <span className="price-featured-card__unit">{f.unit}</span>
+                    </>
+                  )}
+                </div>
+                <div className="price-featured-card__desc">{f.desc}</div>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="container" style={{ padding: '56px 20px' }}>
+      {/* Sticky category nav */}
+      <nav className="price-nav" aria-label="Разделы прайса">
+        <div className="price-nav__scroll">
+          {SECTIONS.map(s => (
+            <button
+              key={s.id}
+              type="button"
+              className={`price-nav__pill${activeId === s.id ? ' price-nav__pill--active' : ''}`}
+              onClick={() => scrollToSection(s.id)}
+            >
+              <span className="price-nav__icon" aria-hidden>{s.icon}</span>
+              {s.title}
+            </button>
+          ))}
+        </div>
+      </nav>
 
-        {/* Price sections */}
+      <div className="container price-body">
         {SECTIONS.map(section => (
-          <div key={section.title} style={{ marginBottom: '48px' }}>
-            <h2 style={{ fontWeight: 800, fontSize: '1.25rem', marginBottom: '16px', paddingBottom: '10px', borderBottom: '2px solid var(--accent)', display: 'inline-block' }}>
-              {section.title}
-            </h2>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.93rem' }}>
+          <section
+            key={section.id}
+            id={section.id}
+            ref={el => { sectionRefs.current[section.id] = el }}
+            className="price-section"
+          >
+            <header className="price-section__head">
+              <span className="price-section__icon" aria-hidden>{section.icon}</span>
+              <h2 className="price-section__title">{section.title}</h2>
+              <span className="price-section__count">{section.rows.length} поз.</span>
+            </header>
+
+            {/* Desktop table */}
+            <div className="price-table-wrap">
+              <table className="price-table">
                 <thead>
-                  <tr style={{ background: 'var(--gray)' }}>
-                    <th style={TH}>Наименование работ</th>
-                    <th style={{ ...TH, textAlign: 'center', width: '80px' }}>Ед.</th>
-                    <th style={{ ...TH, textAlign: 'right', width: '180px' }}>Цена</th>
+                  <tr>
+                    <th>Наименование</th>
+                    <th>Ед.</th>
+                    <th>Цена</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {section.rows.map((row, i) => (
-                    <tr
-                      key={row.name}
-                      style={{ borderBottom: '1px solid #222', background: i % 2 === 0 ? 'transparent' : '#1a1a1a' }}
-                    >
-                      <td style={TD}>{row.name}</td>
-                      <td style={{ ...TD, textAlign: 'center', color: 'var(--mid)', fontSize: '0.85rem' }}>{row.unit}</td>
-                      <td style={{ ...TD, textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap' }}>
-                        {formatPrice(row.min, row.max)}
-                      </td>
-                    </tr>
-                  ))}
+                  {section.rows.map(row => {
+                    const price = formatPrice(row.min, row.max, row.free)
+                    const isFree = row.free || (row.min === 0 && row.max === 0)
+                    return (
+                      <tr key={row.name} className={row.highlight ? 'price-table__row--hot' : ''}>
+                        <td>{row.name}</td>
+                        <td><span className="price-badge">{row.unit}</span></td>
+                        <td className={isFree ? 'price-table__free' : ''}>{price}</td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
-          </div>
+
+            {/* Mobile cards */}
+            <div className="price-cards">
+              {section.rows.map(row => (
+                <PriceRow key={row.name} row={row} />
+              ))}
+            </div>
+          </section>
         ))}
 
-        {/* Note */}
-        <div style={{ background: 'var(--gray)', border: '1px solid #2a2a2a', borderRadius: '8px', padding: '20px 24px', marginBottom: '48px', fontSize: '0.88rem', color: 'var(--mid)', lineHeight: 1.8 }}>
-          <strong style={{ color: 'var(--white)' }}>Важно:</strong> цены являются ориентировочными и могут
-          варьироваться в зависимости от площади объекта, состояния основания, удалённости от МКАД и объёма работ.
-          Скидки при объёме от 500 м².
-          Для точного расчёта —{' '}
-          <button onClick={onQuoteClick} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, cursor: 'pointer', padding: 0, fontSize: 'inherit' }}>
-            закажите бесплатный замер
-          </button>.
+        <aside className="price-note">
+          <strong>Важно:</strong> цены ориентировочные и зависят от площади, основания, удалённости от МКАД и объёма.
+          Скидка при объёме от 500 м².{' '}
+          <button type="button" className="price-note__link" onClick={onQuoteClick}>
+            Закажите бесплатный замер
+          </button>{' '}
+          для точного расчёта.
+        </aside>
+
+        <div className="price-services">
+          <h2 className="price-services__title">Подробнее об услугах</h2>
+          <div className="price-services__links">
+            {SERVICE_LINKS.map(s => (
+              <Link key={s.to} to={s.to} className="price-services__chip">
+                {s.label}
+                <span aria-hidden>→</span>
+              </Link>
+            ))}
+          </div>
         </div>
 
-        {/* Services links */}
-        <h2 style={{ fontWeight: 800, fontSize: '1.25rem', marginBottom: '16px' }}>Подробнее об услугах</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '56px' }}>
-          {[
-            { to: '/uslugi/asfaltirovanie-dvorov/',                    label: 'Асфальтирование дворов' },
-            { to: '/uslugi/asfaltirovanie-parkovok/',                  label: 'Асфальтирование парковок' },
-            { to: '/uslugi/asfaltirovanie-dorog/',                     label: 'Асфальтирование дорог' },
-            { to: '/uslugi/yamochnyj-remont/',                         label: 'Ямочный ремонт' },
-            { to: '/uslugi/asfaltovaya-kroshka/',                      label: 'Асфальтовая крошка' },
-            { to: '/uslugi/asfaltirovanie-promyshlennyh-ploshhadok/',  label: 'Промышленные площадки' },
-            { to: '/uslugi/asfaltirovanie-sportivnyh-ploshhadok/',     label: 'Спортивные площадки' },
-            { to: '/uslugi/kompleksnoe-blagoustrojstvo-dvora-pod-klyuch/', label: 'Благоустройство двора' },
-          ].map(s => (
-            <Link
-              key={s.to}
-              to={s.to}
-              style={{ background: 'var(--gray)', border: '1px solid #2a2a2a', borderRadius: '4px', padding: '8px 16px', color: 'var(--light)', fontSize: '0.88rem', textDecoration: 'none', fontWeight: 600 }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a2a2a'; e.currentTarget.style.color = 'var(--light)' }}
-            >
-              {s.label} →
-            </Link>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div style={{ background: 'var(--accent)', borderRadius: '8px', padding: '40px 32px', textAlign: 'center' }}>
-          <h2 style={{ color: 'var(--black)', fontWeight: 900, fontSize: '1.6rem', marginBottom: '10px' }}>
-            Рассчитайте стоимость за 30 минут
-          </h2>
-          <p style={{ color: '#333', marginBottom: '24px', fontSize: '1rem' }}>
-            Замерщик выедет в день обращения — бесплатно и без обязательств
-          </p>
-          <button
-            onClick={onQuoteClick}
-            style={{ background: 'var(--black)', color: 'var(--white)', padding: '14px 40px', borderRadius: '4px', fontWeight: 700, cursor: 'pointer', border: 'none', fontSize: '1rem' }}
-          >
+        <div className="price-cta-block cta-block">
+          <h2>Рассчитаем стоимость за 30 минут</h2>
+          <p>Замерщик выедет в день обращения — бесплатно</p>
+          <button type="button" className="btn" onClick={onQuoteClick}>
             Получить расчёт
           </button>
         </div>
       </div>
+
+      {/* Mobile sticky CTA */}
+      <div className="price-sticky-cta">
+        <button type="button" className="btn price-sticky-cta__btn" onClick={onQuoteClick}>
+          Бесплатный замер и расчёт
+        </button>
+      </div>
     </>
   )
 }
-
-const TH = { padding: '10px 16px', textAlign: 'left', fontWeight: 700, fontSize: '0.82rem', color: 'var(--mid)', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const TD = { padding: '13px 16px', color: 'var(--white)' }
