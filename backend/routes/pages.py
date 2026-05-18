@@ -60,19 +60,24 @@ async def get_district_page(okrug: str, slug: str):
 
 @router.get("/api/page/podmoskovye/{slug}")
 async def get_city_page(slug: str):
-    page = await db.generated_pages.find_one({"slug": slug, "type": "city"}, {"_id": 0})
-    if not page:
-        raise HTTPException(status_code=404, detail="Page not found")
-
     city = await db.podmoskovye_cities.find_one({"slug": slug}, {"_id": 0})
-    city_name = city["name"] if city else slug
+    city_name = city["name"] if city else slug.replace("-", " ").title()
 
     meta = city_meta(city_name, slug)
     breadcrumb = jsonld_breadcrumb([
         ("Главная", "/"),
-        ("Подмосковье", "/podmoskovye/"),
+        ("Подмосковье", "/regiony/"),
         (city_name, f"/podmoskovye/{slug}/"),
     ])
+
+    page = await db.generated_pages.find_one({"slug": slug, "type": "city"}, {"_id": 0})
+    if not page:
+        return {
+            "meta": meta,
+            "jsonld": [jsonld_organization(), breadcrumb],
+            "content": "",
+            "placeholder": True,
+        }
 
     return {
         "meta": meta,
@@ -82,6 +87,7 @@ async def get_city_page(slug: str):
         "image_url": page.get("image_url"),
         "image_urls": page.get("image_urls") or [],
         "style": page.get("style_page", 1),
+        "placeholder": False,
     }
 
 

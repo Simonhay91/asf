@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import PageMeta from '../components/PageMeta'
+import { HOME_META } from '../utils/seoMeta'
 import { ALL_SERVICES } from '../constants/services'
 import { CITIES } from '../constants/cities'
 import { useCitiesStatus } from '../hooks/useCitiesStatus'
@@ -162,10 +163,7 @@ export default function Home({ onQuoteClick }) {
 
   return (
     <>
-      <Helmet>
-        <title>Асфальтирование в Москве — от 630 руб/м² | РусскийАсфальт</title>
-        <meta name="description" content="Асфальтирование двора частного дома, территорий, парковок в Москве под ключ. Цена от 630 руб/м². Выезд замерщика в день обращения, гарантия 5 лет." />
-      </Helmet>
+      <PageMeta meta={HOME_META} />
 
       {/* ── HERO SLIDER ── */}
       <section className="hero-section" style={{ position: 'relative', height: '560px', overflow: 'hidden' }}>

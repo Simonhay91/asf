@@ -13,10 +13,25 @@ COMPANY_EMAIL = os.getenv("COMPANY_EMAIL", "info@russkiyasphalt.ru")
 
 # ─── META TAGS ───
 
+def normalize_path(path: str) -> str:
+    if path.startswith("http"):
+        return path
+    p = path if path.startswith("/") else f"/{path}"
+    if p != "/" and not p.endswith("/"):
+        p += "/"
+    return p
+
+
 def build_meta(title: str, description: str, url: str, image: str = DEFAULT_IMAGE, page_type: str = "website") -> dict:
     if not url or not url.strip():
         raise ValueError("build_meta: empty url")
-    canonical = f"{SITE_URL}{url}" if not url.startswith("http") else url
+    if not (description or "").strip():
+        description = (
+            f"{title}. Асфальтирование в Москве и Подмосковье под ключ — "
+            f"цены от 630 руб/м², гарантия 5 лет."
+        )
+    path = normalize_path(url.strip())
+    canonical = path if path.startswith("http") else f"{SITE_URL}{path}"
     return {
         "title": title,
         "description": description[:160],
@@ -60,6 +75,11 @@ def city_meta(city_name: str, slug: str) -> dict:
 def blog_meta(title_text: str, excerpt: str, slug: str) -> dict:
     if not slug:
         raise ValueError("blog_meta: empty slug")
+    if not (excerpt or "").strip():
+        excerpt = (
+            f"{title_text}: советы по асфальтированию в Москве и Подмосковье, "
+            f"цены, технологии и опыт компании {SITE_NAME}."
+        )
     return build_meta(f"{title_text} | {SITE_NAME}", excerpt[:160], f"/blog/{slug}/", page_type="article")
 
 
@@ -179,6 +199,9 @@ def jsonld_article(title: str, description: str, url: str, published: datetime) 
 STATIC_URLS = [
     ("/", "1.0", "weekly"),
     ("/moskva/", "0.9", "weekly"),
+    ("/regiony/", "0.8", "weekly"),
+    ("/blog/", "0.7", "weekly"),
+    ("/uslugi/", "0.8", "weekly"),
     ("/o-kompanii/", "0.7", "monthly"),
     ("/prajs-list/", "0.8", "monthly"),
     ("/kontakty/", "0.6", "monthly"),
@@ -230,11 +253,14 @@ ROBOTS_TXT = f"""User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /sys-9x4k2m
 Disallow: /*?
 
 User-agent: Yandex
 Allow: /
 Crawl-delay: 1
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term /
+Clean-param: yclid&gclid&fbclid&openstat&from /
 Clean-param: ref /
 
 User-agent: Googlebot
@@ -247,7 +273,7 @@ Sitemap: {SITE_URL}/sitemap.xml
 # ─── CANONICAL ───
 
 def canonical_url(path: str) -> str:
-    return f"{SITE_URL}{path.rstrip('/')}/"
+    return f"{SITE_URL}{normalize_path(path)}"
 
 
 def district_canonical(okrug: str, slug: str) -> str:

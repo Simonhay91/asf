@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import PageMeta from '../components/PageMeta'
 import { USLUGI_PAGES } from '../constants/services'
+import { serviceMeta } from '../utils/seoMeta'
 
 const SERVICE_META = {
   'asfaltirovanie-dvorov': {
@@ -72,12 +73,26 @@ export default function Service({ onQuoteClick }) {
       .catch(() => {})
   }, [slug])
 
-  if (loading) return <div className="loading">Загрузка...</div>
-  if (error) return (
-    <div className="container" style={{ padding: '60px 20px' }}>
-      <div className="error-box">{error}</div>
-    </div>
-  )
+  const loadingMeta = serviceMeta(slug)
+
+  if (loading) {
+    return (
+      <>
+        {loadingMeta && <PageMeta meta={loadingMeta} />}
+        <div className="loading">Загрузка...</div>
+      </>
+    )
+  }
+  if (error) {
+    return (
+      <>
+        {loadingMeta && <PageMeta meta={loadingMeta} />}
+        <div className="container" style={{ padding: '60px 20px' }}>
+          <div className="error-box">{error}</div>
+        </div>
+      </>
+    )
+  }
 
   const svcMeta = SERVICE_META[slug] || { label: slug, price: '', img: '' }
   const heroImg = data.image_url || svcMeta.img

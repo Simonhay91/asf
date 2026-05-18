@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import PageMeta from '../components/PageMeta'
+import { districtMetaFallback } from '../utils/seoMeta'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=600'
 
@@ -28,12 +29,26 @@ export default function District({ onQuoteClick }) {
       .catch(() => {})
   }, [okrug, slug])
 
-  if (loading) return <div className="loading">Загрузка...</div>
-  if (error) return (
-    <div className="container" style={{ padding: '60px 20px' }}>
-      <div className="error-box">{error}</div>
-    </div>
-  )
+  const fallbackMeta = districtMetaFallback(okrug, slug)
+
+  if (loading) {
+    return (
+      <>
+        <PageMeta meta={fallbackMeta} />
+        <div className="loading">Загрузка...</div>
+      </>
+    )
+  }
+  if (error) {
+    return (
+      <>
+        <PageMeta meta={fallbackMeta} />
+        <div className="container" style={{ padding: '60px 20px' }}>
+          <div className="error-box">{error}</div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>

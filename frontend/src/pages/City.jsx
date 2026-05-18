@@ -4,6 +4,7 @@ import PageMeta from '../components/PageMeta'
 import RegionsWidget from '../components/RegionsWidget'
 import ContentWithImages from '../components/ContentWithImages'
 import { CITIES } from '../constants/cities'
+import { cityMeta } from '../utils/seoMeta'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=1200'
 
@@ -142,19 +143,17 @@ export default function City({ onQuoteClick }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [notFound, setNotFound] = useState(false)
   const [blogs, setBlogs] = useState([])
 
   useEffect(() => {
     setLoading(true)
-    setNotFound(false)
+    setData(null)
     fetch(`/api/page/podmoskovye/${slug}`)
       .then(r => {
-        if (r.status === 404) { setNotFound(true); setLoading(false); return null }
         if (!r.ok) throw new Error('Ошибка загрузки')
         return r.json()
       })
-      .then(d => { if (d) { setData(d); setLoading(false) } })
+      .then(d => { setData(d); setLoading(false) })
       .catch(e => { setError(e.message); setLoading(false) })
 
     fetch('/api/blog/recent?limit=3')
@@ -165,9 +164,20 @@ export default function City({ onQuoteClick }) {
 
   const cityName = CITIES.find(c => c.slug === slug)?.name || slug
 
-  if (loading) return <div className="loading">Загрузка...</div>
-  if (notFound) return (
-    <div className="container" style={{ padding: '80px 20px', maxWidth: '700px' }}>
+  const fallbackMeta = cityMeta(cityName, slug)
+
+  if (loading) {
+    return (
+      <>
+        <PageMeta meta={fallbackMeta} />
+        <div className="loading">Загрузка...</div>
+      </>
+    )
+  }
+  if (data?.placeholder) return (
+    <>
+      <PageMeta meta={data.meta} jsonld={data.jsonld} noindex />
+      <div className="container" style={{ padding: '80px 20px', maxWidth: '700px' }}>
       <div style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
         <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
         {' / '}
@@ -185,13 +195,19 @@ export default function City({ onQuoteClick }) {
         <button onClick={onQuoteClick} className="btn">Получить расчёт бесплатно</button>
         <a href="tel:+79096282800" className="btn btn-outline">+7 909 628 28 00</a>
       </div>
-    </div>
+      </div>
+    </>
   )
-  if (error) return (
-    <div className="container" style={{ padding: '60px 20px' }}>
-      <div className="error-box">{error}</div>
-    </div>
-  )
+  if (error) {
+    return (
+      <>
+        <PageMeta meta={fallbackMeta} />
+        <div className="container" style={{ padding: '60px 20px' }}>
+          <div className="error-box">{error}</div>
+        </div>
+      </>
+    )
+  }
 
   const style = data.style || slugStyle(slug)
   const img = data.image_url || FALLBACK_IMG

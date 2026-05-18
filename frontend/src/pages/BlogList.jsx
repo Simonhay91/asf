@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import PageMeta from '../components/PageMeta'
+import { BLOG_LIST_META } from '../utils/seoMeta'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/302686/pexels-photo-302686.jpeg?auto=compress&cs=tinysrgb&h=400&w=700'
 const PER_PAGE = 12
@@ -29,10 +30,7 @@ export default function BlogList() {
 
   return (
     <>
-      <Helmet>
-        <title>Блог об асфальтировании — РусскийАсфальт</title>
-        <meta name="description" content="Статьи об асфальтировании: цены, технологии, советы по выбору подрядчика. Полезные материалы от профессионалов." />
-      </Helmet>
+      <PageMeta meta={BLOG_LIST_META} />
 
       <section style={{ padding: '48px 0 24px', borderBottom: '1px solid #222' }}>
         <div className="container">

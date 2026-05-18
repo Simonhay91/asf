@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 import RegionsWidget from '../components/RegionsWidget'
 import ContentWithImages from '../components/ContentWithImages'
+import { blogMetaFromSlug } from '../utils/seoMeta'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=1200'
 
@@ -151,12 +152,26 @@ export default function Blog({ onQuoteClick }) {
       .catch(() => {})
   }, [slug])
 
-  if (loading) return <div className="loading">Загрузка...</div>
-  if (error) return (
-    <div className="container" style={{ padding: '60px 20px' }}>
-      <div className="error-box">{error}</div>
-    </div>
-  )
+  const fallbackMeta = blogMetaFromSlug(slug)
+
+  if (loading) {
+    return (
+      <>
+        <PageMeta meta={fallbackMeta} />
+        <div className="loading">Загрузка...</div>
+      </>
+    )
+  }
+  if (error) {
+    return (
+      <>
+        <PageMeta meta={fallbackMeta} />
+        <div className="container" style={{ padding: '60px 20px' }}>
+          <div className="error-box">{error}</div>
+        </div>
+      </>
+    )
+  }
 
   const style = data.style || slugStyle(slug)
   const img = data.image_url || FALLBACK_IMG
