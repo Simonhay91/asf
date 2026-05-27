@@ -32,6 +32,8 @@ export default function App() {
       <main style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home onQuoteClick={openQuote} />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/home/" element={<Navigate to="/" replace />} />
           <Route path="/moskva/" element={<MoscowList />} />
           <Route path="/moskva" element={<TrailingSlashRedirect />} />
           <Route path="/moskva/:okrug/:slug/" element={<District onQuoteClick={openQuote} />} />
