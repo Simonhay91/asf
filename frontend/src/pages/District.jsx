@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
 import PageMeta from '../components/PageMeta'
+import ContentWithImages from '../components/ContentWithImages'
+import { LocationHero, LOCATION_FALLBACK_IMG, slugStyle } from '../components/LocationHero'
 import { districtMetaFallback } from '../utils/seoMeta'
-
-const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=600'
+import { OKRUGS } from '../constants/districts'
 
 export default function District({ onQuoteClick }) {
   const { okrug, slug } = useParams()
@@ -15,6 +15,7 @@ export default function District({ onQuoteClick }) {
 
   useEffect(() => {
     setLoading(true)
+    setData(null)
     fetch(`/api/page/moskva/${okrug}/${slug}`)
       .then(r => {
         if (!r.ok) throw new Error(r.status === 404 ? 'Страница не найдена' : 'Ошибка загрузки')
@@ -30,6 +31,7 @@ export default function District({ onQuoteClick }) {
   }, [okrug, slug])
 
   const fallbackMeta = districtMetaFallback(okrug, slug)
+  const okrugInfo = OKRUGS[okrug]
 
   if (loading) {
     return (
@@ -39,6 +41,7 @@ export default function District({ onQuoteClick }) {
       </>
     )
   }
+
   if (error) {
     return (
       <>
@@ -50,67 +53,143 @@ export default function District({ onQuoteClick }) {
     )
   }
 
+  const style = data.style || slugStyle(slug)
+  const img = data.image_url || LOCATION_FALLBACK_IMG
+  const title = (data.meta?.title || '').split(/[|—]/)[0].trim()
+  const topPadding = style === 4 ? '128px' : '48px'
+  const mapLabel = data.district_name || title
+
   return (
     <>
       <PageMeta meta={data.meta} jsonld={data.jsonld} />
-      <div className="container" style={{ padding: '48px 20px' }}>
-        <div className="prose" style={{ maxWidth: '860px' }}>
-          <ReactMarkdown>{data.content}</ReactMarkdown>
-        </div>
+      <LocationHero style={style} title={title} img={img} badge="Асфальтирование в Москве" />
 
-        <CallBlock onQuoteClick={onQuoteClick} />
+      <div
+        className="container city-layout"
+        style={{
+          padding: `${topPadding} 20px 48px`,
+          display: 'grid',
+          gridTemplateColumns: '1fr 300px',
+          gap: '48px',
+          alignItems: 'start',
+          maxWidth: '1200px',
+        }}
+      >
+        <div>
+          <nav style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
+            <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
+            {' / '}
+            <Link to="/moskva/" style={{ color: 'var(--mid)' }}>Москва</Link>
+            {okrugInfo && (
+              <>
+                {' / '}
+                <span>{okrugInfo.short}</span>
+              </>
+            )}
+            {' / '}
+            <span>{data.district_name || slug}</span>
+          </nav>
 
-        {blogs.length > 0 && (
-          <div style={{ marginTop: '60px', maxWidth: '860px' }}>
-            <h2 style={{ fontWeight: 900, fontSize: '1.6rem', marginBottom: '24px' }}>
-              Полезные статьи об асфальтировании
-            </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(250px,1fr))', gap: '20px' }}>
-              {blogs.map(post => (
-                <Link
-                  key={post.slug}
-                  to={`/blog/${post.slug}`}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <div style={{ background: 'var(--gray)', borderRadius: '8px', overflow: 'hidden', height: '100%' }}>
-                    <div style={{ height: '160px', overflow: 'hidden' }}>
-                      <img
-                        src={post.image_url || FALLBACK_IMG}
-                        alt={post.name || post.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    </div>
-                    <div style={{ padding: '16px' }}>
-                      <p style={{ fontWeight: 700, fontSize: '0.95rem', margin: 0, lineHeight: 1.4 }}>
-                        {post.name || post.title}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div style={{ marginTop: '16px' }}>
-              <Link to="/blog/" style={{ color: 'var(--accent)', fontWeight: 700 }}>
-                Все статьи →
-              </Link>
+          <ContentWithImages
+            content={data.content}
+            img={img}
+            imageUrls={data.image_urls || []}
+            style={style}
+          />
+
+          <CallBlock onQuoteClick={onQuoteClick} districtName={data.district_name} />
+
+          <div style={{ marginTop: '48px' }}>
+            <h2 style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '16px' }}>Район на карте</h2>
+            <div style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid #2a2a2a' }}>
+              <iframe
+                src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(`${mapLabel}, Москва`)}&z=13&lang=ru_RU`}
+                width="100%"
+                height="380"
+                style={{ display: 'block', border: 0 }}
+                title={`Карта — ${mapLabel}`}
+                loading="lazy"
+                allowFullScreen
+              />
             </div>
           </div>
-        )}
+
+          {blogs.length > 0 && (
+            <div style={{ marginTop: '60px' }}>
+              <h2 style={{ fontWeight: 900, fontSize: '1.6rem', marginBottom: '24px' }}>
+                Полезные статьи об асфальтировании
+              </h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(250px,1fr))', gap: '20px' }}>
+                {blogs.map(post => (
+                  <Link key={post.slug} to={`/blog/${post.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <div style={{ background: 'var(--gray)', borderRadius: '8px', overflow: 'hidden', height: '100%' }}>
+                      <div style={{ height: '160px', overflow: 'hidden' }}>
+                        <img
+                          src={post.image_url || LOCATION_FALLBACK_IMG}
+                          alt={post.name || post.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </div>
+                      <div style={{ padding: '16px' }}>
+                        <p style={{ fontWeight: 700, fontSize: '0.95rem', margin: 0, lineHeight: 1.4 }}>
+                          {post.name || post.title}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <Link to="/blog/" style={{ color: 'var(--accent)', fontWeight: 700 }}>
+                  Все статьи →
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <aside>
+          <div style={{ background: 'var(--gray)', border: '1px solid #2a2a2a', borderRadius: '10px', padding: '20px', position: 'sticky', top: '72px' }}>
+            <div style={{ fontWeight: 700, color: 'var(--accent)', marginBottom: '12px' }}>Москва</div>
+            <Link to="/moskva/" style={{ color: 'var(--light)', fontWeight: 600, fontSize: '0.9rem' }}>
+              Все районы Москвы →
+            </Link>
+            {data.image_url && (
+              <div style={{ marginTop: '16px', borderRadius: '8px', overflow: 'hidden', height: '140px' }}>
+                <img
+                  src={data.image_url}
+                  alt={data.district_name || title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+            )}
+          </div>
+        </aside>
       </div>
     </>
   )
 }
 
-function CallBlock({ onQuoteClick }) {
+function CallBlock({ onQuoteClick, districtName }) {
   return (
     <div style={{ background: 'var(--accent)', borderRadius: '8px', padding: '32px', marginTop: '48px', maxWidth: '860px' }}>
       <h3 style={{ color: 'var(--black)', fontWeight: 900, fontSize: '1.4rem', marginBottom: '8px' }}>
-        Готовы рассчитать стоимость?
+        {districtName ? `Расчёт для района ${districtName}` : 'Готовы рассчитать стоимость?'}
       </h3>
       <p style={{ color: '#333', marginBottom: '20px' }}>Замерщик в день обращения — бесплатно</p>
       <button
+        type="button"
         onClick={onQuoteClick}
-        style={{ background: 'var(--black)', color: 'var(--white)', padding: '12px 28px', borderRadius: '4px', fontWeight: 700, cursor: 'pointer', border: 'none', fontSize: '1rem' }}
+        style={{
+          background: 'var(--black)',
+          color: 'var(--white)',
+          padding: '12px 28px',
+          borderRadius: '4px',
+          fontWeight: 700,
+          cursor: 'pointer',
+          border: 'none',
+          fontSize: '1rem',
+        }}
       >
         Получить расчёт
       </button>

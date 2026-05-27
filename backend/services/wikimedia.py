@@ -4,6 +4,9 @@ import httpx
 logger = logging.getLogger(__name__)
 
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
+COMMONS_HEADERS = {
+    "User-Agent": "RusskiyAsfalt/1.0 (https://russkiyasphalt.ru; info@russkiyasphalt.ru)",
+}
 
 # Excluded categories/keywords — avoid logos, coats of arms, maps, flags
 EXCLUDE_KEYWORDS = ("map", "coat", "flag", "logo", "svg", "схема", "герб", "карт", "план")
@@ -18,9 +21,11 @@ async def fetch_wikimedia_image(location_name: str, location_type: str = "distri
 
     if location_type == "district":
         queries = [
+            f"{location_name} Москва",
+            f"район {location_name} Москва",
+            f"{location_name} район Москва",
             f"{slug_latin} Moscow district" if slug_latin else f"{location_name} Moscow district",
             f"{slug_latin} Moscow" if slug_latin else f"{location_name} Moscow",
-            f"{location_name} район Москва",
         ]
     else:
         queries = [
@@ -30,7 +35,7 @@ async def fetch_wikimedia_image(location_name: str, location_type: str = "distri
         ]
 
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
+        async with httpx.AsyncClient(timeout=15, headers=COMMONS_HEADERS) as client:
             for query in queries:
                 resp = await client.get(COMMONS_API, params={
                     "action": "query",

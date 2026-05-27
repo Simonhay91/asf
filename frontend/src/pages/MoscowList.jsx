@@ -14,7 +14,7 @@ const META = {
 const TOTAL = Object.values(DISTRICTS).reduce((s, arr) => s + arr.length, 0)
 
 export default function MoscowList() {
-  const generatedSlugs = useDistrictsStatus()
+  const { done: generatedSlugs, images: districtImages } = useDistrictsStatus()
 
   return (
     <>
@@ -65,42 +65,32 @@ export default function MoscowList() {
               }}>
                 {name} ({short})
               </h2>
-              <div className="region-city-grid" style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-                gap: '10px',
-              }}>
+              <div className="moscow-district-grid">
                 {districts.map(d => {
                   const isDone = generatedSlugs ? generatedSlugs.has(d.slug) : false
-                  const baseStyle = {
-                    background: 'var(--gray)',
-                    borderRadius: '6px',
-                    padding: '12px 16px',
-                    fontSize: '0.93rem',
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '8px',
-                  }
+                  const thumb = districtImages[d.slug]
                   if (isDone) {
                     return (
                       <Link
                         key={d.slug}
                         to={`/moskva/${okrug}/${d.slug}/`}
-                        style={{ ...baseStyle, border: '1px solid #2a2a2a', color: 'var(--light)', textDecoration: 'none' }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a2a2a'; e.currentTarget.style.color = 'var(--light)' }}
+                        className="moscow-district-card moscow-district-card--done"
                       >
-                        <span>{d.name}</span>
-                        <span style={{ opacity: 0.5, fontSize: '0.8rem' }}>→</span>
+                        {thumb ? (
+                          <img src={thumb} alt="" className="moscow-district-card__img" loading="lazy" />
+                        ) : (
+                          <div className="moscow-district-card__img moscow-district-card__img--empty" />
+                        )}
+                        <span className="moscow-district-card__name">{d.name}</span>
+                        <span className="moscow-district-card__arrow">→</span>
                       </Link>
                     )
                   }
                   return (
-                    <span key={d.slug} style={{ ...baseStyle, border: '1px solid #1e1e1e', color: 'var(--mid)', opacity: 0.5, cursor: 'default' }}>
-                      <span>{d.name}</span>
-                      <span style={{ fontSize: '0.7rem' }}>скоро</span>
+                    <span key={d.slug} className="moscow-district-card moscow-district-card--pending">
+                      <div className="moscow-district-card__img moscow-district-card__img--empty" />
+                      <span className="moscow-district-card__name">{d.name}</span>
+                      <span className="moscow-district-card__soon">скоро</span>
                     </span>
                   )
                 })}

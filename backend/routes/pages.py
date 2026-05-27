@@ -55,6 +55,12 @@ async def get_district_page(okrug: str, slug: str):
         "jsonld": jsonld,
         "content": _sanitize_phones(page.get("page_content", "")),
         "generated_at": page.get("generated_at"),
+        "image_url": page.get("image_url"),
+        "image_urls": page.get("image_urls") or [],
+        "style": page.get("style_page", 1),
+        "district_name": district_name,
+        "okrug": okrug,
+        "okrug_name": okrug_name,
     }
 
 
@@ -194,6 +200,17 @@ async def list_districts(status: str = None, limit: int = 50, skip: int = 0):
         query, {"_id": 0}
     ).sort("priority_order", 1).skip(skip).limit(limit).to_list(limit)
     total = await db.moscow_districts.count_documents(query)
+
+    if items:
+        slugs = [i["slug"] for i in items]
+        pages = await db.generated_pages.find(
+            {"slug": {"$in": slugs}, "type": "district"},
+            {"slug": 1, "image_url": 1, "_id": 0},
+        ).to_list(len(slugs))
+        images = {p["slug"]: p.get("image_url") for p in pages if p.get("image_url")}
+        for item in items:
+            item["image_url"] = images.get(item["slug"])
+
     return {"items": items, "total": total}
 
 
