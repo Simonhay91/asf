@@ -176,7 +176,7 @@ export default function City({ onQuoteClick }) {
   }
   if (data?.placeholder) return (
     <>
-      <PageMeta meta={data.meta} jsonld={data.jsonld} noindex />
+      <PageMeta meta={data.meta} jsonld={data.jsonld} />
       <div className="container" style={{ padding: '80px 20px', maxWidth: '700px' }}>
       <div style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
         <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>

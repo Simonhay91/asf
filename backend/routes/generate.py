@@ -3,7 +3,13 @@ from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 
 from backend.models.schemas import GenerateRequest, RegenerateRequest
-from backend.services.generate import generate_next, regenerate_slug, get_status, get_next_queue
+from backend.services.generate import (
+    generate_next,
+    generate_moscow_districts,
+    regenerate_slug,
+    get_status,
+    get_next_queue,
+)
 from backend.services.telegram_service import notify, notify_quote
 
 logger = logging.getLogger(__name__)
@@ -28,12 +34,39 @@ async def submit_quote(req: QuoteRequest):
         raise HTTPException(status_code=500, detail="Failed to send")
 
 
+async def _run_generate_job(location_type: str, count: int) -> None:
+    try:
+        if location_type == "moscow":
+            result = await generate_moscow_districts(count)
+        else:
+            result = await generate_next(location_type)
+        names = [g.get("name", g.get("title", "?")) for g in result.get("generated", [])]
+        if names:
+            await notify(
+                f"✅ Cron /api/generate ({location_type}):\n"
+                + "\n".join(f"  • {n}" for n in names)
+            )
+        else:
+            await notify(f"⚠️ Cron /api/generate ({location_type}): очередь пуста")
+    except Exception as e:
+        logger.error(f"Background generate failed: {e}", exc_info=True)
+        await notify(f"❌ Cron generate: {str(e)[:300]}")
+
+
 @router.post("/generate")
 async def trigger_generate(req: GenerateRequest, background_tasks: BackgroundTasks):
-    """Trigger generation of next pending location."""
+    """Trigger generation. Use background=true for cron-job.org (avoids HTTP timeout)."""
     try:
-        result = await generate_next(req.location_type)
-        return result
+        if req.background:
+            background_tasks.add_task(_run_generate_job, req.location_type, req.count)
+            return {
+                "status": "started",
+                "location_type": req.location_type,
+                "count": req.count if req.location_type == "moscow" else 1,
+            }
+        if req.location_type == "moscow":
+            return await generate_moscow_districts(req.count)
+        return await generate_next(req.location_type)
     except Exception as e:
         logger.error(f"Generate error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))

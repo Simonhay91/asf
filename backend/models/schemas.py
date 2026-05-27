@@ -4,7 +4,9 @@ from pydantic import BaseModel, Field
 
 
 class GenerateRequest(BaseModel):
-    location_type: str = "both"  # "moscow" | "podmoskovye" | "both"
+    location_type: str = "both"  # "moscow" | "podmoskovye" | "both" | "blog" | "uslugi"
+    count: int = Field(default=1, ge=1, le=5, description="For moscow: districts per run (max 5)")
+    background: bool = Field(default=False, description="Run in background (for cron-job.org)")
 
 
 class RegenerateRequest(BaseModel):

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label=" CAA:89AD0;LB">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#1a1510"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <path d="M0 520 L1200 180" stroke="#222" stroke-width="120" stroke-linecap="round"/>
+  <path d="M0 520 L1200 180" stroke="#f5a623" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 24" stroke-dashoffset="12" opacity="0.5"/>
+  <rect x="80" y="80" width="88" height="88" rx="18" fill="#111" stroke="#f5a623" stroke-width="3"/>
+  <text x="124" y="142" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#f5a623"></text>
+  <text x="200" y="130" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="900" fill="#ffffff"> CAA:89</text>
+  <text x="200" y="200" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="900" fill="#f5a623">AD0;LB</text>
+  <text x="200" y="280" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="600" fill="#cccccc">AD0;LB ?>4 :;NG · >A:20 8  · A 2009 3>40</text>
+  <text x="200" y="360" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#ffffff">>B 630 ½/<² · 30@0=B8O 5 ;5B</text>
+  <text x="200" y="420" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="600" fill="#888888">russkiyasphalt.ru</text>
+  <rect x="200" y="480" width="320" height="56" rx="8" fill="#f5a623"/>
+  <text x="360" y="518" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800" fill="#0a0a0a">>;CG8BL @0AGQB 15A?;0B=></text>
+</svg>

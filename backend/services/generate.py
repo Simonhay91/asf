@@ -64,6 +64,21 @@ async def generate_next(location_type: str = "both") -> dict:
     return {"status": "ok", "generated": generated}
 
 
+async def generate_moscow_districts(count: int = 2) -> dict:
+    """Generate up to `count` pending Moscow district pages (SEO priority)."""
+    count = max(1, min(int(count), 5))
+    generated = []
+    for _ in range(count):
+        result = await _process_next_district()
+        if not result:
+            break
+        generated.append(result)
+    if not generated:
+        return {"status": "nothing_pending", "generated": []}
+    await _rebuild_sitemap()
+    return {"status": "ok", "generated": generated, "requested": count}
+
+
 async def generate_cities_by_region(region: str) -> dict:
     """Generate all pending cities in a given region (e.g. 'север', 'запад')."""
     cities = await db.podmoskovye_cities.find(

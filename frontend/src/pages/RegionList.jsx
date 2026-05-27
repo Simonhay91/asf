@@ -10,7 +10,7 @@ const META = {
   'og:title': 'Асфальтирование в Подмосковье — города и районы | РусскийАсфальт',
   'og:description': 'Выполняем асфальтирование во всех городах Московской области. Выберите ваш город и узнайте условия и цены.',
   'og:url': 'https://russkiyasphalt.ru/regiony/',
-  'og:image': 'https://russkiyasphalt.ru/og-image.jpg',
+  'og:image': 'https://russkiyasphalt.ru/og-image.svg',
   'og:type': 'website',
 }
 

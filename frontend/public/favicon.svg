@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label=" CAA:89AD0;LB">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="РусскийАсфальт">
   <rect width="120" height="120" rx="22" fill="#0a0a0a"/>
   <path d="M18 88 L102 32" stroke="#2a2a2a" stroke-width="34" stroke-linecap="round"/>
   <path d="M18 88 L102 32" stroke="#1a1a1a" stroke-width="22" stroke-linecap="round"/>
   <path d="M52 88 L68 32" stroke="#f5a623" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 14" stroke-dashoffset="7"/>
-  <text x="60" y="78" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="900" fill="#f5a623"></text>
+  <text x="60" y="78" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="900" fill="#f5a623">А</text>
 </svg>

@@ -111,11 +111,47 @@ cd frontend && npm run build && cd ..
 pm2 restart russkiyasphalt-backend
 ```
 
-## Cron
+## Cron — Москва ×2, два раза в день
 
-Добавить на cron-job.org:
+**Цель:** 4 района/день (2 района в 09:00 + 2 в 18:00 МСК).
+
+### Вариант A — на сервере (рекомендуется)
+
+```bash
+chmod +x scripts/cron-moscow.sh
+crontab -e
+```
+
+Добавить (если сервер в UTC, 09:00/18:00 МСК = 06:00/15:00 UTC):
+
+```
+0 6,15 * * * /var/www/russkiyasphalt/scripts/cron-moscow.sh >> /var/www/russkiyasphalt/logs/cron-moscow.log 2>&1
+```
+
+Или **supervisord** (постоянный процесс, без crontab):
+
+```bash
+# supervisord.conf → [program:autopost]
+python autopost.py --schedule
+```
+
+### Вариант B — cron-job.org
+
 ```
 POST https://russkiyasphalt.ru/api/generate
-Body: {"location_type": "both"}
-Каждые 8 часов
+Content-Type: application/json
+
+{"location_type": "moscow", "count": 2, "background": true}
+```
+
+Расписание: **09:00 и 18:00** (Europe/Moscow), не `both` и не каждые 8 часов.
+
+`background: true` обязателен — иначе HTTP оборвётся до конца генерации.
+
+### Ручной запуск
+
+```bash
+python autopost.py              # 2 района сейчас
+python autopost.py --count 1    # 1 район
+python autopost.py --schedule   # демон 09:00 + 18:00 МСК
 ```

@@ -4,6 +4,16 @@ import PageMeta from '../components/PageMeta'
 import { HOME_META } from '../utils/seoMeta'
 import { ALL_SERVICES } from '../constants/services'
 import { CITIES } from '../constants/cities'
+import {
+  BRAND_TAGLINE,
+  BRAND_EXPERIENCE,
+  BRAND_WARRANTY,
+  BRAND_PRICE_FROM,
+  BRAND_PHONE_HREF,
+  WHY_PRICE_INTRO,
+  WHY_PRICE_POINTS,
+  WHY_PRICE_COMPARE,
+} from '../constants/brand'
 import { useCitiesStatus } from '../hooks/useCitiesStatus'
 
 const SLIDES = [
@@ -183,21 +193,39 @@ export default function Home({ onQuoteClick }) {
         <div className="container" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
           <div style={{ maxWidth: '600px' }}>
             <div style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '14px' }}>
-              Москва и Подмосковье
+              {BRAND_TAGLINE}
             </div>
             <h1 className="hero-h1" style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 1.15, marginBottom: '18px', color: 'var(--white)', whiteSpace: 'pre-line' }}>
               {slide.title.split('\n').map((line, i) => (
                 <span key={i}>{i === 1 ? <span style={{ color: 'var(--accent)' }}>{line}</span> : line}{i === 0 && <br />}</span>
               ))}
             </h1>
-            <p className="hero-sub" style={{ fontSize: '1.15rem', color: '#ccc', marginBottom: '32px', lineHeight: 1.6 }}>
+            <p className="hero-sub" style={{ fontSize: '1.15rem', color: '#ccc', marginBottom: '20px', lineHeight: 1.6 }}>
               {slide.sub}
             </p>
+            <div className="brand-trust-pills" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '28px' }}>
+              {[BRAND_EXPERIENCE, `Гарантия ${BRAND_WARRANTY}`, `от ${BRAND_PRICE_FROM} ₽/м²`].map(label => (
+                <span
+                  key={label}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(245,166,35,0.35)',
+                    background: 'rgba(245,166,35,0.08)',
+                    color: '#ddd',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
             <div className="hero-btns" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
               <button onClick={onQuoteClick} className="btn" style={{ fontSize: '1rem', padding: '14px 28px' }}>
                 Получить расчёт
               </button>
-              <a href="tel:+79096282800" className="btn btn-outline" style={{ fontSize: '1rem', padding: '14px 28px' }}>
+              <a href={BRAND_PHONE_HREF} className="btn btn-outline" style={{ fontSize: '1rem', padding: '14px 28px' }}>
                 Позвонить
               </a>
               <a
@@ -343,6 +371,53 @@ export default function Home({ onQuoteClick }) {
             <button onClick={onQuoteClick} className="btn">Получить точный расчёт →</button>
             <Link to="/prajs-list/" className="btn btn-outline">Прайс-лист</Link>
           </div>
+
+          <div
+            style={{
+              marginTop: '48px',
+              padding: '32px',
+              background: 'var(--gray)',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+            }}
+          >
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: 'var(--white)', marginBottom: '12px' }}>
+              Почему от {BRAND_PRICE_FROM} ₽/м², а не «от 395 ₽»?
+            </h3>
+            <p style={{ color: 'var(--mid)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '720px' }}>
+              {WHY_PRICE_INTRO}
+            </p>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: '16px',
+                marginBottom: '20px',
+              }}
+            >
+              {WHY_PRICE_POINTS.map(point => (
+                <div
+                  key={point.title}
+                  style={{
+                    padding: '18px',
+                    background: '#1a1a1a',
+                    borderRadius: '8px',
+                    border: '1px solid #333',
+                  }}
+                >
+                  <div style={{ fontWeight: 700, color: 'var(--accent)', marginBottom: '8px', fontSize: '0.95rem' }}>
+                    {point.title}
+                  </div>
+                  <p style={{ color: 'var(--mid)', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>
+                    {point.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p style={{ color: '#999', fontSize: '0.88rem', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>
+              {WHY_PRICE_COMPARE}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -375,7 +450,7 @@ export default function Home({ onQuoteClick }) {
                 О компании
               </div>
               <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--white)', marginBottom: '20px', lineHeight: 1.2 }}>
-                РусскийАсфальт — дорожное строительство под ключ
+                РусскийАсфальт — асфальт под ключ в Москве и Подмосковье
               </h2>
               <p style={{ color: 'var(--mid)', lineHeight: 1.75, marginBottom: '16px', fontSize: '0.95rem' }}>
                 Мы реализуем полный спектр услуг в сфере дорожного строительства на территории Москвы и Московской области: асфальтирование автодорог, пешеходных и велосипедных дорожек, парковок. Выполняем ремонт дорог, благоустройство придомовых участков и детских площадок, укладку бортовых камней.

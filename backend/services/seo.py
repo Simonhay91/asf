@@ -6,7 +6,7 @@ from typing import Optional
 
 SITE_URL = "https://russkiyasphalt.ru"
 SITE_NAME = "РусскийАсфальт"
-DEFAULT_IMAGE = f"{SITE_URL}/og-image.jpg"
+DEFAULT_IMAGE = f"{SITE_URL}/og-image.svg"
 COMPANY_PHONE = os.getenv("COMPANY_PHONE", "")
 COMPANY_EMAIL = os.getenv("COMPANY_EMAIL", "info@russkiyasphalt.ru")
 
@@ -131,13 +131,6 @@ def jsonld_service(
             "price": price_from,
         },
         "url": f"{SITE_URL}{url}",
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "47",
-            "bestRating": "5",
-            "worstRating": "1",
-        },
     }
     if reviews:
         schema["review"] = [_review_to_schema(r) for r in reviews]

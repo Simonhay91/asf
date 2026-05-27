@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { BRAND_PHONE, BRAND_PHONE_HREF } from '../constants/brand'
 
 export default function QuoteModal({ isOpen, onClose, sourceUrl = '' }) {
   const [form, setForm] = useState({ name: '', phone: '', comment: '' })
@@ -120,7 +121,7 @@ export default function QuoteModal({ isOpen, onClose, sourceUrl = '' }) {
 
               {status === 'error' && (
                 <div style={{ color: '#f87171', fontSize: '0.85rem', marginBottom: '16px' }}>
-                  Ошибка отправки. Позвоните нам: <a href="tel:+79096282800" style={{ color: 'var(--accent)' }}>+7 909 628 28 00</a>
+                  Ошибка отправки. Позвоните нам: <a href={BRAND_PHONE_HREF} style={{ color: 'var(--accent)' }}>{BRAND_PHONE}</a>
                 </div>
               )}
 

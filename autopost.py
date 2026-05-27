@@ -1,17 +1,16 @@
 """
-autopost.py — daily content generation scheduler for РусскийАсфальт.
+autopost.py — content generation scheduler for РусскийАсфальт.
 
 Usage:
-    python autopost.py                  # run once now
-    python autopost.py --schedule       # run daily at 09:00 Moscow time
+    python autopost.py                      # once: 2 Moscow districts
+    python autopost.py --count 1            # once: 1 district
+    python autopost.py --schedule           # 09:00 & 18:00 MSK daily, 2× moscow each
+    python autopost.py --blog               # once: blog + 1 moscow (legacy)
 
-The daily run picks content in a balanced round-robin across 3 clusters:
-  Day 1: blog topic  + moscow district
-  Day 2: blog topic  + podmoskovye city
-  Day 3: blog topic  + moscow district
-  ...
+Cron (server, 2× per day at 09:00 and 18:00 MSK):
+    0 6,15 * * * cd /var/www/russkiyasphalt && ./scripts/cron-moscow.sh >> logs/cron-moscow.log 2>&1
 
-Run in background: nohup python autopost.py --schedule >> logs/autopost.log 2>&1 &
+Or use supervisord program [program:autopost] (see supervisord.conf).
 """
 
 import asyncio
@@ -21,11 +20,10 @@ import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-# Make sure project root is on path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from backend.database import init_db
-from backend.services.generate import generate_next, generate_cities_by_region
+from backend.services.generate import generate_next, generate_moscow_districts, generate_cities_by_region
 from backend.services.telegram_service import notify
 
 logging.basicConfig(
@@ -36,59 +34,88 @@ logging.basicConfig(
 logger = logging.getLogger("autopost")
 
 MOSCOW_TZ = timezone(timedelta(hours=3))
-DAILY_HOUR = 9  # 09:00 Moscow time
+# 09:00 and 18:00 Moscow — 2 district generations per run → 4 districts/day
+SCHEDULE_HOURS_MSK = (9, 18)
+MOSCOW_PER_RUN = 2
 
 
-async def run_daily() -> None:
-    """Execute one balanced daily generation run."""
+async def run_moscow_batch(count: int = MOSCOW_PER_RUN) -> None:
+    """Generate `count` Moscow district pages."""
     now = datetime.now(MOSCOW_TZ)
-    # Alternate geo cluster by day-of-year (even → moscow, odd → podmoskovye)
-    geo_type = "moscow" if now.timetuple().tm_yday % 2 == 0 else "podmoskovye"
+    logger.info(f"Moscow batch started: count={count}")
+    await notify(f"🕘 Генерация Москва ×{count} ({now.strftime('%d.%m %H:%M')} МСК)")
 
-    logger.info(f"Daily run started: blog + {geo_type}")
-    await notify(f"🕘 Автопостинг запущен ({now.strftime('%d.%m %H:%M')} МСК)")
+    result = await generate_moscow_districts(count)
+    generated = result.get("generated", [])
+    names = [g.get("name", "?") for g in generated]
 
-    # 1. Blog topic (technical / business / local / problems / inspiration / service_blog / landscaping)
+    if names:
+        await notify("✅ Москва сгенерировано:\n" + "\n".join(f"  • {n}" for n in names))
+        logger.info(f"Moscow done: {names}")
+    else:
+        await notify("⚠️ Москва: нет pending районов в очереди")
+        logger.warning("Moscow: nothing pending")
+
+    logger.info("Moscow batch complete")
+
+
+async def run_daily_legacy() -> None:
+    """Blog + one Moscow district (old behaviour)."""
+    now = datetime.now(MOSCOW_TZ)
+    logger.info("Legacy daily run: blog + moscow")
+    await notify(f"🕘 Автопостинг (blog+москва) ({now.strftime('%d.%m %H:%M')} МСК)")
+
     blog_result = await generate_next("blog")
     blog_names = [g.get("title", g.get("name", "?")) for g in blog_result.get("generated", [])]
-    logger.info(f"Blog: {blog_names}")
 
-    # 2. Geo page (district or city)
-    geo_result = await generate_next(geo_type)
+    geo_result = await generate_next("moscow")
     geo_names = [g.get("name", "?") for g in geo_result.get("generated", [])]
-    logger.info(f"Geo ({geo_type}): {geo_names}")
 
     all_generated = blog_names + geo_names
     if all_generated:
-        await notify(f"✅ Автопостинг завершён:\n" + "\n".join(f"  • {n}" for n in all_generated))
+        await notify("✅ Автопостинг завершён:\n" + "\n".join(f"  • {n}" for n in all_generated))
     else:
         await notify("⚠️ Автопостинг: нет pending элементов в очереди")
 
-    logger.info("Daily run complete")
+
+def _next_run_at(now: datetime) -> datetime:
+    """Next scheduled slot among SCHEDULE_HOURS_MSK today or tomorrow."""
+    candidates = []
+    for hour in SCHEDULE_HOURS_MSK:
+        slot = now.replace(hour=hour, minute=0, second=0, microsecond=0)
+        if slot > now:
+            candidates.append(slot)
+    if candidates:
+        return min(candidates)
+    tomorrow = now + timedelta(days=1)
+    return tomorrow.replace(hour=SCHEDULE_HOURS_MSK[0], minute=0, second=0, microsecond=0)
 
 
 async def schedule_loop() -> None:
-    """Wait until 09:00 Moscow time, then run daily in an infinite loop."""
-    logger.info("Scheduler started — waiting for 09:00 MSK")
+    """Run Moscow ×2 at 09:00 and 18:00 MSK every day."""
+    hours = ", ".join(f"{h:02d}:00" for h in SCHEDULE_HOURS_MSK)
+    logger.info(f"Scheduler started — Moscow ×{MOSCOW_PER_RUN} at {hours} MSK")
+    await notify(f"📅 Автопостинг: Москва ×{MOSCOW_PER_RUN}, {hours} МСК")
+
     while True:
         now = datetime.now(MOSCOW_TZ)
-        next_run = now.replace(hour=DAILY_HOUR, minute=0, second=0, microsecond=0)
-        if now >= next_run:
-            next_run += timedelta(days=1)
+        next_run = _next_run_at(now)
         wait_seconds = (next_run - now).total_seconds()
-        logger.info(f"Next run at {next_run.strftime('%Y-%m-%d %H:%M')} MSK (in {wait_seconds/3600:.1f}h)")
+        logger.info(
+            f"Next run at {next_run.strftime('%Y-%m-%d %H:%M')} MSK "
+            f"(in {wait_seconds / 3600:.1f}h)"
+        )
         await asyncio.sleep(wait_seconds)
         try:
-            await run_daily()
+            await run_moscow_batch(MOSCOW_PER_RUN)
         except Exception as e:
-            logger.error(f"Daily run failed: {e}", exc_info=True)
+            logger.error(f"Scheduled run failed: {e}", exc_info=True)
             await notify(f"❌ Автопостинг: ошибка\n{str(e)[:300]}")
 
 
 async def seed_new_topics() -> None:
     """Insert topics 101-150 from blog_topics.json into MongoDB (upsert)."""
     import json
-    from pathlib import Path
     from backend.database import db
 
     seed_file = Path(__file__).parent / "seed" / "blog_topics.json"
@@ -111,9 +138,20 @@ async def seed_new_topics() -> None:
 
 async def main() -> None:
     parser = argparse.ArgumentParser(description="РусскийАсфальт autopost scheduler")
-    parser.add_argument("--schedule", action="store_true", help="Run on daily schedule at 09:00 MSK")
-    parser.add_argument("--seed", action="store_true", help="Seed new topics (101-150) into MongoDB")
-    parser.add_argument("--region", type=str, help="Generate all pending cities in region (e.g. север, запад)")
+    parser.add_argument(
+        "--schedule",
+        action="store_true",
+        help=f"Daily at {SCHEDULE_HOURS_MSK} MSK, {MOSCOW_PER_RUN} districts per run",
+    )
+    parser.add_argument("--blog", action="store_true", help="Legacy: blog + 1 moscow")
+    parser.add_argument("--seed", action="store_true", help="Seed new topics (101-150)")
+    parser.add_argument("--region", type=str, help="Generate all pending cities in region")
+    parser.add_argument(
+        "--count",
+        type=int,
+        default=MOSCOW_PER_RUN,
+        help=f"Moscow districts per run (default {MOSCOW_PER_RUN})",
+    )
     args = parser.parse_args()
 
     await init_db()
@@ -128,8 +166,10 @@ async def main() -> None:
         print(f"✅ Регион «{args.region}»: {count} городов сгенерировано")
         for g in result.get("generated", []):
             print(f"  • {g.get('name')} → {g.get('page_url')}")
+    elif args.blog:
+        await run_daily_legacy()
     else:
-        await run_daily()
+        await run_moscow_batch(max(1, min(args.count, 5)))
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import BrandLogo from './BrandLogo'
 
 export default function Header({ onQuoteClick }) {
   const [open, setOpen] = useState(false)
@@ -10,9 +11,7 @@ export default function Header({ onQuoteClick }) {
   return (
     <header style={{ background: 'var(--dark)', borderBottom: '2px solid var(--accent)', position: 'sticky', top: 0, zIndex: 200 }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px' }}>
-        <Link to="/" style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--white)', letterSpacing: '-0.5px', textDecoration: 'none', flexShrink: 0 }}>
-          Русский<span style={{ color: 'var(--accent)' }}>Асфальт</span>
-        </Link>
+        <BrandLogo size="md" />
 
         {/* Desktop nav */}
         <nav className="header-nav-desktop" style={{ display: 'flex', gap: '24px', alignItems: 'center', fontSize: '0.9rem' }}>

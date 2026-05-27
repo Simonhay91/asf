@@ -1,6 +1,8 @@
+import { BRAND_NAME } from '../constants/brand'
+
 const SITE_URL = 'https://russkiyasphalt.ru'
-const SITE_NAME = 'РусскийАсфальт'
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`
+const SITE_NAME = BRAND_NAME
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.svg`
 
 function normalizePath(path) {
   if (path.startsWith('http')) return path
@@ -82,8 +84,8 @@ export function districtMetaFallback(okrug, slug) {
 }
 
 export const HOME_META = buildMeta(
-  'Асфальтирование в Москве — от 630 руб/м² | РусскийАсфальт',
-  'Асфальтирование двора частного дома, территорий, парковок в Москве под ключ. Цена от 630 руб/м². Выезд замерщика в день обращения, гарантия 5 лет.',
+  'Асфальтирование в Москве и Подмосковье — от 630 руб/м² | РусскийАсфальт',
+  'Асфальтирование двора, парковок и дорог в Москве и Подмосковье под ключ. Цена от 630 руб/м². Выезд замерщика в день обращения, гарантия 5 лет.',
   '/',
 )
 
