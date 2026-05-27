@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react'
 import { BRAND_PHONE, BRAND_PHONE_HREF } from '../constants/brand'
 
-export default function QuoteModal({ isOpen, onClose, sourceUrl = '' }) {
+export default function QuoteModal({ isOpen, onClose, sourceUrl = '', initialComment = '' }) {
   const [form, setForm] = useState({ name: '', phone: '', comment: '' })
   const [status, setStatus] = useState('idle') // idle | loading | success | error
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
+      setForm({ name: '', phone: '', comment: initialComment })
+      setStatus('idle')
     } else {
       document.body.style.overflow = ''
       setStatus('idle')
       setForm({ name: '', phone: '', comment: '' })
     }
     return () => { document.body.style.overflow = '' }
-  }, [isOpen])
+  }, [isOpen, initialComment])
 
   if (!isOpen) return null
 
@@ -80,14 +82,13 @@ export default function QuoteModal({ isOpen, onClose, sourceUrl = '' }) {
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', color: 'var(--mid)', fontSize: '0.85rem', marginBottom: '6px' }}>
-                  Ваше имя
+                  Ваше имя (необязательно)
                 </label>
                 <input
                   type="text"
                   placeholder="Иван"
                   value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  required
                   style={inputStyle}
                 />
               </div>

@@ -15,6 +15,8 @@ import {
   WHY_PRICE_COMPARE,
 } from '../constants/brand'
 import { useCitiesStatus } from '../hooks/useCitiesStatus'
+import PriceCalculator from '../components/PriceCalculator'
+import { REVIEWS } from '../constants/reviews'
 
 const SLIDES = [
   {
@@ -108,24 +110,6 @@ const PROJECTS = [
   { name: 'Восстановление покрытия Сергиево-Посадского мясокомбината', volume: '4 650 м²', days: '6 дней', address: 'МО, г. Сергиев Посад' },
   { name: 'Асфальтирование территории ООО «АТК-14»', volume: '3 800 м²', days: '5 дней', address: 'МО, г. Воскресенск, Технопарк Федино' },
   { name: 'Дорога с/п Ульянинское, д. Поддубье', volume: '10 000 м²', days: '15 дней', address: 'МО, Раменский р-н, д. Поддубье' },
-]
-
-const REVIEWS = [
-  { name: 'Сергей Михайлович', stars: 5, text: 'Заказывал асфальтирование около своего магазина. Остался доволен работой — всё сделано оперативно и качественно.' },
-  { name: 'Инна Викторовна', stars: 4, text: 'Заказывала укладку асфальта на даче. Специалисты приехали, подготовили площадку, заасфальтировали аккуратно и быстро. Рекомендую!' },
-  { name: 'Татьяна Васильевна', stars: 4.5, text: 'Остановились на асфальтовой крошке для придомовой территории. Обратились в компанию — очень довольны результатом.' },
-  { name: 'Сергей Семенович', stars: 5, text: 'Понравилось, что с оформлением заявки не возникло проблем, специалисты приехали быстро. Приятно, что дали пятилетнюю гарантию.' },
-  { name: 'Виктор Анатольевич', stars: 3, text: 'Нужно было заасфальтировать двор многоэтажки. Специалисты приехали на следующий день после подписания договора, уложились в два дня.' },
-  { name: 'Виталий', stars: 4, text: 'Хочу поблагодарить за укладку асфальта на территории моего предприятия. Стоимость приемлемая, результат — отличный!' },
-]
-
-
-const CALC_TYPES = [
-  { label: 'Асфальтирование 4 см', price: 630 },
-  { label: 'Асфальтирование 5 см', price: 730 },
-  { label: 'Асфальтирование 6 см', price: 850 },
-  { label: 'Ямочный ремонт', price: 1260 },
-  { label: 'Асфальтовая крошка', price: 350 },
 ]
 
 const FAQS = [
@@ -583,7 +567,7 @@ export default function Home({ onQuoteClick }) {
         <div className="container" style={{ maxWidth: '700px' }}>
           <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--white)', marginBottom: '8px' }}>Калькулятор стоимости</h2>
           <p style={{ color: 'var(--mid)', marginBottom: '32px' }}>Рассчитайте примерную стоимость за 30 секунд</p>
-          <Calculator onQuoteClick={onQuoteClick} />
+          <PriceCalculator onQuoteClick={onQuoteClick} />
         </div>
       </section>
 
@@ -739,68 +723,6 @@ function Stars({ rating }) {
         )
       })}
     </span>
-  )
-}
-
-function Calculator({ onQuoteClick }) {
-  const [type, setType] = useState(0)
-  const [area, setArea] = useState('')
-
-  const price = CALC_TYPES[type].price
-  const total = area ? Math.round(parseFloat(area) * price) : null
-
-  return (
-    <div style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '12px', padding: '28px' }}>
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', color: 'var(--mid)', fontSize: '0.85rem', marginBottom: '8px' }}>Вид работ</label>
-        <select
-          value={type}
-          onChange={e => setType(Number(e.target.value))}
-          style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '6px', padding: '10px 14px', color: 'var(--white)', fontSize: '0.95rem', outline: 'none' }}
-        >
-          {CALC_TYPES.map((t, i) => (
-            <option key={i} value={i}>{t.label} — от {t.price} руб/м²</option>
-          ))}
-        </select>
-      </div>
-
-      <div style={{ marginBottom: '24px' }}>
-        <label style={{ display: 'block', color: 'var(--mid)', fontSize: '0.85rem', marginBottom: '8px' }}>Площадь (м²)</label>
-        <input
-          type="number"
-          min="1"
-          placeholder="Например: 200"
-          value={area}
-          onChange={e => setArea(e.target.value)}
-          style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '6px', padding: '10px 14px', color: 'var(--white)', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
-        />
-      </div>
-
-      {total ? (
-        <div style={{ background: 'rgba(245,166,35,0.1)', border: '1px solid rgba(245,166,35,0.3)', borderRadius: '8px', padding: '18px 20px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            <div style={{ color: 'var(--mid)', fontSize: '0.82rem', marginBottom: '4px' }}>Примерная стоимость</div>
-            <div style={{ color: 'var(--accent)', fontSize: '2rem', fontWeight: 900 }}>
-              {total.toLocaleString('ru-RU')} ₽
-            </div>
-            <div style={{ color: 'var(--mid)', fontSize: '0.78rem', marginTop: '4px' }}>
-              {area} м² × {price} руб/м² (без учёта основания)
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div style={{ background: '#111', border: '1px solid #2a2a2a', borderRadius: '8px', padding: '18px 20px', marginBottom: '20px', textAlign: 'center', color: 'var(--mid)', fontSize: '0.9rem' }}>
-          Введите площадь, чтобы увидеть расчёт
-        </div>
-      )}
-
-      <button onClick={onQuoteClick} className="btn" style={{ width: '100%', padding: '13px' }}>
-        Получить точный расчёт бесплатно →
-      </button>
-      <p style={{ color: 'var(--mid)', fontSize: '0.78rem', marginTop: '10px', textAlign: 'center' }}>
-        Калькулятор даёт ориентировочную стоимость. Точная цена — после бесплатного выезда замерщика.
-      </p>
-    </div>
   )
 }
 

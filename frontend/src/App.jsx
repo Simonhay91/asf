@@ -21,9 +21,18 @@ import NotFound from './pages/NotFound'
 
 export default function App() {
   const [quoteOpen, setQuoteOpen] = useState(false)
+  const [quoteComment, setQuoteComment] = useState('')
   const location = useLocation()
 
-  const openQuote = () => setQuoteOpen(true)
+  const openQuote = (comment = '') => {
+    setQuoteComment(typeof comment === 'string' ? comment : '')
+    setQuoteOpen(true)
+  }
+
+  const closeQuote = () => {
+    setQuoteOpen(false)
+    setQuoteComment('')
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -63,8 +72,9 @@ export default function App() {
       <Footer />
       <QuoteModal
         isOpen={quoteOpen}
-        onClose={() => setQuoteOpen(false)}
+        onClose={closeQuote}
         sourceUrl={location.pathname}
+        initialComment={quoteComment}
       />
     </div>
   )

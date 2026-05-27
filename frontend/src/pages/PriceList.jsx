@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import PriceCalculator from '../components/PriceCalculator'
+import PriceInlineQuote from '../components/PriceInlineQuote'
+import WhyPriceBlock from '../components/WhyPriceBlock'
+import PriceReviewsStrip from '../components/PriceReviewsStrip'
+import { BRAND_PHONE, BRAND_PHONE_HREF } from '../constants/brand'
 
 const SECTIONS = [
   {
@@ -105,24 +110,45 @@ function formatPrice(min, max, free) {
   return `${min.toLocaleString('ru')} – ${max.toLocaleString('ru')} ₽`
 }
 
-function PriceRow({ row }) {
+function quoteCommentFor(name) {
+  return `Интересует: ${name} (прайс-лист)`
+}
+
+function PriceRow({ row, onSelect }) {
   const price = formatPrice(row.min, row.max, row.free)
   const isFree = row.free || (row.min === 0 && row.max === 0)
+  const clickable = !isFree && onSelect
+  const className = `price-row${row.highlight ? ' price-row--hot' : ''}${clickable ? ' price-row--clickable' : ''}`
 
-  return (
-    <div className={`price-row${row.highlight ? ' price-row--hot' : ''}`}>
+  const inner = (
+    <>
       <div className="price-row__main">
         <span className="price-row__name">{row.name}</span>
         <span className="price-row__unit">{row.unit}</span>
       </div>
       <span className={`price-row__price${isFree ? ' price-row__price--free' : ''}`}>{price}</span>
-    </div>
+      {clickable && <span className="price-row__action">Расчёт →</span>}
+    </>
+  )
+
+  if (!clickable) {
+    return <div className={className}>{inner}</div>
+  }
+
+  return (
+    <button type="button" className={className} onClick={() => onSelect(row.name)}>
+      {inner}
+    </button>
   )
 }
 
 export default function PriceList({ onQuoteClick }) {
   const [activeId, setActiveId] = useState(SECTIONS[0].id)
   const sectionRefs = useRef({})
+
+  const requestQuote = (comment = '') => {
+    onQuoteClick?.(comment)
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -150,7 +176,6 @@ export default function PriceList({ onQuoteClick }) {
     <>
       <PageMeta meta={META} jsonld={[]} />
 
-      {/* Hero */}
       <section className="price-hero">
         <img src="/photos/work5.jpg" alt="Асфальтирование — прайс-лист" className="price-hero__bg" />
         <div className="price-hero__overlay" />
@@ -167,18 +192,27 @@ export default function PriceList({ onQuoteClick }) {
           <p className="price-hero__sub">
             Москва и Московская область · 2026 · цены с материалом
           </p>
-          <button type="button" className="btn price-hero__cta" onClick={onQuoteClick}>
-            Получить точный расчёт
-          </button>
+          <div className="price-hero__actions">
+            <button type="button" className="btn price-hero__cta" onClick={() => requestQuote()}>
+              Получить точный расчёт
+            </button>
+            <a href={BRAND_PHONE_HREF} className="btn btn-outline price-hero__call">
+              {BRAND_PHONE}
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Featured prices */}
       <section className="price-featured-wrap">
         <div className="container">
           <div className="price-featured-grid">
             {FEATURED.map(f => (
-              <div key={f.label} className={`price-featured-card${f.free ? ' price-featured-card--free' : ''}`}>
+              <button
+                key={f.label}
+                type="button"
+                className={`price-featured-card${f.free ? ' price-featured-card--free' : ''} price-featured-card--btn`}
+                onClick={() => requestQuote(f.free ? 'Нужен бесплатный замер' : quoteCommentFor(f.label))}
+              >
                 <div className="price-featured-card__label">{f.label}</div>
                 <div className="price-featured-card__price">
                   {f.free ? (
@@ -192,13 +226,25 @@ export default function PriceList({ onQuoteClick }) {
                   )}
                 </div>
                 <div className="price-featured-card__desc">{f.desc}</div>
-              </div>
+                <span className="price-featured-card__cta-hint">Заказать расчёт →</span>
+              </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Sticky category nav */}
+      <section className="price-convert-wrap">
+        <div className="container price-convert-grid">
+          <PriceCalculator onQuoteClick={requestQuote} />
+          <PriceInlineQuote sourceUrl="/prajs-list/" />
+        </div>
+      </section>
+
+      <div className="container">
+        <WhyPriceBlock compact />
+        <PriceReviewsStrip />
+      </div>
+
       <nav className="price-nav" aria-label="Разделы прайса">
         <div className="price-nav__scroll">
           {SECTIONS.map(s => (
@@ -229,7 +275,6 @@ export default function PriceList({ onQuoteClick }) {
               <span className="price-section__count">{section.rows.length} поз.</span>
             </header>
 
-            {/* Desktop table */}
             <div className="price-table-wrap">
               <table className="price-table">
                 <thead>
@@ -237,6 +282,7 @@ export default function PriceList({ onQuoteClick }) {
                     <th>Наименование</th>
                     <th>Ед.</th>
                     <th>Цена</th>
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
@@ -244,10 +290,27 @@ export default function PriceList({ onQuoteClick }) {
                     const price = formatPrice(row.min, row.max, row.free)
                     const isFree = row.free || (row.min === 0 && row.max === 0)
                     return (
-                      <tr key={row.name} className={row.highlight ? 'price-table__row--hot' : ''}>
+                      <tr
+                        key={row.name}
+                        className={`${row.highlight ? 'price-table__row--hot' : ''}${!isFree ? ' price-table__row--clickable' : ''}`}
+                        onClick={!isFree ? () => requestQuote(quoteCommentFor(row.name)) : undefined}
+                        role={!isFree ? 'button' : undefined}
+                        tabIndex={!isFree ? 0 : undefined}
+                        onKeyDown={
+                          !isFree
+                            ? e => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault()
+                                  requestQuote(quoteCommentFor(row.name))
+                                }
+                              }
+                            : undefined
+                        }
+                      >
                         <td>{row.name}</td>
                         <td><span className="price-badge">{row.unit}</span></td>
                         <td className={isFree ? 'price-table__free' : ''}>{price}</td>
+                        <td className="price-table__action">{!isFree ? 'Расчёт →' : ''}</td>
                       </tr>
                     )
                   })}
@@ -255,10 +318,9 @@ export default function PriceList({ onQuoteClick }) {
               </table>
             </div>
 
-            {/* Mobile cards */}
             <div className="price-cards">
               {section.rows.map(row => (
-                <PriceRow key={row.name} row={row} />
+                <PriceRow key={row.name} row={row} onSelect={name => requestQuote(quoteCommentFor(name))} />
               ))}
             </div>
           </section>
@@ -267,7 +329,7 @@ export default function PriceList({ onQuoteClick }) {
         <aside className="price-note">
           <strong>Важно:</strong> цены ориентировочные и зависят от площади, основания, удалённости от МКАД и объёма.
           Скидка при объёме от 500 м².{' '}
-          <button type="button" className="price-note__link" onClick={onQuoteClick}>
+          <button type="button" className="price-note__link" onClick={() => requestQuote()}>
             Закажите бесплатный замер
           </button>{' '}
           для точного расчёта.
@@ -288,16 +350,23 @@ export default function PriceList({ onQuoteClick }) {
         <div className="price-cta-block cta-block">
           <h2>Рассчитаем стоимость за 30 минут</h2>
           <p>Замерщик выедет в день обращения — бесплатно</p>
-          <button type="button" className="btn" onClick={onQuoteClick}>
-            Получить расчёт
-          </button>
+          <div className="price-cta-block__actions">
+            <button type="button" className="btn" onClick={() => requestQuote()}>
+              Получить расчёт
+            </button>
+            <a href={BRAND_PHONE_HREF} className="btn btn-outline price-cta-block__call">
+              Позвонить
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Mobile sticky CTA */}
       <div className="price-sticky-cta">
-        <button type="button" className="btn price-sticky-cta__btn" onClick={onQuoteClick}>
-          Бесплатный замер и расчёт
+        <a href={BRAND_PHONE_HREF} className="btn btn-outline price-sticky-cta__call">
+          Позвонить
+        </a>
+        <button type="button" className="btn price-sticky-cta__btn" onClick={() => requestQuote()}>
+          Заявка на расчёт
         </button>
       </div>
     </>
