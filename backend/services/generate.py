@@ -68,15 +68,28 @@ async def generate_moscow_districts(count: int = 2) -> dict:
     """Generate up to `count` pending Moscow district pages (SEO priority)."""
     count = max(1, min(int(count), 5))
     generated = []
+    errors = 0
     for _ in range(count):
-        result = await _process_next_district()
-        if not result:
+        district = await db.moscow_districts.find_one_and_update(
+            {"status": "pending"},
+            {"$set": {"status": "in_progress"}},
+            sort=[("priority_order", 1)],
+            return_document=True,
+        )
+        if not district:
             break
-        generated.append(result)
+        try:
+            result = await _run_district(district)
+            if result:
+                generated.append(result)
+        except Exception as e:
+            errors += 1
+            logger.error(f"Moscow batch item failed ({district.get('name')}): {e}")
     if not generated:
-        return {"status": "nothing_pending", "generated": []}
+        status = "errors" if errors else "nothing_pending"
+        return {"status": status, "generated": [], "errors": errors}
     await _rebuild_sitemap()
-    return {"status": "ok", "generated": generated, "requested": count}
+    return {"status": "ok", "generated": generated, "requested": count, "errors": errors}
 
 
 async def generate_cities_by_region(region: str) -> dict:

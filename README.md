@@ -122,6 +122,8 @@ chmod +x scripts/cron-moscow.sh
 crontab -e
 ```
 
+Cron вызывает **тот же backend**, что и Telegram (`POST /api/generate`), а не отдельный `autopost.py` без PM2-env. Если порт не 8000, в `.env`: `BACKEND_URL=http://127.0.0.1:8001`
+
 Добавить (если сервер в UTC, 09:00/18:00 МСК = 06:00/15:00 UTC):
 
 ```

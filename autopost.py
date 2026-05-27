@@ -20,7 +20,11 @@ import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
+from dotenv import load_dotenv
+
+ROOT = Path(__file__).parent
+sys.path.insert(0, str(ROOT))
+load_dotenv(ROOT / ".env")
 
 from backend.database import init_db
 from backend.services.generate import generate_next, generate_moscow_districts, generate_cities_by_region
