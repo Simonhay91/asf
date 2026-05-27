@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 import { KONTAKTY_META } from '../utils/seoMeta'
+import {
+  BRAND_PHONE,
+  BRAND_PHONE_HREF,
+  BRAND_EMAIL,
+  BRAND_ADDRESS,
+  BRAND_MAP_URL,
+  BRAND_MAP_QUERY,
+  BRAND_HOURS,
+} from '../constants/brand'
 
 export default function Kontakty({ onQuoteClick }) {
   return (
@@ -19,17 +28,42 @@ export default function Kontakty({ onQuoteClick }) {
         </p>
         <div style={{ display: 'grid', gap: '20px', marginBottom: '36px' }}>
           <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '24px' }}>
+            <div style={{ fontWeight: 700, marginBottom: '8px', color: 'var(--accent)' }}>Адрес</div>
+            <p style={{ margin: '0 0 12px', color: 'var(--light)', lineHeight: 1.6 }}>{BRAND_ADDRESS}</p>
+            <a href={BRAND_MAP_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>
+              Открыть на Яндекс.Картах →
+            </a>
+          </div>
+          <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '24px' }}>
             <div style={{ fontWeight: 700, marginBottom: '8px', color: 'var(--accent)' }}>Телефон</div>
-            <a href="tel:+79096282800" style={{ fontSize: '1.25rem', fontWeight: 700 }}>+7 909 628 28 00</a>
+            <a href={BRAND_PHONE_HREF} style={{ fontSize: '1.25rem', fontWeight: 700 }}>{BRAND_PHONE}</a>
           </div>
           <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '24px' }}>
             <div style={{ fontWeight: 700, marginBottom: '8px', color: 'var(--accent)' }}>Email</div>
-            <a href="mailto:info@russkiyasphalt.ru">info@russkiyasphalt.ru</a>
+            <a href={`mailto:${BRAND_EMAIL}`}>{BRAND_EMAIL}</a>
           </div>
           <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '24px' }}>
             <div style={{ fontWeight: 700, marginBottom: '8px', color: 'var(--accent)' }}>Режим работы</div>
-            <p style={{ margin: 0, color: 'var(--light)' }}>Понедельник — воскресенье: 08:00–20:00</p>
+            <p style={{ margin: 0, color: 'var(--light)' }}>{BRAND_HOURS}</p>
           </div>
+        </div>
+        <div
+          style={{
+            borderRadius: '8px',
+            overflow: 'hidden',
+            marginBottom: '36px',
+            border: '1px solid var(--gray)',
+            height: '320px',
+          }}
+        >
+          <iframe
+            title="Офис на карте"
+            src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(BRAND_MAP_QUERY)}&z=16&lang=ru_RU`}
+            width="100%"
+            height="100%"
+            style={{ border: 0, display: 'block' }}
+            loading="lazy"
+          />
         </div>
         <button type="button" onClick={onQuoteClick} className="btn">
           Получить расчёт бесплатно

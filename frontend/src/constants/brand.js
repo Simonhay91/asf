@@ -10,6 +10,14 @@ export const BRAND_PHONE_HREF = 'tel:+79096282800'
 export const BRAND_EMAIL = 'info@russkiyasphalt.ru'
 export const BRAND_YEAR = 2026
 
+export const BRAND_ADDRESS =
+  'Москва, Мясницкая улица, 41, стр. 5 (м. «Красные Ворота»)'
+export const BRAND_ADDRESS_LINE1 = 'Москва, ул. Мясницкая, 41, стр. 5'
+export const BRAND_METRO = 'м. «Красные Ворота»'
+export const BRAND_MAP_QUERY = 'Москва, Мясницкая улица, 41, стр. 5'
+export const BRAND_MAP_URL = `https://yandex.ru/maps/?text=${encodeURIComponent(BRAND_MAP_QUERY)}&z=17&lang=ru_RU`
+export const BRAND_HOURS = 'Пн–Вс: 08:00–20:00'
+
 /** Почему цена от 630 ₽/м² — не «дешёвый асфальт», а под ключ */
 export const WHY_PRICE_INTRO =
   'На рынке Москвы и МО часто встречается «от 350–450 ₽/м²». Мы работаем от 630 ₽/м² — потому что в смету сразу входит полный цикл под ключ, а не только укладка верхнего слоя.'

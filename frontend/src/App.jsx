@@ -17,8 +17,7 @@ import RegionList from './pages/RegionList'
 import MoscowList from './pages/MoscowList'
 import Kontakty from './pages/Kontakty'
 import About from './pages/About'
-import PageMeta from './components/PageMeta'
-import { NOT_FOUND_META } from './utils/seoMeta'
+import NotFound from './pages/NotFound'
 
 export default function App() {
   const [quoteOpen, setQuoteOpen] = useState(false)
@@ -71,15 +70,3 @@ export default function App() {
   )
 }
 
-function NotFound() {
-  return (
-    <>
-      <PageMeta meta={NOT_FOUND_META} noindex />
-      <div className="container" style={{ padding: '80px 20px', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '4rem', color: 'var(--accent)' }}>404</h1>
-        <p style={{ marginTop: '1rem', color: 'var(--mid)' }}>Страница не найдена</p>
-        <a href="/" className="btn" style={{ marginTop: '2rem', display: 'inline-block' }}>На главную</a>
-      </div>
-    </>
-  )
-}

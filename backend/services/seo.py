@@ -101,7 +101,12 @@ def jsonld_organization() -> dict:
         "url": SITE_URL,
         "email": COMPANY_EMAIL,
         "description": "Асфальтирование в Москве и Подмосковье под ключ. 15 лет опыта, гарантия 5 лет.",
-        "address": {"@type": "PostalAddress", "addressLocality": "Москва", "addressCountry": "RU"},
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ул. Мясницкая, д. 41, стр. 5",
+            "addressLocality": "Москва",
+            "addressCountry": "RU",
+        },
         "areaServed": {"@type": "AdministrativeArea", "name": "Москва и Московская область"},
         "priceRange": "от 630 руб/м²",
         "openingHours": "Mo-Su 08:00-20:00",

@@ -8,6 +8,10 @@ import {
   BRAND_PHONE,
   BRAND_PHONE_HREF,
   BRAND_EMAIL,
+  BRAND_ADDRESS_LINE1,
+  BRAND_METRO,
+  BRAND_HOURS,
+  BRAND_MAP_URL,
 } from '../constants/brand'
 
 export default function Footer() {
@@ -35,10 +39,15 @@ export default function Footer() {
         </div>
         <div>
           <div style={{ fontWeight: 700, marginBottom: '12px', color: 'var(--accent)' }}>Контакты</div>
-          <p style={{ color: 'var(--mid)', lineHeight: 2 }}>
+          <p style={{ color: 'var(--mid)', lineHeight: 1.9 }}>
             <a href={BRAND_PHONE_HREF}>{BRAND_PHONE}</a><br />
             <a href={`mailto:${BRAND_EMAIL}`}>{BRAND_EMAIL}</a><br />
-            Пн–Вс: 08:00–20:00
+            {BRAND_ADDRESS_LINE1}<br />
+            {BRAND_METRO}<br />
+            <a href={BRAND_MAP_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem' }}>
+              Яндекс.Карты
+            </a><br />
+            {BRAND_HOURS}
           </p>
         </div>
       </div>
