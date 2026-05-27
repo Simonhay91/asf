@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label=" CAA:89AD0;LB">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="RusskiyAsfalt">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0a0a0a"/>
@@ -6,15 +7,15 @@
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <path d="M0 520 L1200 180" stroke="#222" stroke-width="120" stroke-linecap="round"/>
+  <path d="M0 520 L1200 180" stroke="#222222" stroke-width="120" stroke-linecap="round"/>
   <path d="M0 520 L1200 180" stroke="#f5a623" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 24" stroke-dashoffset="12" opacity="0.5"/>
-  <rect x="80" y="80" width="88" height="88" rx="18" fill="#111" stroke="#f5a623" stroke-width="3"/>
-  <text x="124" y="142" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#f5a623"></text>
-  <text x="200" y="130" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="900" fill="#ffffff"> CAA:89</text>
-  <text x="200" y="200" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="900" fill="#f5a623">AD0;LB</text>
-  <text x="200" y="280" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="600" fill="#cccccc">AD0;LB ?>4 :;NG · >A:20 8  · A 2009 3>40</text>
-  <text x="200" y="360" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#ffffff">>B 630 ½/<² · 30@0=B8O 5 ;5B</text>
+  <rect x="80" y="80" width="88" height="88" rx="18" fill="#111111" stroke="#f5a623" stroke-width="3"/>
+  <text x="124" y="142" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#f5a623">&#1040;</text>
+  <text x="200" y="130" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="900" fill="#ffffff">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</text>
+  <text x="200" y="200" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="900" fill="#f5a623">&#1040;&#1089;&#1092;&#1072;&#1083;&#1100;&#1090;</text>
+  <text x="200" y="280" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="600" fill="#cccccc">&#1040;&#1089;&#1092;&#1072;&#1083;&#1090; &#1087;&#1086;&#1076; &#1082;&#1083;&#1102;&#1095; &#183; &#1052;&#1086;&#1089;&#1082;&#1074;&#1072; &#1080; &#1052;&#1054; &#183; &#1089; 2009 &#1075;&#1086;&#1076;&#1072;</text>
+  <text x="200" y="360" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#ffffff">&#1086;&#1090; 630 &#8381;/&#1084;&#178; &#183; &#1075;&#1072;&#1088;&#1072;&#1085;&#1090;&#1080;&#1103; 5 &#1083;&#1077;&#1090;</text>
   <text x="200" y="420" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="600" fill="#888888">russkiyasphalt.ru</text>
   <rect x="200" y="480" width="320" height="56" rx="8" fill="#f5a623"/>
-  <text x="360" y="518" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800" fill="#0a0a0a">>;CG8BL @0AGQB 15A?;0B=></text>
+  <text x="360" y="518" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800" fill="#0a0a0a">&#1055;&#1086;&#1083;&#1091;&#1095;&#1080;&#1090;&#1100; &#1088;&#1072;&#1089;&#1095;&#1105;&#1090; &#1073;&#1077;&#1089;&#1087;&#1083;&#1072;&#1090;&#1085;&#1086;</text>
 </svg>
