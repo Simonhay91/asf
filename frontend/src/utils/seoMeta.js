@@ -77,7 +77,7 @@ export const ABOUT_META = buildMeta(
 )
 
 export function okrugMeta(okrugName, okrugShort, okrugSlug, districtCount) {
-  const title = `Асфальтирование в ${okrugName} — от 630 руб/м² | ${SITE_NAME}`
+  const title = `Асфальтирование в ${okrugShort} — от 630 руб/м² | ${SITE_NAME}`
   const description =
     `Асфальтирование дворов, площадок и парковок в ${okrugName} (${okrugShort}). ` +
     `${districtCount} районов, выезд замерщика в день обращения, цены от 630 руб/м² под ключ.`

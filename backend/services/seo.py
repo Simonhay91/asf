@@ -66,7 +66,8 @@ MOSCOW_OKRUGS: dict[str, tuple[str, str, int]] = {
 
 
 def okrug_meta(okrug_name: str, okrug_short: str, okrug_slug: str, district_count: int) -> dict:
-    title = f"Асфальтирование в {okrug_name} — от 630 руб/м² | {SITE_NAME}"
+    # Title: «в ЮВАО» — грамматически корректно; полное название — в description
+    title = f"Асфальтирование в {okrug_short} — от 630 руб/м² | {SITE_NAME}"
     description = (
         f"Асфальтирование дворов, площадок и парковок в {okrug_name} ({okrug_short}). "
         f"{district_count} районов, выезд замерщика в день обращения, цены от 630 руб/м² под ключ."
