@@ -2,9 +2,9 @@ import logging
 import os
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -70,3 +70,18 @@ async def sitemap():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/__spa", response_class=HTMLResponse, include_in_schema=False)
+async def spa_shell(path: str = Query("/", description="Original request path")):
+    """Serve SPA shell with unique meta tags (nginx @spa fallback)."""
+    from backend.services.spa_meta import render_spa_html
+
+    try:
+        html = await render_spa_html(path)
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=503, detail=str(e)) from e
+    return HTMLResponse(
+        html,
+        headers={"Cache-Control": "public, max-age=300"},
+    )

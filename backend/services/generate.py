@@ -543,3 +543,11 @@ async def _rebuild_sitemap() -> None:
         logger.info("Sitemap rebuilt")
     except Exception as e:
         logger.error(f"Sitemap rebuild failed: {e}", exc_info=True)
+
+    try:
+        from backend.services.spa_meta import rebuild_spa_meta_html
+
+        await rebuild_spa_meta_html()
+    except Exception as e:
+        logger.warning(f"SPA meta HTML rebuild skipped: {e}")
+

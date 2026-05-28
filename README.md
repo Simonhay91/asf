@@ -106,9 +106,39 @@ COMPANY_EMAIL=info@russkiyasphalt.ru
 ## Deploy (сервер: /var/www/russkiyasphalt)
 
 ```bash
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh
+```
+
+Или вручную:
+
+```bash
 cd /var/www/russkiyasphalt && git pull origin main
 cd frontend && npm run build && cd ..
+./venv/bin/python scripts/generate_spa_meta_html.py
 pm2 restart russkiyasphalt-backend
+```
+
+### Уникальные title для Yandex (обязательно один раз)
+
+Nginx должен отдавать HTML через backend, иначе bot видит один `<title>` на все URL.
+
+```bash
+# Проверить текущий конфиг
+grep -A3 "location /" /etc/nginx/sites-enabled/russkiyasphalt
+
+# Скопировать пример (или добавить location @spa вручную)
+sudo cp deploy/nginx-russkiyasphalt.conf /etc/nginx/sites-available/russkiyasphalt
+sudo ln -sf /etc/nginx/sites-available/russkiyasphalt /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+Проверка:
+
+```bash
+curl -s "http://127.0.0.1:8000/__spa?path=/kontakty/" | grep title
+curl -s https://russkiyasphalt.ru/kontakty/ | grep title
+# Ожидается: Контакты — РусскийАсфальт
 ```
 
 ## Cron — Москва ×2, два раза в день
