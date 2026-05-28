@@ -63,7 +63,9 @@ export default function MoscowList() {
                 paddingBottom: '10px', borderBottom: '2px solid var(--accent)',
                 display: 'inline-block', color: 'var(--white)',
               }}>
-                {name} ({short})
+                <Link to={`/moskva/${okrug}/`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {name} ({short})
+                </Link>
               </h2>
               <div className="moscow-district-grid">
                 {districts.map(d => {

@@ -15,6 +15,7 @@ import ServiceList from './pages/ServiceList'
 import PriceList from './pages/PriceList'
 import RegionList from './pages/RegionList'
 import MoscowList from './pages/MoscowList'
+import MoscowOkrug from './pages/MoscowOkrug'
 import Kontakty from './pages/Kontakty'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
@@ -44,6 +45,8 @@ export default function App() {
           <Route path="/home/" element={<Navigate to="/" replace />} />
           <Route path="/moskva/" element={<MoscowList />} />
           <Route path="/moskva" element={<TrailingSlashRedirect />} />
+          <Route path="/moskva/:okrug/" element={<MoscowOkrug onQuoteClick={openQuote} />} />
+          <Route path="/moskva/:okrug" element={<TrailingSlashRedirect />} />
           <Route path="/moskva/:okrug/:slug/" element={<District onQuoteClick={openQuote} />} />
           <Route path="/moskva/:okrug/:slug" element={<TrailingSlashRedirect />} />
           <Route path="/podmoskovye/:slug/" element={<City onQuoteClick={openQuote} />} />

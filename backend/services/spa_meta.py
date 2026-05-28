@@ -10,11 +10,13 @@ from pathlib import Path
 from backend.database import db
 from backend.services.seo import (
     HOME_META,
+    MOSCOW_OKRUGS,
     STATIC_PAGE_META,
     blog_meta,
     city_meta,
     district_meta,
     normalize_path,
+    okrug_meta,
     service_meta,
 )
 
@@ -123,6 +125,12 @@ async def resolve_meta_for_path(path: str) -> dict:
         okrug_name = (district or {}).get("okrug_name") or okrug
         return district_meta(name, okrug_name, okrug, slug)
 
+    if m := re.match(r"^/moskva/([^/]+)/$", path):
+        okrug_slug = m.group(1)
+        if okrug_slug in MOSCOW_OKRUGS:
+            okrug_name, okrug_short, count = MOSCOW_OKRUGS[okrug_slug]
+            return okrug_meta(okrug_name, okrug_short, okrug_slug, count)
+
     if m := re.match(r"^/blog/([^/]+)/$", path):
         slug = m.group(1)
         page = await db.generated_pages.find_one(
@@ -162,6 +170,9 @@ async def collect_all_paths_with_meta() -> list[tuple[str, dict]]:
 
     for path, meta in STATIC_PAGE_META.items():
         add(path, meta)
+
+    for okrug_slug, (okrug_name, okrug_short, count) in MOSCOW_OKRUGS.items():
+        add(f"/moskva/{okrug_slug}/", okrug_meta(okrug_name, okrug_short, okrug_slug, count))
 
     for slug, svc in SERVICE_PAGES.items():
         add(f"/uslugi/{slug}/", service_meta(svc["name"], slug, svc["price_from"]))

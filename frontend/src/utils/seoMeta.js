@@ -76,10 +76,21 @@ export const ABOUT_META = buildMeta(
   '/o-kompanii/',
 )
 
-export function districtMetaFallback(okrug, slug) {
-  const title = `Асфальтирование в Москве — от 630 руб/м² | ${SITE_NAME}`
+export function okrugMeta(okrugName, okrugShort, okrugSlug, districtCount) {
+  const title = `Асфальтирование в ${okrugName} — от 630 руб/м² | ${SITE_NAME}`
   const description =
-    'Асфальтирование в Москве под ключ. Выезд замерщика в день обращения, гарантия 5 лет. Цены от 630 руб/м².'
+    `Асфальтирование дворов, площадок и парковок в ${okrugName} (${okrugShort}). ` +
+    `${districtCount} районов, выезд замерщика в день обращения, цены от 630 руб/м² под ключ.`
+  return buildMeta(title, description, `/moskva/${okrugSlug}/`)
+}
+
+export function districtMetaFallback(okrug, slug, districtName, okrugShort) {
+  const place = districtName || 'районе Москвы'
+  const ao = okrugShort ? ` (${okrugShort})` : ''
+  const title = `Асфальтирование в ${place}${ao} — от 630 руб/м² | ${SITE_NAME}`
+  const description =
+    `Асфальтирование в ${place} под ключ: дворы, площадки, парковки. ` +
+    'Выезд замерщика в день обращения, гарантия 5 лет, от 630 руб/м².'
   return buildMeta(title, description, `/moskva/${okrug}/${slug}/`)
 }
 

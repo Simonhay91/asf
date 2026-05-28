@@ -50,6 +50,30 @@ def build_meta(title: str, description: str, url: str, image: str = DEFAULT_IMAG
     }
 
 
+# Moscow administrative okrugs (slug → full name, short label, district count)
+MOSCOW_OKRUGS: dict[str, tuple[str, str, int]] = {
+    "czao": ("Центральный административный округ", "ЦАО", 11),
+    "sao": ("Северный административный округ", "САО", 15),
+    "svao": ("Северо-Восточный административный округ", "СВАО", 16),
+    "vao": ("Восточный административный округ", "ВАО", 16),
+    "uvao": ("Юго-Восточный административный округ", "ЮВАО", 12),
+    "yuao": ("Южный административный округ", "ЮАО", 13),
+    "yuzsao": ("Юго-Западный административный округ", "ЮЗАО", 13),
+    "zao": ("Западный административный округ", "ЗАО", 13),
+    "szao": ("Северо-Западный административный округ", "СЗАО", 8),
+    "zelenogradskij": ("Зеленоградский административный округ", "ЗелАО", 7),
+}
+
+
+def okrug_meta(okrug_name: str, okrug_short: str, okrug_slug: str, district_count: int) -> dict:
+    title = f"Асфальтирование в {okrug_name} — от 630 руб/м² | {SITE_NAME}"
+    description = (
+        f"Асфальтирование дворов, площадок и парковок в {okrug_name} ({okrug_short}). "
+        f"{district_count} районов, выезд замерщика в день обращения, цены от 630 руб/м² под ключ."
+    )
+    return build_meta(title, description, f"/moskva/{okrug_slug}/")
+
+
 def district_meta(district_name: str, okrug_name: str, okrug: str, slug: str) -> dict:
     if not slug or not okrug:
         raise ValueError(f"district_meta: empty slug or okrug")
@@ -143,9 +167,9 @@ SERVICE_LIST_META = build_meta(
 )
 
 PRICE_LIST_META = build_meta(
-    "Прайс-лист на асфальтирование в Москве 2026 | от 630 ₽/м² | РусскийАсфальт",
-    "Прайс на асфальтирование в Москве: дворы и парковки от 630 ₽/м², ямочный ремонт от 1 200 ₽/м², "
-    "крошка от 350 ₽/м². Цены с материалом. Замер бесплатно.",
+    "Цена асфальтирования площадки и двора в Москве — прайс от 630 ₽/м² | РусскийАсфальт",
+    "Прайс на асфальтирование площадки, двора и территории под ключ в Москве: от 630 ₽/м² с материалом. "
+    "Парковки, стоянки, ямочный ремонт от 1 200 ₽/м². Замер бесплатно.",
     "/prajs-list/",
 )
 
@@ -264,9 +288,17 @@ def jsonld_article(title: str, description: str, url: str, published: datetime) 
 
 # ─── SITEMAP ───
 
+def moscow_okrug_static_urls() -> list[tuple[str, str, str]]:
+    return [
+        (f"/moskva/{slug}/", "0.85", "weekly")
+        for slug in MOSCOW_OKRUGS
+    ]
+
+
 STATIC_URLS = [
     ("/", "1.0", "weekly"),
     ("/moskva/", "0.9", "weekly"),
+    *moscow_okrug_static_urls(),
     ("/regiony/", "0.8", "weekly"),
     ("/blog/", "0.7", "weekly"),
     ("/uslugi/", "0.8", "weekly"),

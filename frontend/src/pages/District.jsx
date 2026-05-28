@@ -4,7 +4,7 @@ import PageMeta from '../components/PageMeta'
 import ContentWithImages from '../components/ContentWithImages'
 import { LocationHero, LOCATION_FALLBACK_IMG, slugStyle } from '../components/LocationHero'
 import { districtMetaFallback } from '../utils/seoMeta'
-import { OKRUGS } from '../constants/districts'
+import { DISTRICTS, OKRUGS } from '../constants/districts'
 
 export default function District({ onQuoteClick }) {
   const { okrug, slug } = useParams()
@@ -30,8 +30,14 @@ export default function District({ onQuoteClick }) {
       .catch(() => {})
   }, [okrug, slug])
 
-  const fallbackMeta = districtMetaFallback(okrug, slug)
+  const districtRow = DISTRICTS[okrug]?.find(d => d.slug === slug)
   const okrugInfo = OKRUGS[okrug]
+  const fallbackMeta = districtMetaFallback(
+    okrug,
+    slug,
+    districtRow?.name,
+    okrugInfo?.short,
+  )
 
   if (loading) {
     return (
@@ -83,7 +89,9 @@ export default function District({ onQuoteClick }) {
             {okrugInfo && (
               <>
                 {' / '}
-                <span>{okrugInfo.short}</span>
+                <Link to={`/moskva/${okrug}/`} style={{ color: 'var(--mid)' }}>
+                  {okrugInfo.short}
+                </Link>
               </>
             )}
             {' / '}
