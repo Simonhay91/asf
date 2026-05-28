@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import SiteSidebarNav from '../components/SiteSidebarNav'
 import RegionsWidget from '../components/RegionsWidget'
 import ContentWithImages from '../components/ContentWithImages'
 import { blogMetaFromSlug } from '../utils/seoMeta'
@@ -185,8 +187,15 @@ export default function Blog({ onQuoteClick }) {
       <PageMeta meta={data.meta} jsonld={data.jsonld} />
       <HeroComponent title={title} img={img} date={date} />
 
-      <div className="container blog-layout" style={{ padding: `${topPadding} 20px 48px`, display: 'grid', gridTemplateColumns: '1fr 300px', gap: '48px', alignItems: 'start', maxWidth: '1200px' }}>
+      <div className="container blog-layout" style={{ padding: `${topPadding} 20px 48px`, display: 'grid', gridTemplateColumns: '1fr 280px', gap: '40px', alignItems: 'start', maxWidth: '1200px' }}>
         <div>
+          <SiteBreadcrumbs
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Блог', to: '/blog/' },
+              { label: title },
+            ]}
+          />
           {/* Show date inside content only for styles without hero date */}
           {[1, 3, 4].includes(style) && date && (
             <div style={{ color: 'var(--mid)', fontSize: '0.85rem', marginBottom: '24px' }}>
@@ -203,9 +212,9 @@ export default function Blog({ onQuoteClick }) {
           </div>
         </div>
 
-        <aside>
+        <SiteSidebarNav onQuoteClick={onQuoteClick}>
           {related.length > 0 && (
-            <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '20px', marginBottom: '24px' }}>
+            <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '20px', marginBottom: '24px', border: '1px solid #2a2a2a' }}>
               <h3 style={{ fontWeight: 900, fontSize: '1.05rem', marginBottom: '16px', marginTop: 0 }}>Похожие статьи</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {related.map(post => (
@@ -231,7 +240,7 @@ export default function Blog({ onQuoteClick }) {
             </div>
           )}
           <RegionsWidget />
-        </aside>
+        </SiteSidebarNav>
       </div>
     </>
   )

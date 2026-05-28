@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import PageLayout from '../components/PageLayout'
 import { ALL_SERVICES } from '../constants/services'
 
 const STATIC_META = {
@@ -32,11 +34,13 @@ export default function ServiceList({ onQuoteClick }) {
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,10,10,0.92) 55%, rgba(10,10,10,0.5) 100%)' }} />
         <div className="container" style={{ position: 'relative', zIndex: 2, padding: '56px 20px 52px' }}>
-          <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.45)', marginBottom: '14px' }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.45)' }}>Главная</Link>
-            {' / '}
-            <span style={{ color: 'rgba(255,255,255,0.7)' }}>Услуги</span>
-          </div>
+          <SiteBreadcrumbs
+            className="site-breadcrumbs--on-dark"
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Услуги' },
+            ]}
+          />
           <h1 style={{ fontWeight: 900, fontSize: 'clamp(1.7rem, 4vw, 2.6rem)', color: 'var(--white)', marginBottom: '14px', lineHeight: 1.15, maxWidth: '580px' }}>
             Услуги асфальтирования<br />
             <span style={{ color: 'var(--accent)' }}>в Москве и МО</span>
@@ -55,8 +59,7 @@ export default function ServiceList({ onQuoteClick }) {
         </div>
       </div>
 
-      {/* ── Services grid ── */}
-      <div className="container" style={{ padding: '52px 20px 64px' }}>
+      <PageLayout onQuoteClick={onQuoteClick} topPadding="32px">
         <div className="uslugi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '56px' }}>
           {ALL_SERVICES.map(s => (
             <Link
@@ -132,7 +135,7 @@ export default function ServiceList({ onQuoteClick }) {
             </a>
           </div>
         </div>
-      </div>
+      </PageLayout>
     </>
   )
 }

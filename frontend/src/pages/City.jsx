@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 import RegionsWidget from '../components/RegionsWidget'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import SiteSidebarNav from '../components/SiteSidebarNav'
+import PageLayout from '../components/PageLayout'
 import ContentWithImages from '../components/ContentWithImages'
 import { CITIES } from '../constants/cities'
 import { cityMeta } from '../utils/seoMeta'
@@ -163,6 +166,11 @@ export default function City({ onQuoteClick }) {
   }, [slug])
 
   const cityName = CITIES.find(c => c.slug === slug)?.name || slug
+  const breadcrumbItems = [
+    { label: 'Главная', to: '/' },
+    { label: 'Подмосковье', to: '/regiony/' },
+    { label: cityName },
+  ]
 
   const fallbackMeta = cityMeta(cityName, slug)
 
@@ -177,25 +185,23 @@ export default function City({ onQuoteClick }) {
   if (data?.placeholder) return (
     <>
       <PageMeta meta={data.meta} jsonld={data.jsonld} />
-      <div className="container" style={{ padding: '80px 20px', maxWidth: '700px' }}>
-      <div style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
-        <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-        {' / '}
-        <Link to="/regiony/" style={{ color: 'var(--mid)' }}>Подмосковье</Link>
-        {' / '}
-        <span>{cityName}</span>
-      </div>
-      <h1 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '16px' }}>
-        Асфальтирование в {cityName}
-      </h1>
-      <p style={{ color: 'var(--mid)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '28px' }}>
-        Мы уже работаем в {cityName}. Страница с ценами и условиями скоро появится — оставьте заявку прямо сейчас, замерщик приедет бесплатно.
-      </p>
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        <button onClick={onQuoteClick} className="btn">Получить расчёт бесплатно</button>
-        <a href="tel:+79096282800" className="btn btn-outline">+7 909 628 28 00</a>
-      </div>
-      </div>
+      <PageLayout
+        onQuoteClick={onQuoteClick}
+        topPadding="48px"
+        breadcrumbs={breadcrumbItems}
+        sidebarExtra={<RegionsWidget />}
+      >
+        <h1 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '16px' }}>
+          Асфальтирование в {cityName}
+        </h1>
+        <p style={{ color: 'var(--mid)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '28px' }}>
+          Мы уже работаем в {cityName}. Страница с ценами и условиями скоро появится — оставьте заявку прямо сейчас, замерщик приедет бесплатно.
+        </p>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <button type="button" onClick={onQuoteClick} className="btn">Получить расчёт бесплатно</button>
+          <a href="tel:+79096282800" className="btn btn-outline">+7 909 628 28 00</a>
+        </div>
+      </PageLayout>
     </>
   )
   if (error) {
@@ -221,8 +227,9 @@ export default function City({ onQuoteClick }) {
       <PageMeta meta={data.meta} jsonld={data.jsonld} />
       <HeroComponent title={title} img={img} />
 
-      <div className="container city-layout" style={{ padding: `${topPadding} 20px 48px`, display: 'grid', gridTemplateColumns: '1fr 300px', gap: '48px', alignItems: 'start', maxWidth: '1200px' }}>
+      <div className="container city-layout" style={{ padding: `${topPadding} 20px 48px`, display: 'grid', gridTemplateColumns: '1fr 280px', gap: '40px', alignItems: 'start', maxWidth: '1200px' }}>
         <div>
+          <SiteBreadcrumbs items={breadcrumbItems} />
           <ContentWithImages content={data.content} img={img} imageUrls={data.image_urls || []} style={style} />
 
           <CallBlock onQuoteClick={onQuoteClick} />
@@ -266,9 +273,9 @@ export default function City({ onQuoteClick }) {
           )}
         </div>
 
-        <aside>
+        <SiteSidebarNav onQuoteClick={onQuoteClick}>
           <RegionsWidget />
-        </aside>
+        </SiteSidebarNav>
       </div>
     </>
   )

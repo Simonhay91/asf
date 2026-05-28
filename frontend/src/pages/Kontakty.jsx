@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import PageLayout from '../components/PageLayout'
 import { KONTAKTY_META } from '../utils/seoMeta'
 import {
   BRAND_PHONE,
@@ -15,12 +15,13 @@ export default function Kontakty({ onQuoteClick }) {
   return (
     <>
       <PageMeta meta={KONTAKTY_META} />
-      <div className="container" style={{ padding: '48px 20px 64px', maxWidth: '800px' }}>
-        <div style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
-          <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-          {' / '}
-          <span>Контакты</span>
-        </div>
+      <PageLayout
+        onQuoteClick={onQuoteClick}
+        breadcrumbs={[
+          { label: 'Главная', to: '/' },
+          { label: 'Контакты' },
+        ]}
+      >
         <h1 style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '16px' }}>Контакты</h1>
         <p style={{ color: 'var(--mid)', lineHeight: 1.7, marginBottom: '32px' }}>
           Свяжитесь с нами для расчёта стоимости асфальтирования в Москве и Московской области.
@@ -68,7 +69,7 @@ export default function Kontakty({ onQuoteClick }) {
         <button type="button" onClick={onQuoteClick} className="btn">
           Получить расчёт бесплатно
         </button>
-      </div>
+      </PageLayout>
     </>
   )
 }

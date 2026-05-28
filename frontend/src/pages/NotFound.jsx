@@ -8,27 +8,20 @@ import {
   BRAND_MAP_URL,
 } from '../constants/brand'
 import { NOT_FOUND_META } from '../utils/seoMeta'
-
-const QUICK_LINKS = [
-  { to: '/', label: 'Главная' },
-  { to: '/uslugi/', label: 'Услуги' },
-  { to: '/moskva/', label: 'Москва' },
-  { to: '/regiony/', label: 'Подмосковье' },
-  { to: '/blog/', label: 'Блог' },
-  { to: '/kontakty/', label: 'Контакты' },
-  { to: '/prajs-list/', label: 'Прайс-лист' },
-]
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import { MAIN_NAV } from '../constants/nav'
 
 export default function NotFound() {
   return (
     <>
       <PageMeta meta={NOT_FOUND_META} noindex />
       <div className="container" style={{ padding: '56px 20px 80px', maxWidth: '720px' }}>
-        <p style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '20px' }}>
-          <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-          {' / '}
-          <span>404</span>
-        </p>
+        <SiteBreadcrumbs
+          items={[
+            { label: 'Главная', to: '/' },
+            { label: '404' },
+          ]}
+        />
 
         <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)', fontWeight: 900, color: 'var(--accent)', margin: '0 0 12px', lineHeight: 1 }}>
           404
@@ -48,7 +41,7 @@ export default function NotFound() {
             marginBottom: '36px',
           }}
         >
-          {QUICK_LINKS.map(({ to, label }) => (
+          {MAIN_NAV.map(({ to, label }) => (
             <Link
               key={to}
               to={to}

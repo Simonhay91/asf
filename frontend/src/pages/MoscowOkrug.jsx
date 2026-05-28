@@ -1,5 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import SiteSidebarNav from '../components/SiteSidebarNav'
 import { DISTRICTS, OKRUGS, OKRUG_ORDER } from '../constants/districts'
 import MoscowDistrictGrid from '../components/MoscowDistrictGrid'
 import { useDistrictsStatus } from '../hooks/useDistrictsStatus'
@@ -53,13 +55,13 @@ export default function MoscowOkrug({ onQuoteClick }) {
 
       <div style={{ background: 'var(--dark)', borderBottom: '1px solid #2a2a2a', padding: '48px 20px 40px' }}>
         <div className="container">
-          <nav style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '16px' }}>
-            <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-            {' / '}
-            <Link to="/moskva/" style={{ color: 'var(--mid)' }}>Москва</Link>
-            {' / '}
-            <span>{info.short}</span>
-          </nav>
+          <SiteBreadcrumbs
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Москва', to: '/moskva/' },
+              { label: info.short },
+            ]}
+          />
           <h1 style={{ fontWeight: 900, fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', marginBottom: '12px', lineHeight: 1.2 }}>
             Асфальтирование в {info.name}
           </h1>
@@ -77,7 +79,9 @@ export default function MoscowOkrug({ onQuoteClick }) {
         </div>
       </div>
 
-      <div className="container" style={{ padding: '40px 20px 24px' }}>
+      <div className="container page-layout" style={{ padding: '40px 20px 48px', maxWidth: '1200px' }}>
+        <div className="page-layout__grid">
+        <div className="page-layout__main">
         <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
           <div>
             <div style={{ fontWeight: 900, fontSize: '1.3rem', color: 'var(--accent)' }}>{districts.length}</div>
@@ -139,6 +143,9 @@ export default function MoscowOkrug({ onQuoteClick }) {
             </div>
           ))}
         </section>
+        </div>
+        <SiteSidebarNav onQuoteClick={onQuoteClick} />
+        </div>
       </div>
     </>
   )

@@ -901,6 +901,153 @@ h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; }
   .price-sticky-cta { display: none !important; }
 }
 
+/* ─── Site navigation (all pages) ─── */
+.site-subnav {
+  position: sticky;
+  top: 52px;
+  z-index: 150;
+  background: #111;
+  border-bottom: 1px solid #2a2a2a;
+}
+.site-subnav__inner {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+.site-subnav__inner::-webkit-scrollbar { display: none; }
+.site-subnav__link {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--mid);
+  text-decoration: none;
+  border: 1px solid #2a2a2a;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.site-subnav__link:hover {
+  color: var(--light);
+  border-color: #444;
+}
+.site-subnav__link--active {
+  color: var(--black);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.site-breadcrumbs {
+  font-size: 0.85rem;
+  color: var(--mid);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  flex-wrap: wrap;
+}
+.site-breadcrumbs__segment { display: inline; }
+.site-breadcrumbs__sep { margin: 0 6px; opacity: 0.45; }
+.site-breadcrumbs__link { color: var(--mid); text-decoration: none; }
+.site-breadcrumbs__link:hover { color: var(--accent); }
+.site-breadcrumbs__current { color: var(--light); }
+.site-breadcrumbs--on-dark { color: rgba(255,255,255,0.45); }
+.site-breadcrumbs--on-dark .site-breadcrumbs__link { color: rgba(255,255,255,0.45); }
+.site-breadcrumbs--on-dark .site-breadcrumbs__link:hover { color: var(--accent); }
+.site-breadcrumbs--on-dark .site-breadcrumbs__current { color: rgba(255,255,255,0.85); }
+
+.page-layout__grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 40px;
+  align-items: start;
+}
+.page-layout__main { min-width: 0; }
+
+.site-sidebar__sticky {
+  position: sticky;
+  top: 108px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.site-sidebar__nav {
+  background: var(--gray);
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 16px;
+}
+.site-sidebar__title {
+  font-weight: 800;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.site-sidebar__link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--light);
+  text-decoration: none;
+}
+.site-sidebar__link:hover { background: #2a2a2a; }
+.site-sidebar__link--active {
+  background: var(--accent);
+  color: var(--black);
+  font-weight: 700;
+}
+.site-sidebar__cta {
+  background: var(--accent);
+  border-radius: 10px;
+  padding: 18px;
+}
+.site-sidebar__cta-title {
+  font-weight: 900;
+  font-size: 1rem;
+  color: var(--black);
+  margin: 0 0 6px;
+}
+.site-sidebar__cta-text {
+  font-size: 0.8rem;
+  color: #333;
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+.site-sidebar__cta-btn {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.site-sidebar__phone {
+  display: block;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--black);
+}
+
+.header-nav__link--active {
+  color: var(--accent) !important;
+  font-weight: 700;
+}
+
+@media (min-width: 769px) {
+  .site-subnav { display: none; }
+}
+
+@media (max-width: 768px) {
+  .page-layout__grid,
+  .svc-layout,
+  .blog-layout,
+  .city-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .site-sidebar__sticky { position: static; }
+}
+
 /* Moscow district list cards */
 .moscow-district-grid {
   display: grid;

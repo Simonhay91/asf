@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
 import PriceCalculator from '../components/PriceCalculator'
 import PriceInlineQuote from '../components/PriceInlineQuote'
 import WhyPriceBlock from '../components/WhyPriceBlock'
@@ -182,11 +183,13 @@ export default function PriceList({ onQuoteClick }) {
         <img src="/photos/work5.jpg" alt="Асфальтирование — прайс-лист" className="price-hero__bg" />
         <div className="price-hero__overlay" />
         <div className="container price-hero__content">
-          <nav className="price-breadcrumb">
-            <Link to="/">Главная</Link>
-            <span>/</span>
-            <span>Прайс-лист</span>
-          </nav>
+          <SiteBreadcrumbs
+            className="site-breadcrumbs--on-dark"
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Прайс-лист' },
+            ]}
+          />
           <h1 className="price-hero__title">
             Прайс на асфальтирование
             <span> площадок, дворов и территорий</span>

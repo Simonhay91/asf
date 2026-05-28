@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import SiteSidebarNav from '../components/SiteSidebarNav'
 import { CITIES, REGION_ORDER } from '../constants/cities'
 import { useCitiesStatus } from '../hooks/useCitiesStatus'
 
@@ -14,7 +16,7 @@ const META = {
   'og:type': 'website',
 }
 
-export default function RegionList() {
+export default function RegionList({ onQuoteClick }) {
   const generatedSlugs = useCitiesStatus()
   const grouped = REGION_ORDER.reduce((acc, region) => {
     acc[region] = CITIES.filter(c => c.region === region)
@@ -28,11 +30,12 @@ export default function RegionList() {
       {/* Hero */}
       <div style={{ background: 'var(--dark)', borderBottom: '1px solid #2a2a2a', padding: '56px 20px 48px' }}>
         <div className="container">
-          <div style={{ fontSize: '0.8rem', color: 'var(--mid)', marginBottom: '12px' }}>
-            <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-            {' / '}
-            <span style={{ color: 'var(--white)' }}>Регионы</span>
-          </div>
+          <SiteBreadcrumbs
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Подмосковье' },
+            ]}
+          />
           <h1 style={{ fontWeight: 900, fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', marginBottom: '12px' }}>
             Асфальтирование в Подмосковье
           </h1>
@@ -57,7 +60,9 @@ export default function RegionList() {
         </div>
       </div>
 
-      <div className="container" style={{ padding: '56px 20px' }}>
+      <div className="container page-layout" style={{ padding: '40px 20px 48px', maxWidth: '1200px' }}>
+        <div className="page-layout__grid">
+        <div className="page-layout__main">
         {REGION_ORDER.map(region => {
           const cities = grouped[region]
           if (!cities || cities.length === 0) return null
@@ -114,6 +119,9 @@ export default function RegionList() {
             </div>
           )
         })}
+        </div>
+        <SiteSidebarNav onQuoteClick={onQuoteClick} />
+        </div>
       </div>
     </>
   )

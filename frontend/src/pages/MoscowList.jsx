@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
 import { DISTRICTS, OKRUGS, OKRUG_ORDER } from '../constants/districts'
 import MoscowDistrictGrid from '../components/MoscowDistrictGrid'
 import { useDistrictsStatus } from '../hooks/useDistrictsStatus'
@@ -24,11 +25,12 @@ export default function MoscowList() {
       {/* Hero */}
       <div style={{ background: 'var(--dark)', borderBottom: '1px solid #2a2a2a', padding: '56px 20px 48px' }}>
         <div className="container">
-          <div style={{ fontSize: '0.8rem', color: 'var(--mid)', marginBottom: '12px' }}>
-            <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-            {' / '}
-            <span style={{ color: 'var(--white)' }}>Москва</span>
-          </div>
+          <SiteBreadcrumbs
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Москва' },
+            ]}
+          />
           <h1 style={{ fontWeight: 900, fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', marginBottom: '12px' }}>
             Асфальтирование в Москве — по районам
           </h1>

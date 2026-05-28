@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 import ContentWithImages from '../components/ContentWithImages'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import SiteSidebarNav from '../components/SiteSidebarNav'
 import { LocationHero, LOCATION_FALLBACK_IMG, slugStyle } from '../components/LocationHero'
 import { districtMetaFallback } from '../utils/seoMeta'
 import { DISTRICTS, OKRUGS } from '../constants/districts'
@@ -82,21 +84,14 @@ export default function District({ onQuoteClick }) {
         }}
       >
         <div>
-          <nav style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
-            <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-            {' / '}
-            <Link to="/moskva/" style={{ color: 'var(--mid)' }}>Москва</Link>
-            {okrugInfo && (
-              <>
-                {' / '}
-                <Link to={`/moskva/${okrug}/`} style={{ color: 'var(--mid)' }}>
-                  {okrugInfo.short}
-                </Link>
-              </>
-            )}
-            {' / '}
-            <span>{data.district_name || slug}</span>
-          </nav>
+          <SiteBreadcrumbs
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Москва', to: '/moskva/' },
+              ...(okrugInfo ? [{ label: okrugInfo.short, to: `/moskva/${okrug}/` }] : []),
+              { label: data.district_name || slug },
+            ]}
+          />
 
           <ContentWithImages
             content={data.content}
@@ -156,23 +151,7 @@ export default function District({ onQuoteClick }) {
           )}
         </div>
 
-        <aside>
-          <div style={{ background: 'var(--gray)', border: '1px solid #2a2a2a', borderRadius: '10px', padding: '20px', position: 'sticky', top: '72px' }}>
-            <div style={{ fontWeight: 700, color: 'var(--accent)', marginBottom: '12px' }}>Москва</div>
-            <Link to="/moskva/" style={{ color: 'var(--light)', fontWeight: 600, fontSize: '0.9rem' }}>
-              Все районы Москвы →
-            </Link>
-            {data.image_url && (
-              <div style={{ marginTop: '16px', borderRadius: '8px', overflow: 'hidden', height: '140px' }}>
-                <img
-                  src={data.image_url}
-                  alt={data.district_name || title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
-            )}
-          </div>
-        </aside>
+        <SiteSidebarNav onQuoteClick={onQuoteClick} />
       </div>
     </>
   )

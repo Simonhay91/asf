@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import BrandLogo from './BrandLogo'
+import { MAIN_NAV } from '../constants/nav'
+import { USLUGI_PAGES } from '../constants/services'
 import {
   BRAND_NAME,
   BRAND_GEO,
@@ -17,7 +19,7 @@ import {
 export default function Footer() {
   return (
     <footer style={{ background: 'var(--dark)', borderTop: '1px solid var(--gray)', marginTop: '60px', padding: '40px 0' }}>
-      <div className="container footer-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '32px', fontSize: '0.9rem' }}>
+      <div className="container footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '32px', fontSize: '0.9rem' }}>
         <div>
           <BrandLogo size="sm" showTagline asLink={false} />
           <p style={{ color: 'var(--mid)', lineHeight: 1.6, marginTop: '16px' }}>
@@ -25,17 +27,20 @@ export default function Footer() {
           </p>
         </div>
         <div>
-          <div style={{ fontWeight: 700, marginBottom: '12px', color: 'var(--accent)' }}>Услуги</div>
-          <ul style={{ listStyle: 'none', color: 'var(--mid)', lineHeight: 2 }}>
-            <li><Link to="/uslugi/asfaltirovanie-dvorov/">Асфальтирование дворов</Link></li>
-            <li><Link to="/uslugi/asfaltirovanie-parkovok/">Асфальтирование парковок</Link></li>
-            <li><Link to="/uslugi/yamochnyj-remont/">Ямочный ремонт</Link></li>
-            <li><Link to="/uslugi/asfaltovaya-kroshka/">Асфальтовая крошка</Link></li>
+          <div style={{ fontWeight: 700, marginBottom: '12px', color: 'var(--accent)' }}>Разделы</div>
+          <ul style={{ listStyle: 'none', color: 'var(--mid)', lineHeight: 2, padding: 0, margin: 0 }}>
+            {MAIN_NAV.filter(item => item.to !== '/').map(item => (
+              <li key={item.to}><Link to={item.to}>{item.label}</Link></li>
+            ))}
           </ul>
-          <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-            <Link to="/moskva/" style={{ color: 'var(--mid)', fontSize: '0.85rem' }}>Москва →</Link>
-            <Link to="/regiony/" style={{ color: 'var(--mid)', fontSize: '0.85rem' }}>Подмосковье →</Link>
-          </div>
+        </div>
+        <div>
+          <div style={{ fontWeight: 700, marginBottom: '12px', color: 'var(--accent)' }}>Услуги</div>
+          <ul style={{ listStyle: 'none', color: 'var(--mid)', lineHeight: 2, padding: 0, margin: 0 }}>
+            {USLUGI_PAGES.map(s => (
+              <li key={s.href}><Link to={s.href}>{s.name}</Link></li>
+            ))}
+          </ul>
         </div>
         <div>
           <div style={{ fontWeight: 700, marginBottom: '12px', color: 'var(--accent)' }}>Контакты</div>

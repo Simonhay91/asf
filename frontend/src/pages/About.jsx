@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import PageLayout from '../components/PageLayout'
 import { ABOUT_META } from '../utils/seoMeta'
 import { BRAND_ADDRESS, BRAND_MAP_URL } from '../constants/brand'
 
@@ -7,12 +7,13 @@ export default function About({ onQuoteClick }) {
   return (
     <>
       <PageMeta meta={ABOUT_META} />
-      <div className="container" style={{ padding: '48px 20px 64px', maxWidth: '860px' }}>
-        <div style={{ fontSize: '0.85rem', color: 'var(--mid)', marginBottom: '24px' }}>
-          <Link to="/" style={{ color: 'var(--mid)' }}>Главная</Link>
-          {' / '}
-          <span>О компании</span>
-        </div>
+      <PageLayout
+        onQuoteClick={onQuoteClick}
+        breadcrumbs={[
+          { label: 'Главная', to: '/' },
+          { label: 'О компании' },
+        ]}
+      >
         <h1 style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '16px' }}>О компании</h1>
         <p style={{ color: 'var(--light)', lineHeight: 1.8, marginBottom: '20px' }}>
           «РусскийАсфальт» выполняет асфальтирование дворов, парковок, дорог и промышленных площадок
@@ -39,7 +40,7 @@ export default function About({ onQuoteClick }) {
         <button type="button" onClick={onQuoteClick} className="btn">
           Получить расчёт бесплатно
         </button>
-      </div>
+      </PageLayout>
     </>
   )
 }

@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import PageLayout from '../components/PageLayout'
 import { BLOG_LIST_META } from '../utils/seoMeta'
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/302686/pexels-photo-302686.jpeg?auto=compress&cs=tinysrgb&h=400&w=700'
 const PER_PAGE = 12
 
-export default function BlogList() {
+export default function BlogList({ onQuoteClick }) {
   const [posts, setPosts] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -34,6 +36,12 @@ export default function BlogList() {
 
       <section style={{ padding: '48px 0 24px', borderBottom: '1px solid #222' }}>
         <div className="container">
+          <SiteBreadcrumbs
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Блог' },
+            ]}
+          />
           <div style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px' }}>
             Блог
           </div>
@@ -46,8 +54,7 @@ export default function BlogList() {
         </div>
       </section>
 
-      <section style={{ padding: '48px 0' }}>
-        <div className="container">
+      <PageLayout onQuoteClick={onQuoteClick} topPadding="32px">
           {loading ? (
             <div className="loading">Загрузка...</div>
           ) : (
@@ -109,8 +116,7 @@ export default function BlogList() {
               )}
             </>
           )}
-        </div>
-      </section>
+      </PageLayout>
     </>
   )
 }

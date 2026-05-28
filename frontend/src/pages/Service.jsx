@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import PageMeta from '../components/PageMeta'
+import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
+import SiteSidebarNav from '../components/SiteSidebarNav'
 import { USLUGI_PAGES } from '../constants/services'
 import { serviceMeta } from '../utils/seoMeta'
 
@@ -112,13 +114,14 @@ export default function Service({ onQuoteClick }) {
         )}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,10,10,0.88) 50%, rgba(10,10,10,0.4) 100%)' }} />
         <div className="container" style={{ position: 'relative', zIndex: 2, padding: '48px 20px' }}>
-          <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', marginBottom: '14px' }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.5)' }}>Главная</Link>
-            {' / '}
-            <Link to="/uslugi/" style={{ color: 'rgba(255,255,255,0.5)' }}>Услуги</Link>
-            {' / '}
-            <span style={{ color: 'var(--light)' }}>{svcMeta.label}</span>
-          </div>
+          <SiteBreadcrumbs
+            className="site-breadcrumbs--on-dark"
+            items={[
+              { label: 'Главная', to: '/' },
+              { label: 'Услуги', to: '/uslugi/' },
+              { label: svcMeta.label },
+            ]}
+          />
           <h1 style={{ fontWeight: 900, fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', color: 'var(--white)', marginBottom: '14px', lineHeight: 1.2, maxWidth: '600px' }}>
             {svcMeta.label}
             <br />
@@ -177,15 +180,12 @@ export default function Service({ onQuoteClick }) {
             )}
           </div>
 
-          {/* Sidebar */}
-          <aside>
-          <div style={{ position: 'sticky', top: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {/* Services nav — from shared constants */}
-            <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '20px' }}>
-              <h3 style={{ fontWeight: 900, fontSize: '0.95rem', marginBottom: '14px', color: 'var(--accent)' }}>
+          <SiteSidebarNav onQuoteClick={onQuoteClick}>
+            <div style={{ background: 'var(--gray)', borderRadius: '8px', padding: '20px', marginBottom: '20px' }}>
+              <h3 style={{ fontWeight: 900, fontSize: '0.95rem', marginBottom: '14px', color: 'var(--accent)', marginTop: 0 }}>
                 Наши услуги
               </h3>
-              <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }} aria-label="Услуги">
                 {USLUGI_PAGES.map(s => {
                   const isActive = s.href === `/uslugi/${slug}/`
                   return (
@@ -201,7 +201,6 @@ export default function Service({ onQuoteClick }) {
                         background: isActive ? 'var(--accent)' : 'transparent',
                         color: isActive ? 'var(--black)' : 'var(--light)',
                         transition: 'background 0.15s',
-                        borderLeft: isActive ? 'none' : '2px solid transparent',
                       }}
                       onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#2a2a2a' }}
                       onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent' }}
@@ -212,28 +211,6 @@ export default function Service({ onQuoteClick }) {
                 })}
               </nav>
             </div>
-
-            {/* CTA */}
-            <div style={{ background: 'var(--accent)', borderRadius: '8px', padding: '20px' }}>
-              <p style={{ fontWeight: 900, fontSize: '1rem', color: 'var(--black)', marginBottom: '6px' }}>
-                Бесплатный замер
-              </p>
-              <p style={{ fontSize: '0.82rem', color: '#333', marginBottom: '14px', lineHeight: 1.4 }}>
-                Выезд в день обращения. Расчёт за 30 минут.
-              </p>
-              <button
-                onClick={onQuoteClick}
-                style={{
-                  width: '100%', background: 'var(--black)', color: 'var(--white)',
-                  padding: '11px', borderRadius: '4px', fontWeight: 700,
-                  cursor: 'pointer', border: 'none', fontSize: '0.92rem',
-                }}
-              >
-                Получить расчёт
-              </button>
-            </div>
-
-            {/* Yandex Map */}
             <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #2a2a2a' }}>
               <iframe
                 src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(`${svcMeta.label} Москва`)}&z=10&lang=ru_RU`}
@@ -245,8 +222,7 @@ export default function Service({ onQuoteClick }) {
                 allowFullScreen
               />
             </div>
-          </div>
-          </aside>
+          </SiteSidebarNav>
         </div>
       </div>
     </>

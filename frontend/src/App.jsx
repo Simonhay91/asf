@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import Header from './components/Header'
+import SiteSubNav from './components/SiteSubNav'
 import Footer from './components/Footer'
 import QuoteModal from './components/QuoteModal'
 import TrailingSlashRedirect from './components/TrailingSlashRedirect'
@@ -35,9 +36,12 @@ export default function App() {
     setQuoteComment('')
   }
 
+  const isAdmin = location.pathname.startsWith('/sys-9x4k2m')
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header onQuoteClick={openQuote} />
+      {!isAdmin && <SiteSubNav />}
       <main style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home onQuoteClick={openQuote} />} />
@@ -57,9 +61,9 @@ export default function App() {
           <Route path="/uslugi/:slug" element={<TrailingSlashRedirect />} />
           <Route path="/prajs-list/" element={<PriceList onQuoteClick={openQuote} />} />
           <Route path="/prajs-list" element={<TrailingSlashRedirect />} />
-          <Route path="/regiony/" element={<RegionList />} />
+          <Route path="/regiony/" element={<RegionList onQuoteClick={openQuote} />} />
           <Route path="/regiony" element={<TrailingSlashRedirect />} />
-          <Route path="/blog/" element={<BlogList />} />
+          <Route path="/blog/" element={<BlogList onQuoteClick={openQuote} />} />
           <Route path="/blog/:slug/" element={<Blog onQuoteClick={openQuote} />} />
           <Route path="/blog/:slug" element={<TrailingSlashRedirect />} />
           <Route path="/kontakty/" element={<Kontakty onQuoteClick={openQuote} />} />
