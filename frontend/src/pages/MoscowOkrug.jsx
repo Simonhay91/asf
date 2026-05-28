@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 import { DISTRICTS, OKRUGS, OKRUG_ORDER } from '../constants/districts'
+import MoscowDistrictGrid from '../components/MoscowDistrictGrid'
 import { useDistrictsStatus } from '../hooks/useDistrictsStatus'
 import { okrugMeta } from '../utils/seoMeta'
 import { BRAND_PHONE, BRAND_PHONE_HREF, BRAND_PRICE_FROM } from '../constants/brand'
@@ -24,7 +25,7 @@ export default function MoscowOkrug({ onQuoteClick }) {
   const { okrug } = useParams()
   const info = OKRUGS[okrug]
   const districts = DISTRICTS[okrug] || []
-  const { done: generatedSlugs, images: districtImages } = useDistrictsStatus()
+  const { done: generatedSlugs } = useDistrictsStatus()
 
   if (!info) {
     return (
@@ -93,36 +94,11 @@ export default function MoscowOkrug({ onQuoteClick }) {
         <h2 style={{ fontWeight: 800, fontSize: '1.15rem', marginBottom: '16px' }}>
           Районы {info.short}
         </h2>
-        <div className="moscow-district-grid">
-          {districts.map(d => {
-            const isDone = generatedSlugs?.has(d.slug)
-            const thumb = districtImages[d.slug]
-            if (isDone) {
-              return (
-                <Link
-                  key={d.slug}
-                  to={`/moskva/${okrug}/${d.slug}/`}
-                  className="moscow-district-card moscow-district-card--done"
-                >
-                  {thumb ? (
-                    <img src={thumb} alt="" className="moscow-district-card__img" loading="lazy" />
-                  ) : (
-                    <div className="moscow-district-card__img moscow-district-card__img--empty" />
-                  )}
-                  <span className="moscow-district-card__name">{d.name}</span>
-                  <span className="moscow-district-card__arrow">→</span>
-                </Link>
-              )
-            }
-            return (
-              <span key={d.slug} className="moscow-district-card moscow-district-card--pending">
-                <div className="moscow-district-card__img moscow-district-card__img--empty" />
-                <span className="moscow-district-card__name">{d.name}</span>
-                <span className="moscow-district-card__soon">скоро</span>
-              </span>
-            )
-          })}
-        </div>
+        <MoscowDistrictGrid
+          okrug={okrug}
+          districts={districts}
+          generatedSlugs={generatedSlugs}
+        />
 
         <section style={{ marginTop: '48px', marginBottom: '32px' }}>
           <h2 style={{ fontWeight: 800, fontSize: '1.15rem', marginBottom: '16px' }}>Другие округа Москвы</h2>
