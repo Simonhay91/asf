@@ -64,7 +64,7 @@ async def generate_next(location_type: str = "both") -> dict:
     return {"status": "ok", "generated": generated}
 
 
-async def generate_moscow_districts(count: int = 2) -> dict:
+async def generate_moscow_districts(count: int = 3) -> dict:
     """Generate up to `count` pending Moscow district pages (SEO priority)."""
     count = max(1, min(int(count), 5))
     generated = []

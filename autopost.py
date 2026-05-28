@@ -4,7 +4,7 @@ autopost.py — content generation scheduler for РусскийАсфальт.
 Usage:
     python autopost.py                      # once: 2 Moscow districts
     python autopost.py --count 1            # once: 1 district
-    python autopost.py --schedule           # 09:00 & 18:00 MSK daily, 2× moscow each
+    python autopost.py --schedule           # 09:00 & 18:00 MSK daily, 3× moscow each
     python autopost.py --blog               # once: blog + 1 moscow (legacy)
 
 Cron (server, 2× per day at 09:00 and 18:00 MSK):
@@ -38,9 +38,9 @@ logging.basicConfig(
 logger = logging.getLogger("autopost")
 
 MOSCOW_TZ = timezone(timedelta(hours=3))
-# 09:00 and 18:00 Moscow — 2 district generations per run → 4 districts/day
+# 09:00 and 18:00 Moscow — 3 district generations per run → 6 districts/day
 SCHEDULE_HOURS_MSK = (9, 18)
-MOSCOW_PER_RUN = 2
+MOSCOW_PER_RUN = 3
 
 
 async def run_moscow_batch(count: int = MOSCOW_PER_RUN) -> None:

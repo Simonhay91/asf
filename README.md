@@ -143,7 +143,7 @@ curl -s https://russkiyasphalt.ru/kontakty/ | grep title
 
 ## Cron — Москва ×2, два раза в день
 
-**Цель:** 4 района/день (2 района в 09:00 + 2 в 18:00 МСК).
+**Цель:** 6 районов/день (3 района в 09:00 + 3 в 18:00 МСК).
 
 ### Вариант A — на сервере (рекомендуется)
 
@@ -173,7 +173,7 @@ python autopost.py --schedule
 POST https://russkiyasphalt.ru/api/generate
 Content-Type: application/json
 
-{"location_type": "moscow", "count": 2, "background": true}
+{"location_type": "moscow", "count": 3, "background": true}
 ```
 
 Расписание: **09:00 и 18:00** (Europe/Moscow), не `both` и не каждые 8 часов.

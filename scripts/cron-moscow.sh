@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Cron: 2× Moscow districts per invocation via running backend (same env as Telegram).
+# Cron: 3× Moscow districts per invocation via running backend (same env as Telegram).
 # Crontab (UTC server): 0 6,15 * * * /var/www/russkiyasphalt/scripts/cron-moscow.sh >> /var/www/russkiyasphalt/logs/cron-moscow.log 2>&1
 set -euo pipefail
 
@@ -15,7 +15,7 @@ if [ -f "$ROOT/.env" ]; then
 fi
 
 BACKEND_URL="${BACKEND_URL:-http://127.0.0.1:8000}"
-COUNT="${MOSCOW_CRON_COUNT:-2}"
+COUNT="${MOSCOW_CRON_COUNT:-3}"
 
 echo "$(date -Is) cron-moscow: POST ${BACKEND_URL}/api/generate count=${COUNT}"
 
