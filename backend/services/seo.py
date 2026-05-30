@@ -233,8 +233,37 @@ def jsonld_service(
         "url": f"{SITE_URL}{url}",
     }
     if reviews:
-        schema["review"] = [_review_to_schema(r) for r in reviews]
+        review_schemas = [_review_to_schema(r) for r in reviews]
+        schema["review"] = review_schemas
+        aggregate = _aggregate_rating(review_schemas)
+        if aggregate:
+            schema["aggregateRating"] = aggregate
     return schema
+
+
+def _aggregate_rating(review_schemas: list[dict]) -> Optional[dict]:
+    """Build AggregateRating from Review objects (required by Google when reviewRating is present)."""
+    if not review_schemas:
+        return None
+    values: list[float] = []
+    best = 5.0
+    for review in review_schemas:
+        rating = review.get("reviewRating") or {}
+        raw = rating.get("ratingValue")
+        if raw is None:
+            continue
+        values.append(float(raw))
+        best = max(best, float(rating.get("bestRating", 5)))
+    if not values:
+        return None
+    avg = round(sum(values) / len(values), 1)
+    return {
+        "@type": "AggregateRating",
+        "ratingValue": str(int(avg) if avg == int(avg) else avg),
+        "reviewCount": str(len(review_schemas)),
+        "bestRating": str(int(best)),
+        "worstRating": "1",
+    }
 
 
 def _review_to_schema(review_text: str) -> dict:
