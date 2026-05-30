@@ -25,6 +25,9 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    from backend.services.cursor_service import recover_pending_jobs
+
+    await recover_pending_jobs()
     logger.info("RusskiyAsphalt backend started")
     yield
     logger.info("Shutdown")

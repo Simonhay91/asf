@@ -4,6 +4,8 @@ from fastapi import APIRouter, Request, HTTPException, BackgroundTasks
 
 from backend.services.generate import generate_next, regenerate_slug, regenerate_service, get_status, get_next_queue, refresh_all_images, generate_cities_by_region
 from backend.services.telegram_service import notify, send_keyboard, edit_keyboard, answer_callback
+from backend.services import cursor_service
+from backend.services.cursor_service import CursorAPIError, AGENT_ID_RE
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/webhook", tags=["telegram"])
@@ -261,6 +263,7 @@ async def _handle_command(text: str) -> None:
     elif text == "/help":
         await notify(
             "🤖 <b>Команды</b>\n\n"
+            "<b>Генерация:</b>\n"
             "/generate — интерактивное меню с кнопками\n"
             "/generate moscow — только Москва\n"
             "/generate podmoskovye — только Подмосковье\n"
@@ -272,7 +275,137 @@ async def _handle_command(text: str) -> None:
             "/regenerate uslugi {slug} — перегенерировать услугу\n"
             "/refresh-images — обновить изображения блогов\n"
             "/status — прогресс\n"
-            "/next — очередь"
+            "/next — очередь\n\n"
+            "<b>Код (Cursor Cloud Agent):</b>\n"
+            "/code {задача} — запустить coding agent\n"
+            "/code follow {bc-id} {задача} — follow-up\n"
+            "/code status — последние agents\n"
+            "/code status {bc-id} — статус agent\n"
+            "/code cancel {bc-id} — отменить run\n"
+            "/code help — подробнее"
         )
+
+    elif text.startswith("/code"):
+        await _handle_code_command(text)
+
     else:
         await notify("❓ Неизвестная команда. Используй /help")
+
+
+async def _handle_code_command(text: str) -> None:
+    """Handle /code subcommands for Cursor Cloud Agent."""
+    if not cursor_service.is_configured():
+        await notify(
+            "❌ Cursor не настроен.\n"
+            "Добавь CURSOR_API_KEY в .env на сервере.\n"
+            "Ключ: cursor.com/dashboard → Integrations"
+        )
+        return
+
+    body = text[len("/code"):].strip()
+
+    if not body or body == "help":
+        await notify(
+            "💻 <b>Cursor Cloud Agent</b>\n\n"
+            "Отправь coding-задачу с телефона — agent работает в облаке,\n"
+            "меняет код в GitHub и создаёт PR.\n\n"
+            "<b>Примеры:</b>\n"
+            "<code>/code Fix mobile layout in PriceList.jsx</code>\n"
+            "<code>/code Добавь breadcrumbs на страницу услуг</code>\n\n"
+            "<code>/code follow bc-xxx Добавь unit tests</code>\n"
+            "<code>/code status</code> — последние agents\n"
+            "<code>/code status bc-xxx</code> — детали\n"
+            "<code>/code cancel bc-xxx</code> — отменить"
+        )
+        return
+
+    if body == "status":
+        try:
+            msg = await cursor_service.format_agents_list(5)
+            await notify(msg)
+        except CursorAPIError as e:
+            await notify(f"❌ Cursor error: {str(e)[:200]}")
+        return
+
+    if body.startswith("status "):
+        agent_id = body.split(maxsplit=1)[1].strip()
+        if not AGENT_ID_RE.match(agent_id):
+            await notify("❌ Неверный ID. Формат: <code>bc-xxxxxxxx</code>")
+            return
+        try:
+            msg = await cursor_service.format_agent_status(agent_id)
+            await notify(msg)
+        except CursorAPIError as e:
+            await notify(f"❌ Cursor error: {str(e)[:200]}")
+        return
+
+    if body.startswith("cancel "):
+        agent_id = body.split(maxsplit=1)[1].strip()
+        if not AGENT_ID_RE.match(agent_id):
+            await notify("❌ Неверный ID. Формат: <code>bc-xxxxxxxx</code>")
+            return
+        try:
+            agent = await cursor_service.get_agent(agent_id)
+            run_id = agent.get("latestRunId")
+            if not run_id:
+                await notify("❌ Нет активного run для отмены.")
+                return
+            await cursor_service.cancel_run(agent_id, run_id)
+            await notify(f"🛑 Run отменён: <code>{agent_id}</code>")
+        except CursorAPIError as e:
+            await notify(f"❌ {str(e)[:200]}")
+        return
+
+    if body.startswith("follow "):
+        rest = body[len("follow "):].strip()
+        parts = rest.split(maxsplit=1)
+        if len(parts) < 2 or not AGENT_ID_RE.match(parts[0]):
+            await notify(
+                "❌ Формат: <code>/code follow bc-xxx описание задачи</code>"
+            )
+            return
+        agent_id, task = parts[0], parts[1]
+        await notify(f"⏳ Follow-up для <code>{agent_id}</code>...")
+        try:
+            result = await cursor_service.send_followup(agent_id, task)
+            agent = result["agent"]
+            run = result["run"]
+            url = agent.get("url", "")
+            msg = (
+                f"🚀 <b>Follow-up запущен</b>\n"
+                f"🆔 <code>{agent['id']}</code>\n"
+                f"🏃 Run: <code>{run['id']}</code>"
+            )
+            if url:
+                msg += f'\n🔗 <a href="{url}">Cursor</a>'
+            msg += "\n\nУведомлю когда готово."
+            await notify(msg)
+        except CursorAPIError as e:
+            await notify(f"❌ Cursor error: {str(e)[:200]}")
+        return
+
+    # Default: new coding task
+    task = body
+    if len(task) < 10:
+        await notify("❌ Задача слишком короткая. Опиши подробнее что нужно сделать.")
+        return
+
+    preview = task[:120] + ("…" if len(task) > 120 else "")
+    await notify(f"⏳ Запускаю Cursor agent...\n<i>{preview}</i>")
+
+    try:
+        result = await cursor_service.create_coding_task(task)
+        agent = result["agent"]
+        run = result["run"]
+        url = agent.get("url", "")
+        msg = (
+            f"🚀 <b>Cursor Agent запущен</b>\n"
+            f"🆔 <code>{agent['id']}</code>\n"
+            f"🏃 Run: <code>{run['id']}</code>"
+        )
+        if url:
+            msg += f'\n🔗 <a href="{url}">Открыть в Cursor</a>'
+        msg += "\n\nРаботаю в облаке → PR появится автоматически.\nУведомлю когда готово."
+        await notify(msg)
+    except CursorAPIError as e:
+        await notify(f"❌ Cursor error: {str(e)[:300]}")

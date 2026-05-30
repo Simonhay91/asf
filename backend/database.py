@@ -30,6 +30,9 @@ async def init_db() -> None:
     await db.generated_pages.create_index("url")
     await db.used_images.create_index("photo_id", unique=True)
     await db.used_images.create_index("slug")
+    await db.cursor_jobs.create_index([("agent_id", 1), ("run_id", 1)], unique=True)
+    await db.cursor_jobs.create_index([("status", 1), ("notified", 1)])
+    await db.cursor_jobs.create_index("created_at")
 
     await _seed_if_empty()
     logger.info("DB initialized")

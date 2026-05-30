@@ -89,6 +89,15 @@ seed/
 - `/next` — очередь
 - `/help` — справка
 
+### Cursor coding (Telegram → Cloud Agent)
+
+- `/code {задача}` — запустить Cloud Agent (код + PR)
+- `/code follow {bc-id} {задача}` — follow-up к agent
+- `/code status` — последние agents
+- `/code status {bc-id}` — детали agent
+- `/code cancel {bc-id}` — отменить run
+- `/code help` — справка по coding
+
 ## ENV
 
 ```env
@@ -96,6 +105,10 @@ ANTHROPIC_API_KEY=
 PERPLEXITY_API_KEY=
 TELEGRAM_BOT_TOKEN=
 TELEGRAM_CHAT_ID=
+CURSOR_API_KEY=
+CURSOR_REPO_URL=https://github.com/Simonhay91/asf
+CURSOR_DEFAULT_BRANCH=main
+CURSOR_MODEL=composer-2.5
 YANDEX_WEBMASTER_TOKEN=
 YANDEX_HOST_ID=
 MONGODB_URL=mongodb://localhost:27017
