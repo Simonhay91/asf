@@ -110,7 +110,7 @@ def city_meta(city_name: str, slug: str) -> dict:
     return build_meta(title, description, f"/podmoskovye/{slug}/")
 
 
-def blog_meta(title_text: str, excerpt: str, slug: str) -> dict:
+def blog_meta(title_text: str, excerpt: str, slug: str, canonical_path: Optional[str] = None) -> dict:
     if not slug:
         raise ValueError("blog_meta: empty slug")
     if not (excerpt or "").strip():
@@ -118,9 +118,43 @@ def blog_meta(title_text: str, excerpt: str, slug: str) -> dict:
             f"{title_text}: советы по асфальтированию в Москве и Подмосковье, "
             f"цены, технологии и опыт компании {SITE_NAME}."
         )
-    # Blog posts that mirror a service page should canonicalize to /uslugi/.
-    path = f"/uslugi/{slug}/" if slug in SERVICE_SLUGS else f"/blog/{slug}/"
+    title_text = re.sub(rf"\s*\|\s*{re.escape(SITE_NAME)}\s*$", "", title_text.strip())
+    if canonical_path:
+        path = canonical_path
+    elif slug in SERVICE_SLUGS:
+        path = f"/uslugi/{slug}/"
+    else:
+        path = f"/blog/{slug}/"
     return build_meta(f"{title_text} | {SITE_NAME}", excerpt[:160], path, page_type="article")
+
+
+def asfalt_blog_location_slug(blog_slug: str) -> Optional[str]:
+    """Extract city/district slug from companion blog slug (asfalt-balashiha-5 → balashiha)."""
+    if not blog_slug.startswith("asfalt-"):
+        return None
+    rest = blog_slug[7:]
+    rest = re.sub(r"-\d+$", "", rest)
+    return rest or None
+
+
+def is_location_companion_blog_slug(slug: str) -> bool:
+    return slug.startswith("asfalt-")
+
+
+async def resolve_location_blog_canonical(blog_slug: str) -> Optional[str]:
+    """Point location companion blogs at the main city/district landing page."""
+    loc_slug = asfalt_blog_location_slug(blog_slug)
+    if not loc_slug:
+        return None
+    from backend.database import db
+
+    city = await db.podmoskovye_cities.find_one({"slug": loc_slug}, {"slug": 1})
+    if city:
+        return f"/podmoskovye/{loc_slug}/"
+    district = await db.moscow_districts.find_one({"slug": loc_slug}, {"okrug": 1})
+    if district and district.get("okrug"):
+        return f"/moskva/{district['okrug']}/{loc_slug}/"
+    return None
 
 
 def not_found_meta(path: str) -> dict:
@@ -418,7 +452,7 @@ def build_sitemap(generated_pages: list[dict]) -> str:
             continue
         page_type = page.get("type", "district")
         blog_slug = _blog_slug_from_path(path)
-        if blog_slug and blog_slug in SERVICE_SLUGS:
+        if blog_slug and (blog_slug in SERVICE_SLUGS or is_location_companion_blog_slug(blog_slug)):
             continue
         priority = "0.9" if page_type in ("district", "city") else "0.6"
         generated_at = page.get("generated_at")

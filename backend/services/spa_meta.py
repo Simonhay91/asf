@@ -15,9 +15,11 @@ from backend.services.seo import (
     blog_meta,
     city_meta,
     district_meta,
+    is_location_companion_blog_slug,
     normalize_path,
     not_found_meta,
     okrug_meta,
+    resolve_location_blog_canonical,
     service_meta,
 )
 
@@ -153,7 +155,13 @@ async def resolve_meta_for_path(path: str) -> tuple[dict, bool]:
         )
         if not page:
             return not_found_meta(path), False
-        return blog_meta(page.get("title") or slug, page.get("meta_description") or "", slug), True
+        canonical_path = await resolve_location_blog_canonical(slug)
+        return blog_meta(
+            page.get("title") or slug,
+            page.get("meta_description") or "",
+            slug,
+            canonical_path=canonical_path,
+        ), True
 
     if m := re.match(r"^/uslugi/([^/]+)/$", path):
         slug = m.group(1)
@@ -231,7 +239,7 @@ async def collect_all_paths_with_meta() -> list[tuple[str, dict]]:
     ).to_list(500)
     for b in blogs:
         slug = b.get("slug") or ""
-        if not slug or slug in SERVICE_SLUGS or not _valid_slug(slug):
+        if not slug or slug in SERVICE_SLUGS or is_location_companion_blog_slug(slug) or not _valid_slug(slug):
             continue
         title = b.get("title") or slug.replace("-", " ").title()
         add(f"/blog/{slug}/", blog_meta(title, b.get("meta_description") or "", slug))

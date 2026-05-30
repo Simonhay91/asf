@@ -6,6 +6,7 @@ from backend.database import db
 from backend.services.seo import (
     district_meta, city_meta, blog_meta, service_meta,
     jsonld_organization, jsonld_service, jsonld_breadcrumb, jsonld_article, jsonld_faq,
+    resolve_location_blog_canonical,
     ROBOTS_TXT, SITE_NAME, SITE_URL,
 )
 from backend.services.claude_service import parse_faq_from_markdown, _sanitize_phones
@@ -105,7 +106,8 @@ async def get_blog_page(slug: str):
 
     title = page.get("title", slug)
     excerpt = page.get("meta_description", "")
-    meta = blog_meta(title, excerpt, slug)
+    canonical_path = await resolve_location_blog_canonical(slug)
+    meta = blog_meta(title, excerpt, slug, canonical_path=canonical_path)
     generated_at = page.get("generated_at")
 
     jsonld = [
