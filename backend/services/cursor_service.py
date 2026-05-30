@@ -198,15 +198,21 @@ async def cancel_run(agent_id: str, run_id: str) -> None:
 
 async def recover_pending_jobs() -> None:
     """Resume polling for jobs that were active when the server restarted."""
-    if not is_configured():
-        return
-    cursor = db.cursor_jobs.find(
-        {"status": {"$in": list(ACTIVE_STATUSES)}, "notified": False}
-    )
-    jobs = await cursor.to_list(50)
-    for job in jobs:
-        logger.info(f"Recovering cursor job poll: {job['agent_id']}/{job['run_id']}")
-        asyncio.create_task(_poll_and_notify(job["agent_id"], job["run_id"]))
+    try:
+        from backend.services.cursor_service import is_configured
+        if not is_configured():
+            return
+        from backend.services import cursor_service as cs
+
+        cursor = db.cursor_jobs.find(
+            {"status": {"$in": list(ACTIVE_STATUSES)}, "notified": False}
+        )
+        jobs = await cursor.to_list(50)
+        for job in jobs:
+            logger.info(f"Recovering cursor job poll: {job['agent_id']}/{job['run_id']}")
+            asyncio.create_task(cs._poll_and_notify(job["agent_id"], job["run_id"]))
+    except Exception as e:
+        logger.warning(f"Cursor job recovery skipped: {e}")
 
 
 async def _save_job(

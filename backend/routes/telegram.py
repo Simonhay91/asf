@@ -4,8 +4,6 @@ from fastapi import APIRouter, Request, HTTPException, BackgroundTasks
 
 from backend.services.generate import generate_next, regenerate_slug, regenerate_service, get_status, get_next_queue, refresh_all_images, generate_cities_by_region
 from backend.services.telegram_service import notify, send_keyboard, edit_keyboard, answer_callback
-from backend.services import cursor_service
-from backend.services.cursor_service import CursorAPIError, AGENT_ID_RE
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/webhook", tags=["telegram"])
@@ -16,14 +14,26 @@ CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
 def _normalize_command(text: str) -> str:
     """Strip @botusername suffix Telegram adds to menu commands."""
+    text = (text or "").strip()
     if not text.startswith("/"):
-        return text.strip()
+        return text
     parts = text.split(maxsplit=1)
     cmd = parts[0]
     rest = parts[1] if len(parts) > 1 else ""
     if "@" in cmd:
         cmd = cmd.split("@", 1)[0]
     return f"{cmd} {rest}".strip() if rest else cmd
+
+
+async def _safe_handle_command(text: str) -> None:
+    try:
+        await _handle_command(text)
+    except Exception as e:
+        logger.error(f"Telegram command failed ({text[:80]!r}): {e}", exc_info=True)
+        try:
+            await notify(f"❌ Ошибка команды: {str(e)[:200]}")
+        except Exception:
+            logger.error("Failed to send Telegram error notification", exc_info=True)
 
 
 @router.post("/telegram")
@@ -48,14 +58,21 @@ async def telegram_webhook(request: Request, background_tasks: BackgroundTasks):
         return {"ok": True}
 
     chat_id = str(message.get("chat", {}).get("id", ""))
-    text = _normalize_command(message.get("text", ""))
+    raw_text = message.get("text")
+    if not raw_text:
+        return {"ok": True}
+    text = _normalize_command(raw_text)
+
+    if not CHAT_ID:
+        logger.error("TELEGRAM_CHAT_ID is not configured")
+        return {"ok": True}
 
     if chat_id != CHAT_ID:
         logger.warning(f"Unauthorized Telegram message from chat {chat_id}")
         return {"ok": True}
 
     logger.info(f"Telegram command: {text[:80]}")
-    background_tasks.add_task(_handle_command, text)
+    background_tasks.add_task(_safe_handle_command, text)
     return {"ok": True}
 
 
@@ -307,8 +324,11 @@ async def _handle_command(text: str) -> None:
 
 async def _handle_code_command(text: str) -> None:
     """Handle /code subcommands for Cursor Cloud Agent."""
+    from backend.services import cursor_service
+    from backend.services.cursor_service import CursorAPIError, AGENT_ID_RE
+
     try:
-        await _handle_code_command_inner(text)
+        await _handle_code_command_inner(text, cursor_service, CursorAPIError, AGENT_ID_RE)
     except CursorAPIError as e:
         logger.warning(f"Cursor API error: {e}")
         await notify(f"❌ Cursor error: {str(e)[:300]}")
@@ -317,7 +337,7 @@ async def _handle_code_command(text: str) -> None:
         await notify(f"❌ Ошибка /code: {str(e)[:200]}")
 
 
-async def _handle_code_command_inner(text: str) -> None:
+async def _handle_code_command_inner(text, cursor_service, CursorAPIError, AGENT_ID_RE) -> None:
     body = text[len("/code"):].strip()
 
     if not body or body == "help":
