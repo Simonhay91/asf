@@ -20,12 +20,18 @@ from backend.services.telegram_service import notify
 logger = logging.getLogger(__name__)
 
 API_BASE = "https://api.cursor.com/v1"
-API_KEY = os.getenv("CURSOR_API_KEY", "")
-REPO_URL = os.getenv("CURSOR_REPO_URL", "https://github.com/Simonhay91/asf")
-DEFAULT_BRANCH = os.getenv("CURSOR_DEFAULT_BRANCH", "main")
-DEFAULT_MODEL = os.getenv("CURSOR_MODEL", "composer-2.5")
-POLL_INTERVAL_SEC = int(os.getenv("CURSOR_POLL_INTERVAL_SEC", "20"))
-POLL_MAX_ATTEMPTS = int(os.getenv("CURSOR_POLL_MAX_ATTEMPTS", "360"))  # ~2 hours
+
+
+def _env(key: str, default: str = "") -> str:
+    return os.getenv(key, default)
+
+
+def _poll_interval_sec() -> int:
+    return int(_env("CURSOR_POLL_INTERVAL_SEC", "20"))
+
+
+def _poll_max_attempts() -> int:
+    return int(_env("CURSOR_POLL_MAX_ATTEMPTS", "360"))
 
 TERMINAL_STATUSES = frozenset({"FINISHED", "ERROR", "CANCELLED", "EXPIRED"})
 ACTIVE_STATUSES = frozenset({"CREATING", "RUNNING", "QUEUED"})
@@ -70,11 +76,26 @@ class CursorAPIError(Exception):
 
 
 def is_configured() -> bool:
-    return bool(API_KEY and REPO_URL)
+    return bool(_env("CURSOR_API_KEY") and _repo_url())
 
 
-def _auth() -> httpx.BasicAuth:
-    return httpx.BasicAuth(username=API_KEY, password="")
+def _repo_url() -> str:
+    return _env("CURSOR_REPO_URL", "https://github.com/Simonhay91/asf")
+
+
+def _default_branch() -> str:
+    return _env("CURSOR_DEFAULT_BRANCH", "main")
+
+
+def _default_model() -> str:
+    return _env("CURSOR_MODEL", "composer-2.5")
+
+
+def _headers() -> dict[str, str]:
+    api_key = _env("CURSOR_API_KEY")
+    if not api_key:
+        return {}
+    return {"Authorization": f"Bearer {api_key}"}
 
 
 async def _api(
@@ -84,12 +105,12 @@ async def _api(
     json: Optional[dict] = None,
     params: Optional[dict] = None,
 ) -> Any:
-    if not API_KEY:
+    if not _env("CURSOR_API_KEY"):
         raise CursorAPIError("CURSOR_API_KEY не настроен", status_code=0)
 
     url = f"{API_BASE}{path}"
     try:
-        async with httpx.AsyncClient(timeout=60, auth=_auth()) as http:
+        async with httpx.AsyncClient(timeout=60, headers=_headers()) as http:
             resp = await http.request(method, url, json=json, params=params)
     except httpx.TimeoutException as e:
         raise CursorAPIError(f"Cursor API timeout: {e}", retryable=True) from e
@@ -115,13 +136,14 @@ async def create_coding_task(prompt: str) -> dict:
     full_prompt = CODING_SYSTEM_PREFIX + prompt.strip()
     payload = {
         "prompt": {"text": full_prompt},
-        "repos": [{"url": REPO_URL, "startingRef": DEFAULT_BRANCH}],
+        "repos": [{"url": _repo_url(), "startingRef": _default_branch()}],
         "autoCreatePR": True,
         "skipReviewerRequest": True,
         "mode": "agent",
     }
-    if DEFAULT_MODEL:
-        payload["model"] = {"id": DEFAULT_MODEL}
+    model = _default_model()
+    if model:
+        payload["model"] = {"id": model}
 
     data = await _api("POST", "/agents", json=payload)
     agent = data["agent"]
@@ -247,14 +269,14 @@ def _format_duration(ms: Optional[int]) -> str:
 
 async def _poll_and_notify(agent_id: str, run_id: str) -> None:
     """Poll run status until terminal, then send Telegram notification."""
-    for attempt in range(POLL_MAX_ATTEMPTS):
+    for attempt in range(_poll_max_attempts()):
         try:
             run = await get_run(agent_id, run_id)
             status = run.get("status", "UNKNOWN")
             await _update_job(agent_id, run_id, status=status)
 
             if status not in TERMINAL_STATUSES:
-                await asyncio.sleep(POLL_INTERVAL_SEC)
+                await asyncio.sleep(_poll_interval_sec())
                 continue
 
             job = await db.cursor_jobs.find_one(
@@ -301,10 +323,10 @@ async def _poll_and_notify(agent_id: str, run_id: str) -> None:
             if not e.retryable and e.status_code not in (0, 429):
                 await notify(f"❌ Cursor poll error: {str(e)[:200]}")
                 return
-            await asyncio.sleep(POLL_INTERVAL_SEC * 2)
+            await asyncio.sleep(_poll_interval_sec() * 2)
         except Exception as e:
             logger.error(f"Unexpected poll error {agent_id}/{run_id}: {e}", exc_info=True)
-            await asyncio.sleep(POLL_INTERVAL_SEC * 2)
+            await asyncio.sleep(_poll_interval_sec() * 2)
 
     await notify(
         f"⌛ Cursor agent <code>{agent_id}</code> — таймаут ожидания.\n"
