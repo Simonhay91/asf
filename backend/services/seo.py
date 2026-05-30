@@ -10,6 +10,19 @@ DEFAULT_IMAGE = f"{SITE_URL}/og-image.svg"
 COMPANY_PHONE = os.getenv("COMPANY_PHONE", "")
 COMPANY_EMAIL = os.getenv("COMPANY_EMAIL", "info@russkiyasphalt.ru")
 
+SERVICE_SLUGS = frozenset({
+    "asfaltirovanie-dvorov",
+    "asfaltirovanie-parkovok",
+    "asfaltirovanie-dorog",
+    "yamochnyj-remont",
+    "asfaltovaya-kroshka",
+    "asfaltirovanie-promyshlennyh-ploshhadok",
+    "asfaltirovanie-sportivnyh-ploshhadok",
+    "kompleksnoe-blagoustrojstvo-dvora-pod-klyuch",
+})
+
+_SLUG_SEGMENT = re.compile(r"^[a-z0-9-]+$")
+
 
 # ─── META TAGS ───
 
@@ -105,7 +118,19 @@ def blog_meta(title_text: str, excerpt: str, slug: str) -> dict:
             f"{title_text}: советы по асфальтированию в Москве и Подмосковье, "
             f"цены, технологии и опыт компании {SITE_NAME}."
         )
-    return build_meta(f"{title_text} | {SITE_NAME}", excerpt[:160], f"/blog/{slug}/", page_type="article")
+    # Blog posts that mirror a service page should canonicalize to /uslugi/.
+    path = f"/uslugi/{slug}/" if slug in SERVICE_SLUGS else f"/blog/{slug}/"
+    return build_meta(f"{title_text} | {SITE_NAME}", excerpt[:160], path, page_type="article")
+
+
+def not_found_meta(path: str) -> dict:
+    meta = build_meta(
+        f"Страница не найдена — {SITE_NAME}",
+        "Запрашиваемая страница не найдена. Асфальтирование в Москве и Подмосковье под ключ.",
+        path,
+    )
+    meta["noindex"] = True
+    return meta
 
 
 def service_meta(service_name: str, slug: str, price_from: int) -> dict:
@@ -349,7 +374,24 @@ STATIC_URLS = [
     ("/uslugi/asfaltirovanie-dorog/", "0.8", "monthly"),
     ("/uslugi/yamochnyj-remont/", "0.8", "monthly"),
     ("/uslugi/asfaltovaya-kroshka/", "0.8", "monthly"),
+    ("/uslugi/asfaltirovanie-promyshlennyh-ploshhadok/", "0.8", "monthly"),
+    ("/uslugi/asfaltirovanie-sportivnyh-ploshhadok/", "0.8", "monthly"),
+    ("/uslugi/kompleksnoe-blagoustrojstvo-dvora-pod-klyuch/", "0.8", "monthly"),
 ]
+
+
+def _safe_sitemap_path(path: str) -> bool:
+    if not path or not path.startswith("/"):
+        return False
+    for part in path.strip("/").split("/"):
+        if not part or not _SLUG_SEGMENT.match(part):
+            return False
+    return True
+
+
+def _blog_slug_from_path(path: str) -> Optional[str]:
+    m = re.match(r"^/blog/([^/]+)/$", path)
+    return m.group(1) if m else None
 
 
 def build_sitemap(generated_pages: list[dict]) -> str:
@@ -372,7 +414,12 @@ def build_sitemap(generated_pages: list[dict]) -> str:
             continue
         if path in static_paths:
             continue
+        if not _safe_sitemap_path(path):
+            continue
         page_type = page.get("type", "district")
+        blog_slug = _blog_slug_from_path(path)
+        if blog_slug and blog_slug in SERVICE_SLUGS:
+            continue
         priority = "0.9" if page_type in ("district", "city") else "0.6"
         generated_at = page.get("generated_at")
         lastmod = generated_at.strftime("%Y-%m-%d") if isinstance(generated_at, datetime) else today
@@ -393,7 +440,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /sys-9x4k2m
-Disallow: /*?
 
 User-agent: Yandex
 Allow: /

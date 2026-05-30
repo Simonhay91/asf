@@ -7,12 +7,13 @@ export default function PageMeta({ meta, jsonld, noindex = false }) {
   if (!meta) return null
   const description = (meta.description || '').trim() || DEFAULT_DESCRIPTION
   const ogDescription = (meta['og:description'] || meta.description || '').trim() || DEFAULT_DESCRIPTION
+  const shouldNoindex = noindex || meta.noindex
   return (
     <Helmet>
       <title>{meta.title}</title>
       <meta name="description" content={description} />
-      {noindex && <meta name="robots" content="noindex, follow" />}
-      <link rel="canonical" href={meta.canonical} />
+      {shouldNoindex && <meta name="robots" content="noindex, follow" />}
+      {meta.canonical && <link rel="canonical" href={meta.canonical} />}
       <meta property="og:title" content={meta['og:title']} />
       <meta property="og:description" content={ogDescription} />
       <meta property="og:url" content={meta['og:url']} />

@@ -5,7 +5,7 @@ import ContentWithImages from '../components/ContentWithImages'
 import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
 import SiteSidebarNav from '../components/SiteSidebarNav'
 import { LocationHero, LOCATION_FALLBACK_IMG, slugStyle } from '../components/LocationHero'
-import { districtMetaFallback } from '../utils/seoMeta'
+import { districtMetaFallback, notFoundMeta } from '../utils/seoMeta'
 import { DISTRICTS, OKRUGS } from '../constants/districts'
 
 export default function District({ onQuoteClick }) {
@@ -53,7 +53,7 @@ export default function District({ onQuoteClick }) {
   if (error) {
     return (
       <>
-        <PageMeta meta={fallbackMeta} />
+        <PageMeta meta={notFoundMeta(`/moskva/${okrug}/${slug}/`)} />
         <div className="container" style={{ padding: '60px 20px' }}>
           <div className="error-box">{error}</div>
         </div>

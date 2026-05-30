@@ -83,10 +83,11 @@ async def spa_shell(path: str = Query("/", description="Original request path"))
     from backend.services.spa_meta import render_spa_html
 
     try:
-        html = await render_spa_html(path)
+        html, is_known = await render_spa_html(path)
     except FileNotFoundError as e:
         raise HTTPException(status_code=503, detail=str(e)) from e
     return HTMLResponse(
         html,
+        status_code=404 if not is_known else 200,
         headers={"Cache-Control": "public, max-age=300"},
     )

@@ -5,7 +5,7 @@ import SiteSidebarNav from '../components/SiteSidebarNav'
 import { DISTRICTS, OKRUGS, OKRUG_ORDER } from '../constants/districts'
 import MoscowDistrictGrid from '../components/MoscowDistrictGrid'
 import { useDistrictsStatus } from '../hooks/useDistrictsStatus'
-import { okrugMeta } from '../utils/seoMeta'
+import { okrugMeta, notFoundMeta } from '../utils/seoMeta'
 import { BRAND_PHONE, BRAND_PHONE_HREF, BRAND_PRICE_FROM } from '../constants/brand'
 
 const FAQ = [
@@ -31,9 +31,12 @@ export default function MoscowOkrug({ onQuoteClick }) {
 
   if (!info) {
     return (
-      <div className="container" style={{ padding: '80px 20px' }}>
-        <p>Округ не найден. <Link to="/moskva/">Все районы Москвы</Link></p>
-      </div>
+      <>
+        <PageMeta meta={notFoundMeta(`/moskva/${okrug}/`)} />
+        <div className="container" style={{ padding: '80px 20px' }}>
+          <p>Округ не найден. <Link to="/moskva/">Все районы Москвы</Link></p>
+        </div>
+      </>
     )
   }
 

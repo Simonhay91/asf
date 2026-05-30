@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import PageMeta from '../components/PageMeta'
 import {
   BRAND_NAME,
@@ -7,14 +7,15 @@ import {
   BRAND_ADDRESS,
   BRAND_MAP_URL,
 } from '../constants/brand'
-import { NOT_FOUND_META } from '../utils/seoMeta'
+import { notFoundMeta } from '../utils/seoMeta'
 import SiteBreadcrumbs from '../components/SiteBreadcrumbs'
 import { MAIN_NAV } from '../constants/nav'
 
 export default function NotFound() {
+  const { pathname } = useLocation()
   return (
     <>
-      <PageMeta meta={NOT_FOUND_META} noindex />
+      <PageMeta meta={notFoundMeta(pathname)} />
       <div className="container" style={{ padding: '56px 20px 80px', maxWidth: '720px' }}>
         <SiteBreadcrumbs
           items={[

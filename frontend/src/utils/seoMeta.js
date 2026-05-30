@@ -106,8 +106,16 @@ export const BLOG_LIST_META = buildMeta(
   '/blog/',
 )
 
-export const NOT_FOUND_META = buildMeta(
-  `Страница не найдена — ${SITE_NAME}`,
-  'Запрашиваемая страница не найдена. Асфальтирование в Москве и Подмосковье под ключ — цены от 630 руб/м², гарантия 5 лет.',
-  '/',
-)
+export function notFoundMeta(path) {
+  const normalized = normalizePath(path || '/404/')
+  return {
+    ...buildMeta(
+      `Страница не найдена — ${SITE_NAME}`,
+      'Запрашиваемая страница не найдена. Асфальтирование в Москве и Подмосковье под ключ — цены от 630 руб/м², гарантия 5 лет.',
+      normalized,
+    ),
+    noindex: true,
+  }
+}
+
+export const NOT_FOUND_META = notFoundMeta('/404/')

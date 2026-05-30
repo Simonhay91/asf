@@ -9,13 +9,14 @@ from pathlib import Path
 
 from backend.database import db
 from backend.services.seo import (
-    HOME_META,
     MOSCOW_OKRUGS,
+    SERVICE_SLUGS,
     STATIC_PAGE_META,
     blog_meta,
     city_meta,
     district_meta,
     normalize_path,
+    not_found_meta,
     okrug_meta,
     service_meta,
 )
@@ -82,6 +83,8 @@ def inject_meta_into_html(html_template: str, meta: dict) -> str:
     <meta name="twitter:description" content="{_esc(og_desc)}" />"""
     if og_image:
         seo_block += f'\n    <meta property="og:image" content="{_esc(og_image)}" />'
+    if meta.get("noindex"):
+        seo_block += '\n    <meta name="robots" content="noindex, follow" />'
     seo_block += "\n    <!-- spa-meta:end -->"
 
     out = re.sub(r"(<title>.*?</title>)", rf"\1\n{seo_block}", out, count=1, flags=re.DOTALL)
@@ -105,55 +108,71 @@ def load_spa_template() -> str:
     return _template_cache
 
 
-async def resolve_meta_for_path(path: str) -> dict:
-    """Resolve title/description/canonical for a public URL path."""
+async def resolve_meta_for_path(path: str) -> tuple[dict, bool]:
+    """Resolve meta for a public URL. Returns (meta, is_known_path)."""
     path = normalize_path(path or "/")
 
     if path in STATIC_PAGE_META:
-        return STATIC_PAGE_META[path]
+        return STATIC_PAGE_META[path], True
 
     if m := re.match(r"^/podmoskovye/([^/]+)/$", path):
         slug = m.group(1)
+        if not slug.isascii() or slug not in _valid_slug(slug):
+            return not_found_meta(path), False
         city = await db.podmoskovye_cities.find_one({"slug": slug}, {"name": 1})
-        name = city["name"] if city else slug.replace("-", " ").title()
-        return city_meta(name, slug)
+        if not city:
+            return not_found_meta(path), False
+        name = city["name"]
+        return city_meta(name, slug), True
 
     if m := re.match(r"^/moskva/([^/]+)/([^/]+)/$", path):
         okrug, slug = m.group(1), m.group(2)
+        if okrug not in MOSCOW_OKRUGS or not _valid_slug(slug):
+            return not_found_meta(path), False
         district = await db.moscow_districts.find_one({"slug": slug}, {"name": 1, "okrug_name": 1})
-        name = district["name"] if district else slug.replace("-", " ").title()
-        okrug_name = (district or {}).get("okrug_name") or okrug
-        return district_meta(name, okrug_name, okrug, slug)
+        if not district:
+            return not_found_meta(path), False
+        name = district["name"]
+        okrug_name = district.get("okrug_name") or okrug
+        return district_meta(name, okrug_name, okrug, slug), True
 
     if m := re.match(r"^/moskva/([^/]+)/$", path):
         okrug_slug = m.group(1)
         if okrug_slug in MOSCOW_OKRUGS:
             okrug_name, okrug_short, count = MOSCOW_OKRUGS[okrug_slug]
-            return okrug_meta(okrug_name, okrug_short, okrug_slug, count)
+            return okrug_meta(okrug_name, okrug_short, okrug_slug, count), True
+        return not_found_meta(path), False
 
     if m := re.match(r"^/blog/([^/]+)/$", path):
         slug = m.group(1)
+        if not _valid_slug(slug):
+            return not_found_meta(path), False
         page = await db.generated_pages.find_one(
             {"slug": slug, "type": "blog"},
             {"title": 1, "meta_description": 1},
         )
-        if page:
-            return blog_meta(page.get("title") or slug, page.get("meta_description") or "", slug)
-        return blog_meta(slug.replace("-", " ").title(), "", slug)
+        if not page:
+            return not_found_meta(path), False
+        return blog_meta(page.get("title") or slug, page.get("meta_description") or "", slug), True
 
     if m := re.match(r"^/uslugi/([^/]+)/$", path):
         slug = m.group(1)
         svc = SERVICE_PAGES.get(slug)
         if svc:
-            return service_meta(svc["name"], slug, svc["price_from"])
+            return service_meta(svc["name"], slug, svc["price_from"]), True
+        return not_found_meta(path), False
 
-    return HOME_META
+    return not_found_meta(path), False
 
 
-async def render_spa_html(path: str) -> str:
+def _valid_slug(slug: str) -> bool:
+    return bool(slug) and slug.isascii() and bool(re.match(r"^[a-z0-9-]+$", slug))
+
+
+async def render_spa_html(path: str) -> tuple[str, bool]:
     template = load_spa_template()
-    meta = await resolve_meta_for_path(path)
-    return inject_meta_into_html(template, meta)
+    meta, is_known = await resolve_meta_for_path(path)
+    return inject_meta_into_html(template, meta), is_known
 
 
 async def collect_all_paths_with_meta() -> list[tuple[str, dict]]:
@@ -196,9 +215,13 @@ async def collect_all_paths_with_meta() -> list[tuple[str, dict]]:
         )
 
     cities = await db.podmoskovye_cities.find({}, {"slug": 1, "name": 1, "_id": 0}).to_list(200)
+    city_pages = await db.generated_pages.find({"type": "city"}, {"slug": 1, "_id": 0}).to_list(500)
+    city_slugs_with_content = {p["slug"] for p in city_pages if p.get("slug")}
     for c in cities:
         slug = c.get("slug") or ""
-        if not slug:
+        if not slug or slug not in city_slugs_with_content:
+            continue
+        if not _valid_slug(slug):
             continue
         add(f"/podmoskovye/{slug}/", city_meta(c.get("name") or slug, slug))
 
@@ -208,7 +231,7 @@ async def collect_all_paths_with_meta() -> list[tuple[str, dict]]:
     ).to_list(500)
     for b in blogs:
         slug = b.get("slug") or ""
-        if not slug:
+        if not slug or slug in SERVICE_SLUGS or not _valid_slug(slug):
             continue
         title = b.get("title") or slug.replace("-", " ").title()
         add(f"/blog/{slug}/", blog_meta(title, b.get("meta_description") or "", slug))
