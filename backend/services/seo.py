@@ -218,9 +218,11 @@ def jsonld_service(
     url: str,
     reviews: Optional[list[str]] = None,
 ) -> dict:
+    # Google Review Snippets do not support Service as parent type; Product is supported.
+    has_reviews = bool(reviews)
     schema: dict = {
         "@context": "https://schema.org",
-        "@type": "Service",
+        "@type": ["Service", "Product"] if has_reviews else "Service",
         "name": service_name,
         "description": description,
         "provider": {"@type": "LocalBusiness", "name": SITE_NAME, "url": SITE_URL},
@@ -229,11 +231,12 @@ def jsonld_service(
             "@type": "Offer",
             "priceCurrency": "RUB",
             "price": price_from,
+            **({"availability": "https://schema.org/InStock"} if has_reviews else {}),
         },
         "url": f"{SITE_URL}{url}",
     }
     if reviews:
-        review_schemas = [_review_to_schema(r) for r in reviews]
+        review_schemas = [_review_to_schema(r, service_name) for r in reviews]
         schema["review"] = review_schemas
         aggregate = _aggregate_rating(review_schemas)
         if aggregate:
@@ -266,16 +269,22 @@ def _aggregate_rating(review_schemas: list[dict]) -> Optional[dict]:
     }
 
 
-def _review_to_schema(review_text: str) -> dict:
+def _review_to_schema(review_text: str, item_name: str) -> dict:
     """Convert plain-text review ('text — Имя') to schema.org Review."""
     parts = review_text.rsplit("—", 1)
     body = parts[0].strip().strip("«»")
     author = parts[1].strip() if len(parts) > 1 else "Клиент"
     return {
         "@type": "Review",
+        "itemReviewed": {"@type": "Product", "name": item_name},
         "reviewBody": body,
         "author": {"@type": "Person", "name": author},
-        "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"},
+        "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5",
+            "worstRating": "1",
+        },
     }
 
 
