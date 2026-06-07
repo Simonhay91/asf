@@ -1,13 +1,19 @@
+import asyncio
 import logging
 import random
 from datetime import datetime, timedelta
 from typing import Optional
 
 from backend.database import db
+from backend.constants.city_matrix import (
+    CITY_SERVICE_CITIES,
+    CITY_SERVICE_SLUGS,
+    CITY_SERVICE_TARGET,
+)
 from backend.services.claude_service import (
     generate_district_page,
     generate_city_page,
-    generate_blog_article,
+    generate_city_service_page,
     generate_topic_article,
     generate_service_page,
     SERVICE_META,
@@ -29,7 +35,7 @@ SITE_URL = "https://russkiyasphalt.ru"
 
 async def generate_next(location_type: str = "both") -> dict:
     """
-    location_type: "moscow" | "podmoskovye" | "both" | "blog" | "uslugi"
+    location_type: "moscow" | "podmoskovye" | "both" | "blog" | "uslugi" | "city-services"
     """
     generated = []
 
@@ -39,6 +45,9 @@ async def generate_next(location_type: str = "both") -> dict:
             generated.append(result)
     elif location_type == "uslugi":
         results = await generate_all_services()
+        generated.extend(results)
+    elif location_type == "city-services":
+        results = await generate_city_services_batch(limit=3)
         generated.extend(results)
     else:
         if location_type in ("moscow", "both"):
@@ -85,6 +94,7 @@ async def generate_moscow_districts(count: int = 3) -> dict:
         except Exception as e:
             errors += 1
             logger.error(f"Moscow batch item failed ({district.get('name')}): {e}")
+        await asyncio.sleep(5)
     if not generated:
         status = "errors" if errors else "nothing_pending"
         return {"status": status, "generated": [], "errors": errors}
@@ -141,6 +151,63 @@ async def regenerate_service(slug: str) -> dict:
     if result:
         await _rebuild_sitemap()
     return {"status": "ok", "generated": [result] if result else []}
+
+
+async def generate_city_services_batch(limit: int = 3) -> list[dict]:
+    """Generate up to `limit` missing city×service pages (top-20 cities × 5 services)."""
+    limit = max(1, min(int(limit), 10))
+    pending = await _pending_city_service_pairs(limit)
+    if not pending:
+        return []
+
+    results = []
+    for city_slug, service_slug in pending:
+        try:
+            result = await _run_city_service(city_slug, service_slug)
+            if result:
+                results.append(result)
+        except Exception as e:
+            logger.error(f"city_service failed {city_slug}/{service_slug}: {e}", exc_info=True)
+    return results
+
+
+async def generate_all_city_services() -> dict:
+    """Generate all missing city×service pages in the matrix batch."""
+    await notify(f"⏳ Генерирую матрицу город×услуга (до {CITY_SERVICE_TARGET} URL)...")
+    generated = []
+    while True:
+        batch = await generate_city_services_batch(limit=5)
+        if not batch:
+            break
+        generated.extend(batch)
+        await notify(f"📦 city×service: +{len(batch)} (всего {len(generated)})")
+    await _rebuild_sitemap()
+    done = await db.generated_pages.count_documents({"type": "city_service"})
+    return {
+        "status": "ok" if generated else "nothing_pending",
+        "generated": generated,
+        "city_services_done": done,
+        "city_services_target": CITY_SERVICE_TARGET,
+    }
+
+
+async def _pending_city_service_pairs(limit: int) -> list[tuple[str, str]]:
+    existing = await db.generated_pages.find(
+        {"type": "city_service"},
+        {"slug": 1, "_id": 0},
+    ).to_list(CITY_SERVICE_TARGET + 10)
+    existing_keys = {p["slug"] for p in existing if p.get("slug")}
+
+    pairs: list[tuple[str, str]] = []
+    for city_slug in CITY_SERVICE_CITIES:
+        for service_slug in CITY_SERVICE_SLUGS:
+            composite = f"{city_slug}/{service_slug}"
+            if composite in existing_keys:
+                continue
+            pairs.append((city_slug, service_slug))
+            if len(pairs) >= limit:
+                return pairs
+    return pairs
 
 
 async def regenerate_slug(slug: str) -> dict:
@@ -214,9 +281,11 @@ async def get_status() -> dict:
     mo_total = await db.moscow_districts.count_documents({})
     pm_done = await db.podmoskovye_cities.count_documents({"status": "done"})
     pm_total = await db.podmoskovye_cities.count_documents({})
+    cs_done = await db.generated_pages.count_documents({"type": "city_service"})
     return {
         "moscow": {"done": mo_done, "total": mo_total, "pending": mo_total - mo_done},
         "podmoskovye": {"done": pm_done, "total": pm_total, "pending": pm_total - pm_done},
+        "city_services": {"done": cs_done, "target": CITY_SERVICE_TARGET, "pending": CITY_SERVICE_TARGET - cs_done},
         "total_pages": await db.generated_pages.count_documents({}),
     }
 
@@ -293,16 +362,12 @@ async def _run_district(district: dict) -> Optional[dict]:
         style_id = await _next_style_id("moscow_districts")
 
         page = await generate_district_page(district, research, style_id)
-        blog = await generate_blog_article(name, "district", research, style_id)
 
         page_url = f"/moskva/{okrug}/{slug}/"
-        blog_slug = f"asfalt-{slug}"
-        blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
         wiki_image = await fetch_wikimedia_image(name, "district", slug=slug)
         city_image_urls = await fetch_images(slug, "district", location_name=name, count=3)
-        blog_image_urls = await fetch_images(blog_slug, "", count=3)
         image_url = wiki_image or (city_image_urls[0] if city_image_urls else None)
 
         await db.generated_pages.insert_one({
@@ -313,28 +378,19 @@ async def _run_district(district: dict) -> Optional[dict]:
             "generated_at": now, "style_page": style_id, "indexed": False, "indexed_at": None,
             "image_url": image_url, "image_urls": city_image_urls,
         })
-        await db.generated_pages.insert_one({
-            "slug": blog_slug, "type": "blog", "name": blog.get("topic", f"Блог — {name}"),
-            "title": blog["meta_title"], "url": blog_url,
-            "page_content": blog["content"],
-            "meta_title": blog["meta_title"], "meta_description": blog["meta_description"],
-            "generated_at": now, "style_blog": style_id, "indexed": False, "indexed_at": None,
-            "image_url": blog_image_urls[0] if blog_image_urls else image_url,
-            "image_urls": blog_image_urls,
-        })
         await db.moscow_districts.update_one(
             {"slug": slug},
-            {"$set": {"status": "done", "style_page": style_id, "style_blog": style_id,
-                      "generated_at": now, "page_url": page_url, "blog_url": blog_url}},
+            {"$set": {"status": "done", "style_page": style_id,
+                      "generated_at": now, "page_url": page_url}},
         )
 
-        await ping_urls([f"{SITE_URL}{page_url}", f"{SITE_URL}{blog_url}"])
+        await ping_urls([f"{SITE_URL}{page_url}"])
         await notify_page(
             name=name, page_type="district", url=page_url, image_url=image_url,
             meta_title=page["meta_title"], meta_description=page["meta_description"],
         )
         logger.info(f"Done: district {name}")
-        return {"type": "district", "name": name, "page_url": page_url, "blog_url": blog_url}
+        return {"type": "district", "name": name, "page_url": page_url}
 
     except Exception as e:
         logger.error(f"Error generating district {name}: {e}", exc_info=True)
@@ -352,16 +408,12 @@ async def _run_city(city: dict) -> Optional[dict]:
         style_id = await _next_style_id("podmoskovye_cities")
 
         page = await generate_city_page(city, research, style_id)
-        blog = await generate_blog_article(name, "city", research, style_id)
 
         page_url = f"/podmoskovye/{slug}/"
-        blog_slug = f"asfalt-{slug}"
-        blog_url = f"/blog/{blog_slug}/"
         now = datetime.utcnow()
 
         wiki_image = await fetch_wikimedia_image(name, "city", slug=slug)
         city_image_urls = await fetch_images(slug, "city", location_name=name, count=3)
-        blog_image_urls = await fetch_images(blog_slug, "", count=3)
         image_url = wiki_image or (city_image_urls[0] if city_image_urls else None)
 
         await db.generated_pages.insert_one({
@@ -372,33 +424,91 @@ async def _run_city(city: dict) -> Optional[dict]:
             "generated_at": now, "style_page": style_id, "indexed": False, "indexed_at": None,
             "image_url": image_url, "image_urls": city_image_urls,
         })
-        await db.generated_pages.insert_one({
-            "slug": blog_slug, "type": "blog", "name": blog.get("topic", f"Блог — {name}"),
-            "title": blog["meta_title"], "url": blog_url,
-            "page_content": blog["content"],
-            "meta_title": blog["meta_title"], "meta_description": blog["meta_description"],
-            "generated_at": now, "style_blog": style_id, "indexed": False, "indexed_at": None,
-            "image_url": blog_image_urls[0] if blog_image_urls else image_url,
-            "image_urls": blog_image_urls,
-        })
         await db.podmoskovye_cities.update_one(
             {"slug": slug},
-            {"$set": {"status": "done", "style_page": style_id, "style_blog": style_id,
-                      "generated_at": now, "page_url": page_url, "blog_url": blog_url}},
+            {"$set": {"status": "done", "style_page": style_id,
+                      "generated_at": now, "page_url": page_url}},
         )
 
-        await ping_urls([f"{SITE_URL}{page_url}", f"{SITE_URL}{blog_url}"])
+        await ping_urls([f"{SITE_URL}{page_url}"])
         await notify_page(
             name=name, page_type="city", url=page_url, image_url=image_url,
             meta_title=page["meta_title"], meta_description=page["meta_description"],
         )
         logger.info(f"Done: city {name}")
-        return {"type": "city", "name": name, "page_url": page_url, "blog_url": blog_url}
+        return {"type": "city", "name": name, "page_url": page_url}
 
     except Exception as e:
         logger.error(f"Error generating city {name}: {e}", exc_info=True)
         await db.podmoskovye_cities.update_one({"slug": slug}, {"$set": {"status": "pending"}})
         await notify(f"❌ Ошибка: {name}\n{str(e)[:200]}")
+        raise
+
+
+async def _run_city_service(city_slug: str, service_slug: str) -> Optional[dict]:
+    if service_slug not in SERVICE_META:
+        raise ValueError(f"Unknown service slug: {service_slug}")
+
+    city = await db.podmoskovye_cities.find_one({"slug": city_slug})
+    if not city:
+        raise ValueError(f"City not found: {city_slug}")
+
+    name = city["name"]
+    service = SERVICE_META[service_slug]
+    composite_slug = f"{city_slug}/{service_slug}"
+    page_url = f"/podmoskovye/{city_slug}/{service_slug}/"
+
+    existing = await db.generated_pages.find_one({"slug": composite_slug, "type": "city_service"})
+    if existing:
+        return None
+
+    try:
+        research = await _get_research(city_slug, name, "city")
+        style_id = await _next_style_id("podmoskovye_cities")
+        page = await generate_city_service_page(city, service, research, style_id)
+        now = datetime.utcnow()
+
+        image_urls = await fetch_images(composite_slug, "city", location_name=name, count=3)
+        image_url = image_urls[0] if image_urls else None
+
+        await db.generated_pages.insert_one({
+            "slug": composite_slug,
+            "type": "city_service",
+            "city_slug": city_slug,
+            "service_slug": service_slug,
+            "name": f"{service['name']} — {name}",
+            "title": page["meta_title"],
+            "url": page_url,
+            "page_content": page["content"],
+            "meta_title": page["meta_title"],
+            "meta_description": page["meta_description"],
+            "generated_at": now,
+            "style_page": style_id,
+            "indexed": False,
+            "indexed_at": None,
+            "image_url": image_url,
+            "image_urls": image_urls,
+        })
+
+        await ping_urls([f"{SITE_URL}{page_url}"])
+        await notify_page(
+            name=f"{service['name']} — {name}",
+            page_type="city_service",
+            url=page_url,
+            image_url=image_url,
+            meta_title=page["meta_title"],
+            meta_description=page["meta_description"],
+        )
+        logger.info(f"Done: city_service {composite_slug}")
+        return {
+            "type": "city_service",
+            "name": f"{service['name']} — {name}",
+            "page_url": page_url,
+        }
+
+    except Exception as e:
+        logger.error(f"Error generating city_service {composite_slug}: {e}", exc_info=True)
+        await notify(f"❌ Ошибка city×service: {composite_slug}\n{str(e)[:200]}")
         raise
 
 

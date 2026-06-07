@@ -99,7 +99,7 @@ async def research_location(name: str, location_type: str) -> str:
 
     except httpx.HTTPStatusError as e:
         logger.error(f"Perplexity HTTP error for {name}: {e.response.status_code}")
-        raise
+        return ""
     except Exception as e:
         logger.error(f"Perplexity error for {name}: {e}", exc_info=True)
-        raise
+        return ""
