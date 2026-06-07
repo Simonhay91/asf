@@ -8,6 +8,7 @@ import TrailingSlashRedirect from './components/TrailingSlashRedirect'
 import Home from './pages/Home'
 import District from './pages/District'
 import City from './pages/City'
+import CityService from './pages/CityService'
 import Blog from './pages/Blog'
 import BlogList from './pages/BlogList'
 import Admin from './pages/Admin'
@@ -19,6 +20,7 @@ import MoscowList from './pages/MoscowList'
 import MoscowOkrug from './pages/MoscowOkrug'
 import Kontakty from './pages/Kontakty'
 import About from './pages/About'
+import Obekty from './pages/Obekty'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -53,6 +55,8 @@ export default function App() {
           <Route path="/moskva/:okrug" element={<TrailingSlashRedirect />} />
           <Route path="/moskva/:okrug/:slug/" element={<District onQuoteClick={openQuote} />} />
           <Route path="/moskva/:okrug/:slug" element={<TrailingSlashRedirect />} />
+          <Route path="/podmoskovye/:city/:service/" element={<CityService onQuoteClick={openQuote} />} />
+          <Route path="/podmoskovye/:city/:service" element={<TrailingSlashRedirect />} />
           <Route path="/podmoskovye/:slug/" element={<City onQuoteClick={openQuote} />} />
           <Route path="/podmoskovye/:slug" element={<TrailingSlashRedirect />} />
           <Route path="/uslugi/" element={<ServiceList onQuoteClick={openQuote} />} />
@@ -70,6 +74,8 @@ export default function App() {
           <Route path="/kontakty" element={<TrailingSlashRedirect />} />
           <Route path="/o-kompanii/" element={<About onQuoteClick={openQuote} />} />
           <Route path="/o-kompanii" element={<TrailingSlashRedirect />} />
+          <Route path="/obekty/" element={<Obekty onQuoteClick={openQuote} />} />
+          <Route path="/obekty" element={<TrailingSlashRedirect />} />
           <Route path="/asfalt-kroshka-primineniye" element={<Navigate to="/uslugi/asfaltovaya-kroshka/" replace />} />
           <Route path="/asfalt-kroshka-primineniye/" element={<Navigate to="/uslugi/asfaltovaya-kroshka/" replace />} />
           <Route path="/sys-9x4k2m" element={<Admin />} />

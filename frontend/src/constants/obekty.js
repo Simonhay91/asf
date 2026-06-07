@@ -1,0 +1,73 @@
+/** Portfolio items for /obekty/ — real project photos from /photos/ */
+export const OBEKTY_ITEMS = [
+  {
+    img: '/photos/work5.jpg',
+    title: 'Автодорога ООО «Газрегион»',
+    location: 'МО, Одинцовский р-н, пос. Горки-10',
+    workType: 'Асфальтирование дорог',
+    volume: '44 000 м²',
+  },
+  {
+    img: '/photos/work3.jpg',
+    title: 'Кондитерский концерн «Бабаевский»',
+    location: 'г. Москва, ул. Малая Красносельская',
+    workType: 'Восстановление покрытия',
+    volume: '2 976 м²',
+  },
+  {
+    img: '/photos/work10.jpg',
+    title: 'Школьный двор МБОУ СОШ №4',
+    location: 'г. Балашиха',
+    workType: 'Асфальтирование двора',
+    volume: '550 м²',
+  },
+  {
+    img: '/photos/work7.jpg',
+    title: 'Сергиево-Посадский мясокомбинат',
+    location: 'г. Сергиев Посад',
+    workType: 'Восстановление покрытия',
+    volume: '4 650 м²',
+  },
+  {
+    img: '/photos/work6.jpg',
+    title: 'Территория ООО «АТК-14»',
+    location: 'г. Воскресенск, Технопарк Федино',
+    workType: 'Асфальтирование площадки',
+    volume: '3 800 м²',
+  },
+  {
+    img: '/photos/work1.jpg',
+    title: 'Дорога с/п Ульянинское',
+    location: 'Раменский р-н, д. Поддубье',
+    workType: 'Асфальтирование дорог',
+    volume: '10 000 м²',
+  },
+  {
+    img: '/photos/work2.jpg',
+    title: 'Парковка торгового центра',
+    location: 'г. Подольск',
+    workType: 'Асфальтирование парковки',
+    volume: '1 200 м²',
+  },
+  {
+    img: '/photos/work4.jpg',
+    title: 'Придомовая территория ЖК',
+    location: 'г. Мытищи',
+    workType: 'Асфальтирование двора',
+    volume: '890 м²',
+  },
+  {
+    img: '/photos/work8.jpg',
+    title: 'Ямочный ремонт проезда',
+    location: 'г. Королёв',
+    workType: 'Ямочный ремонт',
+    volume: '320 м²',
+  },
+  {
+    img: '/photos/work9.jpg',
+    title: 'Асфальтовая крошка — дачный участок',
+    location: 'г. Люберцы',
+    workType: 'Асфальтовая крошка',
+    volume: '480 м²',
+  },
+]

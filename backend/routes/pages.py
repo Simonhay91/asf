@@ -4,11 +4,12 @@ from fastapi import APIRouter, HTTPException
 
 from backend.database import db
 from backend.services.seo import (
-    district_meta, city_meta, blog_meta, service_meta,
+    district_meta, city_meta, city_service_meta, blog_meta, service_meta,
     jsonld_organization, jsonld_service, jsonld_breadcrumb, jsonld_article, jsonld_faq,
     resolve_location_blog_canonical,
     ROBOTS_TXT, SITE_NAME, SITE_URL,
 )
+from backend.constants.city_matrix import CITY_SERVICE_SLUGS
 from backend.services.claude_service import parse_faq_from_markdown, _sanitize_phones
 
 logger = logging.getLogger(__name__)
@@ -62,6 +63,82 @@ async def get_district_page(okrug: str, slug: str):
         "district_name": district_name,
         "okrug": okrug,
         "okrug_name": okrug_name,
+    }
+
+
+@router.get("/api/page/podmoskovye/{city}/{service}")
+async def get_city_service_page(city: str, service: str):
+    if service not in CITY_SERVICE_SLUGS:
+        raise HTTPException(status_code=404, detail="Service not found")
+
+    city_doc = await db.podmoskovye_cities.find_one({"slug": city}, {"_id": 0})
+    if not city_doc:
+        raise HTTPException(status_code=404, detail="City not found")
+
+    city_name = city_doc["name"]
+    service_info = SERVICES.get(service)
+    if not service_info:
+        raise HTTPException(status_code=404, detail="Service not found")
+
+    composite_slug = f"{city}/{service}"
+    meta = city_service_meta(
+        city_name,
+        service_info["name"],
+        city,
+        service,
+        service_info["price_from"],
+    )
+    breadcrumb = jsonld_breadcrumb([
+        ("Главная", "/"),
+        ("Подмосковье", "/regiony/"),
+        (city_name, f"/podmoskovye/{city}/"),
+        (service_info["name"], f"/podmoskovye/{city}/{service}/"),
+    ])
+
+    page = await db.generated_pages.find_one(
+        {"slug": composite_slug, "type": "city_service"},
+        {"_id": 0},
+    )
+    if not page:
+        return {
+            "meta": meta,
+            "jsonld": [jsonld_organization(), breadcrumb],
+            "content": "",
+            "placeholder": True,
+            "city_name": city_name,
+            "service_name": service_info["name"],
+            "city_slug": city,
+            "service_slug": service,
+        }
+
+    jsonld = [jsonld_organization(), breadcrumb]
+    if page.get("style_page") == 5:
+        faq_pairs = parse_faq_from_markdown(page.get("page_content", ""))
+        if faq_pairs:
+            jsonld.append(jsonld_faq(faq_pairs))
+
+    if page.get("meta_title"):
+        meta = {
+            **meta,
+            "title": page["meta_title"],
+            "description": (page.get("meta_description") or meta["description"])[:160],
+            "og:title": page["meta_title"],
+            "og:description": (page.get("meta_description") or meta["description"])[:200],
+        }
+
+    return {
+        "meta": meta,
+        "jsonld": jsonld,
+        "content": _sanitize_phones(page.get("page_content", "")),
+        "generated_at": page.get("generated_at"),
+        "image_url": page.get("image_url"),
+        "image_urls": page.get("image_urls") or [],
+        "style": page.get("style_page", 1),
+        "placeholder": False,
+        "city_name": city_name,
+        "service_name": service_info["name"],
+        "city_slug": city,
+        "service_slug": service,
     }
 
 

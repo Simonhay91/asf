@@ -76,6 +76,21 @@ export const ABOUT_META = buildMeta(
   '/o-kompanii/',
 )
 
+export const OBEKTY_META = buildMeta(
+  `Наши объекты — ${SITE_NAME}`,
+  'Фото реальных объектов асфальтирования в Москве и Подмосковье: дворы, парковки, дороги, промышленные площадки.',
+  '/obekty/',
+)
+
+export function cityServiceMeta(serviceName, cityName, citySlug, serviceSlug) {
+  const svc = SERVICE_SEO[serviceSlug]
+  const price = svc?.price || 630
+  const title = `${serviceName} в ${cityName} — от ${price} руб/м² | ${SITE_NAME}`
+  const description =
+    `${serviceName} в ${cityName} под ключ. Цена от ${price} руб/м², гарантия 5 лет. Выезд замерщика бесплатно.`
+  return buildMeta(title, description, `/podmoskovye/${citySlug}/${serviceSlug}/`)
+}
+
 export function okrugMeta(okrugName, okrugShort, okrugSlug, districtCount) {
   const title = `Асфальтирование в ${okrugShort} — от 630 руб/м² | ${SITE_NAME}`
   const description =

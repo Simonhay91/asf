@@ -7,6 +7,7 @@ export const MAIN_NAV = [
   { to: '/moskva/', label: 'Москва' },
   { to: '/regiony/', label: 'Подмосковье' },
   { to: '/blog/', label: 'Блог' },
+  { to: '/obekty/', label: 'Объекты' },
   { to: '/o-kompanii/', label: 'О компании' },
   { to: '/kontakty/', label: 'Контакты' },
 ]
@@ -16,6 +17,7 @@ export function isNavActive(pathname, item) {
   if (item.to === '/uslugi/') return pathname.startsWith('/uslugi')
   if (item.to === '/moskva/') return pathname.startsWith('/moskva')
   if (item.to === '/regiony/') return pathname.startsWith('/regiony') || pathname.startsWith('/podmoskovye')
+  if (item.to === '/obekty/') return pathname.startsWith('/obekty')
   if (item.to === '/blog/') return pathname.startsWith('/blog')
   return pathname === item.to || pathname.startsWith(item.to)
 }

@@ -9,6 +9,7 @@ from backend.services.generate import (
     regenerate_slug,
     get_status,
     get_next_queue,
+    generate_all_city_services,
 )
 from backend.services.telegram_service import notify, notify_quote
 
@@ -38,6 +39,8 @@ async def _run_generate_job(location_type: str, count: int) -> None:
     try:
         if location_type == "moscow":
             result = await generate_moscow_districts(count)
+        elif location_type == "city-services-all":
+            result = await generate_all_city_services()
         else:
             result = await generate_next(location_type)
         names = [g.get("name", g.get("title", "?")) for g in result.get("generated", [])]
@@ -66,6 +69,8 @@ async def trigger_generate(req: GenerateRequest, background_tasks: BackgroundTas
             }
         if req.location_type == "moscow":
             return await generate_moscow_districts(req.count)
+        if req.location_type == "city-services-all":
+            return await generate_all_city_services()
         return await generate_next(req.location_type)
     except Exception as e:
         logger.error(f"Generate error: {e}", exc_info=True)

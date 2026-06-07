@@ -110,6 +110,21 @@ def city_meta(city_name: str, slug: str) -> dict:
     return build_meta(title, description, f"/podmoskovye/{slug}/")
 
 
+def city_service_meta(
+    city_name: str,
+    service_name: str,
+    city_slug: str,
+    service_slug: str,
+    price_from: int,
+) -> dict:
+    title = f"{service_name} в {city_name} — от {price_from} руб/м² | {SITE_NAME}"
+    description = (
+        f"{service_name} в {city_name} и Московской области под ключ. "
+        f"Цена от {price_from} руб/м², гарантия 5 лет. Выезд замерщика бесплатно."
+    )
+    return build_meta(title, description, f"/podmoskovye/{city_slug}/{service_slug}/")
+
+
 def blog_meta(title_text: str, excerpt: str, slug: str, canonical_path: Optional[str] = None) -> dict:
     if not slug:
         raise ValueError("blog_meta: empty slug")
@@ -233,10 +248,18 @@ PRICE_LIST_META = build_meta(
     "/prajs-list/",
 )
 
+OBEKTY_META = build_meta(
+    f"Наши объекты — {SITE_NAME}",
+    "Фото реальных объектов асфальтирования в Москве и Подмосковье: дворы, парковки, дороги, "
+    "промышленные площадки. Гарантия 5 лет на все работы.",
+    "/obekty/",
+)
+
 STATIC_PAGE_META: dict[str, dict] = {
     "/": HOME_META,
     "/kontakty/": KONTAKTY_META,
     "/o-kompanii/": ABOUT_META,
+    "/obekty/": OBEKTY_META,
     "/blog/": BLOG_LIST_META,
     "/moskva/": MOSCOW_LIST_META,
     "/regiony/": REGION_LIST_META,
@@ -401,6 +424,7 @@ STATIC_URLS = [
     ("/blog/", "0.7", "weekly"),
     ("/uslugi/", "0.8", "weekly"),
     ("/o-kompanii/", "0.7", "monthly"),
+    ("/obekty/", "0.7", "monthly"),
     ("/prajs-list/", "0.8", "monthly"),
     ("/kontakty/", "0.6", "monthly"),
     ("/uslugi/asfaltirovanie-dvorov/", "0.8", "monthly"),
@@ -454,7 +478,7 @@ def build_sitemap(generated_pages: list[dict]) -> str:
         blog_slug = _blog_slug_from_path(path)
         if blog_slug and (blog_slug in SERVICE_SLUGS or is_location_companion_blog_slug(blog_slug)):
             continue
-        priority = "0.9" if page_type in ("district", "city") else "0.6"
+        priority = "0.9" if page_type in ("district", "city") else "0.85" if page_type == "city_service" else "0.6"
         generated_at = page.get("generated_at")
         lastmod = generated_at.strftime("%Y-%m-%d") if isinstance(generated_at, datetime) else today
         el = ET.SubElement(urlset, "url")

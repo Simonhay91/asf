@@ -7,7 +7,14 @@ import SiteSidebarNav from '../components/SiteSidebarNav'
 import PageLayout from '../components/PageLayout'
 import ContentWithImages from '../components/ContentWithImages'
 import { CITIES } from '../constants/cities'
+import { ALL_SERVICES } from '../constants/services'
+import { CITY_MATRIX_SERVICES } from '../constants/cityMatrix'
 import { cityMeta } from '../utils/seoMeta'
+
+const MATRIX_SERVICES = ALL_SERVICES.filter(s => {
+  const slug = s.href.replace(/^\/uslugi\//, '').replace(/\/$/, '')
+  return CITY_MATRIX_SERVICES.includes(slug)
+})
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg?auto=compress&cs=tinysrgb&w=1200'
 
@@ -231,6 +238,35 @@ export default function City({ onQuoteClick }) {
         <div>
           <SiteBreadcrumbs items={breadcrumbItems} />
           <ContentWithImages content={data.content} img={img} imageUrls={data.image_urls || []} style={style} />
+
+          <div style={{ marginTop: '48px' }}>
+            <h2 style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '16px' }}>
+              Услуги в {cityName}
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px' }}>
+              {MATRIX_SERVICES.map(svc => {
+                const serviceSlug = svc.href.replace(/^\/uslugi\//, '').replace(/\/$/, '')
+                return (
+                  <Link
+                    key={serviceSlug}
+                    to={`/podmoskovye/${slug}/${serviceSlug}/`}
+                    style={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      background: 'var(--gray)',
+                      borderRadius: '8px',
+                      padding: '16px',
+                      border: '1px solid #2a2a2a',
+                      display: 'block',
+                    }}
+                  >
+                    <div style={{ fontWeight: 700, marginBottom: '6px', fontSize: '0.95rem' }}>{svc.name}</div>
+                    <div style={{ color: 'var(--accent)', fontSize: '0.85rem' }}>{svc.price}</div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
 
           <CallBlock onQuoteClick={onQuoteClick} />
 

@@ -2,7 +2,7 @@ import os
 import logging
 from fastapi import APIRouter, Request, HTTPException, BackgroundTasks
 
-from backend.services.generate import generate_next, regenerate_slug, regenerate_service, get_status, get_next_queue, refresh_all_images, generate_cities_by_region
+from backend.services.generate import generate_next, regenerate_slug, regenerate_service, get_status, get_next_queue, refresh_all_images, generate_cities_by_region, generate_all_city_services
 from backend.services.telegram_service import notify, send_keyboard, edit_keyboard, answer_callback
 
 logger = logging.getLogger(__name__)
@@ -195,12 +195,15 @@ async def _handle_command(text: str) -> None:
     elif text.startswith("/generate "):
         parts = text.split()
         loc_type = parts[1] if len(parts) > 1 else "both"
-        if loc_type not in ("moscow", "podmoskovye", "both", "blog", "uslugi"):
-            await notify("❌ Неверный тип. Используй: /generate moscow | podmoskovye | both | blog | uslugi")
+        if loc_type not in ("moscow", "podmoskovye", "both", "blog", "uslugi", "city-services"):
+            await notify("❌ Неверный тип. Используй: /generate moscow | podmoskovye | both | blog | uslugi | city-services")
             return
         await notify(f"⏳ Начинаю генерацию ({loc_type})...")
         try:
-            result = await generate_next(loc_type)
+            if loc_type == "city-services" and len(parts) > 2 and parts[2] == "all":
+                result = await generate_all_city_services()
+            else:
+                result = await generate_next(loc_type)
             if result["status"] == "nothing_pending":
                 await notify("✅ Нет pending элементов в очереди")
             else:
@@ -241,11 +244,14 @@ async def _handle_command(text: str) -> None:
             s = await get_status()
             mo = s["moscow"]
             pm = s["podmoskovye"]
+            cs = s.get("city_services", {})
             msg = (
                 f"📊 <b>Статус</b>\n\n"
-                f"🏙 Москва: {mo['done']}/{mo['total']} ({mo['pending']} осталось)\n"
+                f"🏙 Москва: {mo['done']}/{mo['total']} ({mo['pending']} осталось) — цель 125/125\n"
                 f"🌲 Подмосковье: {pm['done']}/{pm['total']} ({pm['pending']} осталось)\n"
-                f"📄 Всего страниц: {s['total_pages']}"
+                f"🔗 city×service: {cs.get('done', 0)}/{cs.get('target', 100)} ({cs.get('pending', 0)} осталось)\n"
+                f"📄 Всего страниц: {s['total_pages']}\n\n"
+                f"Cron log: <code>tail -20 /var/www/russkiyasphalt/logs/cron-moscow.log</code>"
             )
             await notify(msg)
         except Exception as e:
@@ -290,6 +296,20 @@ async def _handle_command(text: str) -> None:
         except Exception as e:
             await notify(f"❌ Ошибка: {str(e)[:300]}")
 
+    elif text == "/seo-weekly":
+        await notify(
+            "📋 <b>Еженедельный SEO-чеклист</b>\n\n"
+            "<b>Пн:</b> GSC — индекс, ошибки, CTR топ-10\n"
+            "<b>Ср:</b> Яндекс — переобход 5 новых URL\n"
+            "<b>Пт:</b> asfaltirovanie.ru — новый паттерн?\n"
+            "<b>Вс:</b> KPI: sitemap / GSC «не проинд.» / заявки\n\n"
+            "<b>После deploy:</b>\n"
+            "<code>curl -s https://russkiyasphalt.ru/kontakty/ | grep title</code>\n"
+            "<code>curl -s https://russkiyasphalt.ru/sitemap.xml | grep -c blog/asfalt-</code>\n\n"
+            "<b>Cron:</b> <code>tail -20 .../logs/cron-moscow.log</code>\n"
+            "Полный runbook: <code>docs/WEEKLY-SEO-CHECKLIST.md</code>"
+        )
+
     elif text == "/help":
         await notify(
             "🤖 <b>Команды</b>\n\n"
@@ -299,12 +319,15 @@ async def _handle_command(text: str) -> None:
             "/generate podmoskovye — только Подмосковье\n"
             "/generate blog — только блог-тема\n"
             "/generate uslugi — все страницы услуг\n"
+            "/generate city-services — 3 страницы город×услуга\n"
+            "/generate city-services all — вся матрица 100 URL\n"
             "/generate region север — все города региона\n"
             "  (север, восток, юго-восток, юг, юго-запад, запад)\n"
             "/regenerate {slug} — перегенерировать район/город\n"
             "/regenerate uslugi {slug} — перегенерировать услугу\n"
             "/refresh-images — обновить изображения блогов\n"
             "/status — прогресс\n"
+            "/seo-weekly — чеклист SEO на неделю\n"
             "/next — очередь\n\n"
             "<b>Код (Cursor Cloud Agent):</b>\n"
             "/code {задача} — запустить coding agent\n"

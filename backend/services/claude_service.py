@@ -252,6 +252,56 @@ meta_description: [150–160 символов]
     return _parse_output(response.content[0].text, fallback_title=f"Асфальтирование в {name}")
 
 
+async def generate_city_service_page(
+    city: dict,
+    service_meta: dict,
+    research: str,
+    style_id: int,
+) -> dict:
+    city_name = city["name"]
+    service_name = service_meta["name"]
+    price_min = service_meta["price_min"]
+    price_max = service_meta.get("price_max", price_min)
+    style_desc = PAGE_STYLES.get(style_id, PAGE_STYLES[1])
+    keywords_str = ", ".join(service_meta.get("keywords", [])[:4])
+
+    prompt = f"""{COMPANY_BLOCK}
+
+ЗАДАЧА: SEO-страница услуги «{service_name}» в городе {city_name} (Московская область).
+СТРУКТУРА (стиль {style_id}/7): {style_desc}
+
+ДАННЫЕ О ГОРОДЕ:
+{research}
+
+ТРЕБОВАНИЯ:
+- Объём: 1400–1800 слов
+- H1: вариация «{service_name} в {city_name}»
+- Локальный контекст: упомяни {city_name}, типичные объекты (дворы, парковки, дороги)
+- Блок с ценами: от {price_min} до {price_max} руб/м²
+- 2–3 внутренние ссылки на /uslugi/ и /prajs-list/
+- FAQ из 3–4 вопросов (если уместно для стиля)
+- CTA в конце
+- SEO-ключи: {keywords_str}, {service_name.lower()} {city_name}
+- Только русский язык
+
+META (после разделителя ---META---):
+meta_title: {service_name} в {city_name} — от {price_min} руб/м² | РусскийАсфальт
+meta_description: [150–160 символов, цена + гарантия + город]
+
+ФОРМАТ: только markdown + ---META--- блок. Без пояснений."""
+
+    logger.info(f"Generating city×service page: {service_name} / {city_name}, style {style_id}")
+    response = await client.messages.create(
+        model=MODEL,
+        max_tokens=4096,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return _parse_output(
+        response.content[0].text,
+        fallback_title=f"{service_name} в {city_name}",
+    )
+
+
 async def generate_blog_article(
     location_name: str,
     location_type: str,

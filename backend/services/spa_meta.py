@@ -14,6 +14,7 @@ from backend.services.seo import (
     STATIC_PAGE_META,
     blog_meta,
     city_meta,
+    city_service_meta,
     district_meta,
     is_location_companion_blog_slug,
     normalize_path,
@@ -22,6 +23,7 @@ from backend.services.seo import (
     resolve_location_blog_canonical,
     service_meta,
 )
+from backend.constants.city_matrix import CITY_SERVICE_SLUGS
 
 logger = logging.getLogger(__name__)
 
@@ -117,6 +119,30 @@ async def resolve_meta_for_path(path: str) -> tuple[dict, bool]:
     if path in STATIC_PAGE_META:
         return STATIC_PAGE_META[path], True
 
+    if m := re.match(r"^/podmoskovye/([^/]+)/([^/]+)/$", path):
+        city_slug, service_slug = m.group(1), m.group(2)
+        if not _valid_slug(city_slug) or service_slug not in CITY_SERVICE_SLUGS:
+            return not_found_meta(path), False
+        city = await db.podmoskovye_cities.find_one({"slug": city_slug}, {"name": 1})
+        if not city:
+            return not_found_meta(path), False
+        svc = SERVICE_PAGES.get(service_slug)
+        if not svc:
+            return not_found_meta(path), False
+        page = await db.generated_pages.find_one(
+            {"slug": f"{city_slug}/{service_slug}", "type": "city_service"},
+            {"meta_title": 1, "meta_description": 1},
+        )
+        if page and page.get("meta_title"):
+            return build_meta_from_page(page, path), True
+        return city_service_meta(
+            city.get("name") or city_slug,
+            svc["name"],
+            city_slug,
+            service_slug,
+            svc["price_from"],
+        ), True
+
     if m := re.match(r"^/podmoskovye/([^/]+)/$", path):
         slug = m.group(1)
         if not slug.isascii() or slug not in _valid_slug(slug):
@@ -177,6 +203,14 @@ def _valid_slug(slug: str) -> bool:
     return bool(slug) and slug.isascii() and bool(re.match(r"^[a-z0-9-]+$", slug))
 
 
+def build_meta_from_page(page: dict, path: str) -> dict:
+    from backend.services.seo import build_meta
+
+    title = page.get("meta_title") or ""
+    description = page.get("meta_description") or ""
+    return build_meta(title, description, path)
+
+
 async def render_spa_html(path: str) -> tuple[str, bool]:
     template = load_spa_template()
     meta, is_known = await resolve_meta_for_path(path)
@@ -232,6 +266,33 @@ async def collect_all_paths_with_meta() -> list[tuple[str, dict]]:
         if not _valid_slug(slug):
             continue
         add(f"/podmoskovye/{slug}/", city_meta(c.get("name") or slug, slug))
+
+    city_services = await db.generated_pages.find(
+        {"type": "city_service"},
+        {"slug": 1, "meta_title": 1, "meta_description": 1, "city_slug": 1, "service_slug": 1, "_id": 0},
+    ).to_list(500)
+    for cs in city_services:
+        city_slug = cs.get("city_slug") or (cs.get("slug") or "").split("/")[0]
+        service_slug = cs.get("service_slug") or (cs.get("slug") or "").split("/")[-1]
+        if not city_slug or not service_slug:
+            continue
+        path = f"/podmoskovye/{city_slug}/{service_slug}/"
+        if cs.get("meta_title"):
+            add(path, build_meta_from_page(cs, path))
+        else:
+            city = await db.podmoskovye_cities.find_one({"slug": city_slug}, {"name": 1})
+            svc = SERVICE_PAGES.get(service_slug)
+            if city and svc:
+                add(
+                    path,
+                    city_service_meta(
+                        city.get("name") or city_slug,
+                        svc["name"],
+                        city_slug,
+                        service_slug,
+                        svc["price_from"],
+                    ),
+                )
 
     blogs = await db.generated_pages.find(
         {"type": "blog"},

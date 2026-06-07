@@ -18,6 +18,12 @@ export const BRAND_MAP_QUERY = 'Москва, Мясницкая улица, 41,
 export const BRAND_MAP_URL = `https://yandex.ru/maps/?text=${encodeURIComponent(BRAND_MAP_QUERY)}&z=17&lang=ru_RU`
 export const BRAND_HOURS = 'Пн–Вс: 08:00–20:00'
 
+/** E-E-A-T: когда появятся реальные реквизиты — вписать сюда (не нужен .env) */
+export const BRAND_FOUNDED = 2009
+export const BRAND_INN = ''
+export const BRAND_OGRN = ''
+export const BRAND_SRO = ''
+
 /** Почему цена от 630 ₽/м² — не «дешёвый асфальт», а под ключ */
 export const WHY_PRICE_INTRO =
   'На рынке Москвы и МО часто встречается «от 350–450 ₽/м²». Мы работаем от 630 ₽/м² — потому что в смету сразу входит полный цикл под ключ, а не только укладка верхнего слоя.'
