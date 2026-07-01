@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 YANDEX_TOKEN = os.getenv("YANDEX_WEBMASTER_TOKEN", "")
 YANDEX_HOST_ID = os.getenv("YANDEX_HOST_ID", "")
-API_URL = "https://api.webmaster.yandex.net/v4/user/{user_id}/hosts/{host_id}/urls/queue"
+API_URL = "https://api.webmaster.yandex.net/v4/user/{user_id}/hosts/{host_id}/recrawl/queue"
 
 
 async def ping_urls(urls: list[str]) -> None:
@@ -36,7 +36,7 @@ async def ping_urls(urls: list[str]) -> None:
                     },
                     json={"url": url},
                 )
-                if r.status_code in (200, 201):
+                if r.status_code in (200, 201, 202):
                     logger.info(f"Yandex pinged: {url}")
                 else:
                     logger.warning(f"Yandex ping failed {r.status_code}: {url}")
