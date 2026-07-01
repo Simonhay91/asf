@@ -16,7 +16,9 @@ async def ping_urls(urls: list[str]) -> None:
         return
 
     try:
-        async with httpx.AsyncClient(timeout=15) as http:
+        # trust_env=False: Yandex is a RU-domestic API and must bypass any
+        # HTTP(S)_PROXY configured for geo-blocked services (Anthropic/Telegram).
+        async with httpx.AsyncClient(timeout=15, trust_env=False) as http:
             # First get user_id
             resp = await http.get(
                 "https://api.webmaster.yandex.net/v4/user",

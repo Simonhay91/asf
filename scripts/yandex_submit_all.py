@@ -50,7 +50,7 @@ async def main(dry_run: bool = False) -> None:
     if not TOKEN or not HOST_ID:
         sys.exit("YANDEX_WEBMASTER_TOKEN / YANDEX_HOST_ID not set in .env")
 
-    async with httpx.AsyncClient(timeout=20) as http:
+    async with httpx.AsyncClient(timeout=20, trust_env=False) as http:
         headers = {"Authorization": f"OAuth {TOKEN}"}
 
         user_id = (await http.get(
