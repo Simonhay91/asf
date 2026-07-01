@@ -23,3 +23,6 @@ frontend/.vite/
 # OS
 .DS_Store
 Thumbs.db
+
+# Yandex submit resume-state
+scripts/.yandex_submitted.json
